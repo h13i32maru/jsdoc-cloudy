@@ -1,0 +1,29 @@
+{
+  "name": "jsdoc-cloudy",
+  "version": "0.0.1",
+  "description": "JSDoc template",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/h13i32maru/jsdoc-cloudy"
+  },
+  "scripts": {
+    "init": "bash ./script/init.sh",
+    "build": "bash ./script/build.sh",
+    "test": "bash ./script/test.sh",
+    "jsdoc": "bash ./script/build_jsdoc.sh",
+    "sample": "bash ./script/build_sample.sh",
+    "start": "bash ./script/server.sh"
+  },
+  "author": "h13i32maru",
+  "license": "MIT",
+  "devDependencies" : {
+    "babel": "",
+    "mocha": "",
+    "espower-cli": "",
+    "jsdoc": "",
+    "http-server": "",
+    "escape-html": "",
+    "fs-extra": ""
+  },
+  "main": "out/src/publish.js"
+}
