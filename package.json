@@ -19,11 +19,13 @@
   "devDependencies" : {
     "babel": "",
     "mocha": "",
-    "espower-cli": "",
+    "power-assert": "",
+    "espower-loader": "",
     "jsdoc": "",
     "http-server": "",
     "escape-html": "",
-    "fs-extra": ""
+    "fs-extra": "",
+    "jsdom": ""
   },
   "main": "out/src/publish.js"
 }

@@ -1,7 +1,6 @@
 #!/bin/bash
 
 npm install
-bower install
 
 type curl > /dev/null 2>&1
 if [ $? -eq 0 ]
