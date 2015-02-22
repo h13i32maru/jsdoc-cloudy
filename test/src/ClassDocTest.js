@@ -49,6 +49,12 @@ describe('ClassDoc: SampleNamespace1.SampleClass1: ', ()=>{
       assert.includes(doc, '', 'this is SampleClass1#method1 desc.');
       assert.includes(doc, 'a', '#instance-method1', 'href');
     });
+
+    find(doc, '[data-s="summaryMethods"] tr[data-s="target"]:nth-child(2)', (doc)=>{
+      assert.includes(doc, '', 'method2(p1: boolean): Array.<Object.<string, number>>');
+      assert.includes(doc, '', 'this is SampleClass1#method2 desc.');
+      assert.includes(doc, 'a', '#instance-method2', 'href');
+    });
   });
 
   it('has detail of static members', ()=>{

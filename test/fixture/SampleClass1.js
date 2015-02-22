@@ -36,6 +36,17 @@ function SampleClass1(p1, p2){
    * var foo = 'this is SampleClass1#method1 example';
    */
   this.method1 = function(p1, p2){};
+
+  /**
+   * this is SampleClass1#method2 desc.
+   * after 2nd line are more information.
+   * @method
+   * @param {boolean} p1 p1 is SampleClass1#method2 1st param.
+   * @return {Array.<Object.<string, number>>} SampleClass1#method2 returns string array.
+   * @example
+   * var foo = 'this is SampleClass1#method2 example';
+   */
+  this.method2 = null;
 }
 
 /**
