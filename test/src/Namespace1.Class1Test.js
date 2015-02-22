@@ -19,6 +19,8 @@ describe('Namespace1.Class1: ', ()=>{
       assert.includes(doc, '[data-s="classDesc"]', 'this is Class1 classdesc.');
       assert.includes(doc, '[data-s="fileexampleCode"]', "var foo = Class1;");
 
+      assert.includes(doc, '[data-s="deprecated"]', 'this class was deprecated. since 1.0.0');
+
       // @see and @link
       assert.includes(doc, '[data-s="see"]:nth-child(1)', 'See: http://example.com');
       assert.includes(doc, '[data-s="see"]:nth-child(1) a', 'http://example.com', 'href');
@@ -118,7 +120,7 @@ describe('Namespace1.Class1: ', ()=>{
       });
 
       find(doc, '[data-s="summaryPublicMemberDocs"] tr[data-s="target"]:nth-child(3)', (doc)=>{
-        assert.includes(doc, '[data-s="name"]', 'true', 'data-deprecated');
+        assert.includes(doc, '[data-s="deprecated"]', 'this member was deprecated. since 1.0.0');
       });
 
       find(doc, '[data-s="summaryPublicMemberDocs"] tr[data-s="target"]:nth-child(4)', (doc)=>{
@@ -174,7 +176,7 @@ describe('Namespace1.Class1: ', ()=>{
       });
 
       find(doc, '[data-s="summaryPublicMethodDocs"] tr[data-s="target"]:nth-child(12)', (doc)=>{
-        assert.includes(doc, '[data-s="name"]', 'true', 'data-deprecated');
+        assert.includes(doc, '[data-s="deprecated"]', 'this method was deprecated. since 1.0.0');
       });
 
       find(doc, '[data-s="summaryPublicMethodDocs"] tr[data-s="target"]:nth-child(13)', (doc)=>{
@@ -280,7 +282,7 @@ describe('Namespace1.Class1: ', ()=>{
       });
 
       find(doc, '[data-s="publicMembers"] [data-s="member"]:nth-child(3)', (doc)=>{
-        assert.includes(doc, '[data-s="name"]', 'true', 'data-deprecated');
+        assert.includes(doc, '[data-s="deprecated"]', 'this member was deprecated. since 1.0.0');
       });
 
       find(doc, '[data-s="publicMembers"] [data-s="member"]:nth-child(4)', (doc)=>{
@@ -330,7 +332,7 @@ describe('Namespace1.Class1: ', ()=>{
       });
 
       find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(12)', (doc)=>{
-        assert.includes(doc, '#instance-method14 [data-s="name"]', 'true', 'data-deprecated');
+        assert.includes(doc, '[data-s="deprecated"]', 'this method was deprecated. since 1.0.0');
       });
 
       find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(13)', (doc)=>{

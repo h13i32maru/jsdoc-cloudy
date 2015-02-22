@@ -219,11 +219,11 @@ export default class DocBuilder {
       s.load('name', this._buildDocLinkHTML(memberDoc, memberDoc.name, {inner: true}));
       s.load('signature', this._buildVariableSignatureHTML(memberDoc));
       s.load('description', this._shorten(memberDoc.description));
-      s.attr('name', 'data-deprecated', memberDoc.deprecated);
       s.text('readonly', memberDoc.readonly ? 'readonly' : '');
       s.text('access', memberDoc.access);
       s.drop('sinceLabel', !memberDoc.since);
       s.text('since', memberDoc.since);
+      s.load('deprecated', this._buildDeprecatedHTML(memberDoc));
     });
 
     return s;
@@ -241,10 +241,10 @@ export default class DocBuilder {
       s.load('description', this._shorten(functionDoc.description));
       s.text('virtual', functionDoc.virtual ? 'virtual' : '');
       s.text('override', functionDoc.override ? 'override' : '');
-      s.attr('name', 'data-deprecated', functionDoc.deprecated);
       s.text('access', functionDoc.access);
       s.drop('sinceLabel', !functionDoc.since);
       s.text('since', functionDoc.since);
+      s.load('deprecated', this._buildDeprecatedHTML(functionDoc));
     });
 
     return s;
@@ -260,10 +260,10 @@ export default class DocBuilder {
       s.load('name', this._buildDocLinkHTML(classDoc, classDoc.name, {inner: innerLink}));
       s.load('signature', this._buildFunctionSignatureHTML(classDoc));
       s.load('description', this._shorten(classDoc.description));
-      s.attr('name', 'data-deprecated', classDoc.deprecated);
       s.text('access', classDoc.access);
       s.drop('sinceLabel', !classDoc.since);
       s.text('since', classDoc.since);
+      s.load('deprecated', this._buildDeprecatedHTML(classDoc));
     });
 
     return s;
@@ -279,10 +279,10 @@ export default class DocBuilder {
       s.load('name', this._buildDocLinkHTML(namespaceDoc, namespaceDoc.name, {inner: false}));
       s.drop('signature');
       s.load('description', this._shorten(namespaceDoc.description));
-      s.attr('name', 'data-deprecated', namespaceDoc.deprecated);
       s.text('access', namespaceDoc.access);
       s.drop('sinceLabel', !namespaceDoc.since);
       s.text('since', namespaceDoc.since);
+      s.load('deprecated', this._buildDeprecatedHTML(namespaceDoc));
     });
 
     return s;
@@ -371,9 +371,9 @@ export default class DocBuilder {
       s.text('virtual', functionDoc.virtual ? 'virtual' : '');
       s.text('override', functionDoc.override ? 'override' : '');
       s.text('access', functionDoc.access);
-      s.attr('name', 'data-deprecated', functionDoc.deprecated);
       s.drop('sinceLabel', !functionDoc.since);
       s.text('since', functionDoc.since);
+      s.load('deprecated', this._buildDeprecatedHTML(functionDoc));
 
       // params
       s.loop('param', functionDoc.params, (i, param, s)=>{
@@ -470,10 +470,10 @@ export default class DocBuilder {
       s.load('signature', this._buildVariableSignatureHTML(memberDoc));
       s.load('description', memberDoc.description);
       s.text('access', memberDoc.access);
-      s.attr('name', 'data-deprecated', memberDoc.deprecated);
       s.text('readonly', memberDoc.readonly ? 'readonly' : '');
       s.drop('sinceLabel', !memberDoc.since);
       s.text('since', memberDoc.since);
+      s.load('deprecated', this._buildDeprecatedHTML(memberDoc));
 
       // example
       var exampleDocs = memberDoc.examples;
@@ -496,5 +496,17 @@ export default class DocBuilder {
     });
 
     return s.html;
+  }
+
+  _buildDeprecatedHTML(doc) {
+    if (doc.deprecated) {
+      var kind = doc.kind;
+      if (kind === 'function') kind = 'method';
+      var deprecated = [`this ${kind} was deprecated.`];
+      if (typeof doc.deprecated === 'string') deprecated.push(doc.deprecated);
+      return deprecated.join(' ');
+    } else {
+      return '';
+    }
   }
 }

@@ -38,6 +38,7 @@ function Class0(){}
  * @see {@link Namespace1.Class1.staticMember1}
  * @see {@link method1}
  * @see {@link member1}
+ * @deprecated since 1.0.0
  */
 function Class1(p1, p2){
 
@@ -71,7 +72,7 @@ function Class1(p1, p2){
   this.member4;
 
   /**
-   * @deprecated
+   * @deprecated since 1.0.0
    * @member {string}
    */
   this.member5;
@@ -178,7 +179,7 @@ function Class1(p1, p2){
   this.method13 = function(){};
 
   /**
-   * @deprecated
+   * @deprecated since 1.0.0
    */
   this.method14 = function(){};
 

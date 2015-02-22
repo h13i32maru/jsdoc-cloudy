@@ -151,6 +151,7 @@ table.summary tbody td:nth-child(1) {
   text-align: right;
   white-space: nowrap;
   min-width: 64px;
+  vertical-align: top;
 }
 
 table.summary tbody td:nth-child(2) {
@@ -161,6 +162,7 @@ table.summary tbody td:nth-child(2) {
 table.summary tbody td:nth-child(3) {
   white-space: nowrap;
   border-left: none;
+  vertical-align: top;
 }
 
 table.summary td > div:nth-of-type(2) {
@@ -215,8 +217,10 @@ table.params td p {
   margin-top: 4px;
 }
 
-[data-deprecated="true"] {
-  text-decoration: line-through;
+.deprecated {
+  border-left: solid 5px orange;
+  padding-left: 4px;
+  margin: 4px 0;
 }
 
 .since {

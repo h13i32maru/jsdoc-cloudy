@@ -54,6 +54,7 @@ export default class ClassDocBuilder extends DocBuilder {
     s.load('classDesc', classDoc.classdesc);
     s.text('fileexampleCode', classDoc.fileexample);
     s.drop('fileexampleDoc', !classDoc.fileexample);
+    s.load('deprecated', this._buildDeprecatedHTML(classDoc));
 
     if (implementsDocs) {
       var temp = [];

@@ -32,10 +32,10 @@ describe('IndexDoc: ', ()=>{
       assert.includes(doc, 'a', 'Namespace1.html', 'href');
     });
 
-    find(doc, '[data-s="summaryNamespaceDocs"] tr[data-s="target"]:nth-child(2)', (doc)=>{
-      assert.includes(doc, '', '@global');
-      assert.includes(doc, '', 'global object.');
-      assert.includes(doc, 'a', '@global.html', 'href');
-    });
+    //find(doc, '[data-s="summaryNamespaceDocs"] tr[data-s="target"]:nth-child(2)', (doc)=>{
+    //  assert.includes(doc, '', '@global');
+    //  assert.includes(doc, '', 'global object.');
+    //  assert.includes(doc, 'a', '@global.html', 'href');
+    //});
   });
 });
