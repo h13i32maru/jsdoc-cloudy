@@ -19,7 +19,7 @@ export default class ClassDocBuilder extends DocBuilder {
 
     var s = new SpruceTemplate(this._readTemplate('class.html'));
 
-    s.text('nameSpace', classDoc.memberof);
+    s.text('nameSpace', classDoc.memberof || '@global');
     s.text('className', classDoc.name);
     s.load('classDesc', classDoc.classdesc);
     s.text('fileexampleCode', classDoc.fileexample);
