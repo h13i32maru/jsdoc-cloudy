@@ -16,10 +16,6 @@ export default class IndexDocBuilder extends DocBuilder {
 
   _buildIndexDoc() {
     var indexInfo = this._getIndexInfo();
-    //var title = options.template.title || packageObj.name;
-    //var desc = options.template.description || packageObj.description;
-    //var version = options.template.version || packageObj.version;
-    //var url = options.url || packageObj.repository.url;
     var classDocs = this._find({kind: 'class'});
     var namespaceDocs = this._find({kind: 'namespace'});
 
@@ -37,10 +33,17 @@ export default class IndexDocBuilder extends DocBuilder {
   }
 
   _getIndexInfo() {
-    var config = this._config;
-    var filePath = this._config.package;
-    var json = fs.readFileSync(filePath, {encoding: 'utf-8'});
-    var packageObj = JSON.parse(json);
+    if (this._config.configure) {
+      var configPath = this._config.configure;
+      var configJSON = fs.readFileSync(configPath, {encoding: 'utf-8'});
+      var config = JSON.parse(configJSON);
+    }
+
+    if (this._config.package) {
+      var packagePath = this._config.package;
+      var json = fs.readFileSync(packagePath, {encoding: 'utf-8'});
+      var packageObj = JSON.parse(json);
+    }
 
     var indexInfo = {
       title: config.template.title || packageObj.name,
