@@ -12,6 +12,7 @@ function Class0(){}
 /**
  * @classdesc
  * this is Class1 classdesc.
+ * {@link Namespace1}
  *
  * @fileexample
  * var foo = Class1;
@@ -29,6 +30,14 @@ function Class0(){}
  * var foo = 'this is Class1 example';
  * @implements Namespace1.Interface1
  * @since 1.2.3
+ * @see http://example.com
+ * @see {@link Namespace1.Class1}
+ * @see {@link Namespace1.Class1#method1}
+ * @see {@link Namespace1.Class1.staticMethod1}
+ * @see {@link Namespace1.Class1#member1}
+ * @see {@link Namespace1.Class1.staticMember1}
+ * @see {@link method1}
+ * @see {@link member1}
  */
 function Class1(p1, p2){
 
@@ -38,6 +47,8 @@ function Class1(p1, p2){
    * @member {string}
    * @example
    * var foo = 'this is Class1#member1 example';
+   * @see http://example.com
+   * @see http://example.org
    */
   this.member1 = null;
 
@@ -90,6 +101,8 @@ function Class1(p1, p2){
    * @return {string[]} Class1#method1 returns string array.
    * @example
    * var foo = 'this is Class1#method1 example';
+   * @see http://example.com
+   * @see http://example.org
    */
   this.method1 = function(p1, p2){};
 
@@ -175,10 +188,13 @@ function Class1(p1, p2){
   this.method15 = function(){};
 
   /**
-   * @throws {Error} this is throws desc.
+   * link to {@link Namespace1}.
+   * @params {string} p1 link to {@link Namespace1}.
+   * @throws {Error} this is throws desc. link to {@link Namespace1}.
    * @throws {InvalidArgumentException} this is throws desc.
+   * @return {string} link to {@link Namespace1}.
    */
-  this.method16 = function(){};
+  this.method16 = function(p1){};
 }
 
 /**

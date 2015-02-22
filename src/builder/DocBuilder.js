@@ -102,20 +102,35 @@ export default class DocBuilder {
   }
 
   _resolveLink() {
+    if(this._data.__RESOLVED_LINK__) return;
+
     function link(str) {
       if (!str) return str;
 
-      return str.replace(/\{@link ([\w\#_\-.]+)}/g, (str, cap)=>{
-        var temp = cap.split('#'); // cap = HogeFoo#bar
-        temp[0] += '.html';
-        return `<a href="${temp.join('#')}">${cap}</a>`;
+      return str.replace(/\{@link ([\w\#_\-.]+)}/g, (str, longname)=>{
+        return `<a href="${url(longname)}">${longname}</a>`;
       });
     }
 
-    this._data().each((v)=>{
-      if(v.__RESOLVED_LINK__) return;
+    var url = (longname)=>{
+      var doc = this._find({longname})[0];
+      if (!doc) return;
 
+      if (doc.kind === 'function' || doc.kind === 'member') {
+        var parentLongname = longname.replace(doc.name, '').replace(/.$/, '');
+        if (!parentLongname) parentLongname = '@global';
+        return `${parentLongname}.html#${doc.scope}-${doc.name}`;
+      } else {
+        return `${longname}.html`;
+      }
+    };
+
+    this._data().each((v)=>{
       v.description = link(v.description);
+
+      if (v.classdesc) {
+        v.classdesc = link(v.classdesc);
+      }
 
       if (v.params) {
         for (var param of v.params) {
@@ -129,8 +144,25 @@ export default class DocBuilder {
         }
       }
 
-      v.__RESOLVED_LINK__ = true;
+      if (v.exceptions) {
+        for (var e of v.exceptions) {
+          e.description = link(e.description);
+        }
+      }
+
+      if (v.see) {
+        for (var i = 0; i < v.see.length; i++) {
+          if (v.see[i].indexOf('{@link') === 0) {
+            v.see[i] = link(v.see[i]);
+          } else {
+            v.see[i] = `<a href="${v.see[i]}">${v.see[i]}</a>`;
+          }
+        }
+      }
+
     });
+
+    this._data.__RESOLVED_LINK__ = true;
   }
 
   _find(...cond) {
@@ -273,7 +305,8 @@ export default class DocBuilder {
     if (result) {
       if (result.kind === 'external') {
         text = text.replace(/^external:\s*/, '');
-        return `<span><a href="${result.see[0]}">${text}</a></span>`;
+        var aTag = result.see[0].replace(/>.*?</, `>${text}<`);
+        return `<span>${aTag}</span>`;
       } else {
         return `<span><a href="${longname}.html">${text}</a></span>`;
       }
@@ -413,6 +446,16 @@ export default class DocBuilder {
       if (!exampleDocs) {
         s.drop('example');
       }
+
+      // see
+      var seeDocs = functionDoc.see;
+      if (seeDocs) {
+        s.loop('see', seeDocs, (i, seeDoc, s)=>{
+          s.load('seeLink', seeDoc);
+        });
+      } else {
+        s.drop('seeWrap');
+      }
     });
 
     return s.html;
@@ -439,6 +482,16 @@ export default class DocBuilder {
       });
       if (!exampleDocs) {
         s.drop('example');
+      }
+
+      // see
+      var seeDocs = memberDoc.see;
+      if (seeDocs) {
+        s.loop('see', seeDocs, (i, seeDoc, s)=>{
+          s.load('seeLink', seeDoc);
+        });
+      } else {
+        s.drop('seeWrap');
       }
     });
 

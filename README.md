@@ -7,9 +7,7 @@
 - @module
 - @property (synonyms: @prop)
 - @requires
-- @see
 - @summary
 - @typedef
 - @variation
 - @version
-- {@link}

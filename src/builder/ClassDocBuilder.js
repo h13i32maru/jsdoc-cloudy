@@ -65,6 +65,16 @@ export default class ClassDocBuilder extends DocBuilder {
       s.drop('implements');
     }
 
+    // see
+    var seeDocs = classDoc.see;
+    if (seeDocs) {
+      s.loop('see', seeDocs, (i, seeDoc, s)=>{
+        s.load('seeLink', seeDoc);
+      });
+    } else {
+      s.drop('seeWrap');
+    }
+
     s.load('summaryStaticPrivateMemberDocs', this._buildSummaryMemberDocs(staticPrivateMemberDocs, 'Static Private Members'));
     s.load('summaryStaticProtectedMemberDocs', this._buildSummaryMemberDocs(staticProtectedMemberDocs, 'Static Protected Members'));
     s.load('summaryStaticPublicMemberDocs', this._buildSummaryMemberDocs(staticPublicMemberDocs, 'Static Public Members'));

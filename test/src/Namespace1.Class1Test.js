@@ -18,6 +18,24 @@ describe('Namespace1.Class1: ', ()=>{
       assert.includes(doc, 'h1 [data-s="className"]', 'Class1');
       assert.includes(doc, '[data-s="classDesc"]', 'this is Class1 classdesc.');
       assert.includes(doc, '[data-s="fileexampleCode"]', "var foo = Class1;");
+
+      // @see and @link
+      assert.includes(doc, '[data-s="see"]:nth-child(1)', 'See: http://example.com');
+      assert.includes(doc, '[data-s="see"]:nth-child(1) a', 'http://example.com', 'href');
+      assert.includes(doc, '[data-s="see"]:nth-child(2)', 'See: Namespace1.Class1');
+      assert.includes(doc, '[data-s="see"]:nth-child(2) a', 'Namespace1.Class1.html', 'href');
+      assert.includes(doc, '[data-s="see"]:nth-child(3)', 'See: Namespace1.Class1#method1');
+      assert.includes(doc, '[data-s="see"]:nth-child(3) a', 'Namespace1.Class1.html#instance-method1', 'href');
+      assert.includes(doc, '[data-s="see"]:nth-child(4)', 'See: Namespace1.Class1.staticMethod1');
+      assert.includes(doc, '[data-s="see"]:nth-child(4) a', 'Namespace1.Class1.html#static-staticMethod1', 'href');
+      assert.includes(doc, '[data-s="see"]:nth-child(5)', 'See: Namespace1.Class1#member1');
+      assert.includes(doc, '[data-s="see"]:nth-child(5) a', 'Namespace1.Class1.html#instance-member1', 'href');
+      assert.includes(doc, '[data-s="see"]:nth-child(6)', 'See: Namespace1.Class1.staticMember1');
+      assert.includes(doc, '[data-s="see"]:nth-child(6) a', 'Namespace1.Class1.html#static-staticMember1', 'href');
+      assert.includes(doc, '[data-s="see"]:nth-child(7)', 'See: method1');
+      assert.includes(doc, '[data-s="see"]:nth-child(7) a', '@global.html#global-method1', 'href');
+      assert.includes(doc, '[data-s="see"]:nth-child(8)', 'See: member1');
+      assert.includes(doc, '[data-s="see"]:nth-child(8) a', '@global.html#global-member1', 'href');
     });
   });
 

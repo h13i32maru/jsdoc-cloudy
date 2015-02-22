@@ -233,6 +233,14 @@ h3 .since {
   margin-left: 10px;
 }
 
+.see {
+  margin-top: 10px;
+}
+
+.see h4 {
+  margin: 4px 0;
+}
+
 footer {
   text-align: right;
   font-style: italic;
