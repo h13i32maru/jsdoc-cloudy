@@ -165,7 +165,7 @@ export default class DocBuilder {
 
     s.text('title', title);
     s.loop('target', memberDocs, (i, memberDoc, s)=>{
-      s.load('name', this._buildDocLinkHTML(memberDoc.name, memberDoc.name, {inner: true}));
+      s.load('name', this._buildDocLinkHTML(memberDoc, memberDoc.name, {inner: true}));
       s.load('signature', this._buildVariableSignatureHTML(memberDoc));
       s.load('description', this._shorten(memberDoc.description));
     });
@@ -180,7 +180,7 @@ export default class DocBuilder {
 
     s.text('title', title);
     s.loop('target', functionDocs, (i, functionDoc, s)=>{
-      s.load('name', this._buildDocLinkHTML(functionDoc.name, functionDoc.name, {inner: true}));
+      s.load('name', this._buildDocLinkHTML(functionDoc, functionDoc.name, {inner: true}));
       s.load('signature', this._buildFunctionSignatureHTML(functionDoc));
       s.load('description', this._shorten(functionDoc.description));
     });
@@ -195,7 +195,7 @@ export default class DocBuilder {
 
     s.text('title', 'Classes');
     s.loop('target', classDocs, (i, classDoc, s)=>{
-      s.load('name', this._buildDocLinkHTML(classDoc.longname, classDoc.name, {inner: innerLink}));
+      s.load('name', this._buildDocLinkHTML(classDoc, classDoc.name, {inner: innerLink}));
       s.load('signature', this._buildFunctionSignatureHTML(classDoc));
       s.load('description', this._shorten(classDoc.description));
     });
@@ -210,7 +210,7 @@ export default class DocBuilder {
 
     s.text('title', 'Namespaces');
     s.loop('target', namespaceDocs, (i, namespaceDoc, s)=>{
-      s.load('name', this._buildDocLinkHTML(namespaceDoc.longname, namespaceDoc.name, {inner: false}));
+      s.load('name', this._buildDocLinkHTML(namespaceDoc, namespaceDoc.name, {inner: false}));
       s.drop('signature');
       s.load('description', this._shorten(namespaceDoc.description));
     });
@@ -218,11 +218,13 @@ export default class DocBuilder {
     return s;
   }
 
-  _buildDocLinkHTML(longname, text = longname, {inner = false} = {}) {
+  _buildDocLinkHTML(doc, text = doc.longname || doc, {inner = false} = {}) {
     text = escape(text);
 
+    var longname = doc.longname || doc;
+
     if (inner) {
-      return `<span><a href=#${longname}>${text}</a></span>`;
+      return `<span><a href=#${doc.scope}-${doc.name}>${text}</a></span>`;
     }
 
     if (longname === '@global') {
@@ -284,7 +286,7 @@ export default class DocBuilder {
     var s = new SpruceTemplate(this._readTemplate('methods.html'));
 
     s.loop('method', functionDocs, (i, functionDoc, s)=>{
-      s.attr('anchor', 'id', functionDoc.name);
+      s.attr('anchor', 'id', `${functionDoc.scope}-${functionDoc.name}`);
       s.text('name', functionDoc.name);
       s.load('signature', this._buildFunctionSignatureHTML(functionDoc));
       s.load('description', functionDoc.description);
@@ -339,12 +341,11 @@ export default class DocBuilder {
     return s.html;
   }
 
-// kind = member
   _buildMemberDocs(memberDocs) {
     var s = new SpruceTemplate(this._readTemplate('members.html'));
 
     s.loop('member', memberDocs, (i, memberDoc, s)=>{
-      s.attr('anchor', 'id', memberDoc.name);
+      s.attr('anchor', 'id', `${memberDoc.scope}-${memberDoc.name}`);
       s.text('name', memberDoc.name);
       s.load('signature', this._buildVariableSignatureHTML(memberDoc));
       s.load('description', memberDoc.description);
