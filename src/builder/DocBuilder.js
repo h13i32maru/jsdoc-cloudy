@@ -8,6 +8,7 @@ export default class DocBuilder {
     this._data = data;
 
     this._resolveFileExample();
+    this._resolveAccess();
     this._resolveGlobalNamespace();
     this._resolveLink();
   }
@@ -52,6 +53,17 @@ export default class DocBuilder {
     return desc.substr(0, len);
   }
 
+  _resolveAccess() {
+    if (this._data.__RESOLVED_ACCESS__) return;
+
+    var docs = this._find({access: {isUndefined: true}});
+    for (var doc of docs) {
+      doc.access = 'public';
+    }
+
+    this._data.__RESOLVED_ACCESS__ = true;
+  }
+
   _resolveGlobalNamespace() {
     if (this._data.__RESOLVED_GLOBAL_NAMESPACE__) return;
 
@@ -70,7 +82,7 @@ export default class DocBuilder {
   }
 
   _resolveFileExample() {
-    var docs = this._find([{kind: 'class'}, {kind: 'namespace'}]);
+    var docs = this._find({kind: ['class', 'interface', 'namespace']});
     for (var doc of docs) {
       if (doc.__RESOLVED_FILE_EXAMPLE__) continue;
 
@@ -121,8 +133,8 @@ export default class DocBuilder {
     });
   }
 
-  _find(cond) {
-    return this._data(cond).map(v => v);
+  _find(...cond) {
+    return this._data(...cond).map(v => v);
   }
 
   _readTemplate(fileName) {
@@ -148,6 +160,13 @@ export default class DocBuilder {
       s.attr('className', 'href', `./${classDoc.longname}.html`)
     });
 
+    // interfaces
+    var interfaceDocs = this._find({kind: 'interface'});
+    s.loop('interfaceDoc', interfaceDocs, (i, interfaceDoc, s)=>{
+      s.text('interfaceName', interfaceDoc.name);
+      s.attr('interfaceName', 'href', `./${interfaceDoc.longname}.html`)
+    });
+
     // namespaces
     var namespaceDocs = this._find({kind: 'namespace'});
     s.loop('namespaceDoc', namespaceDocs, (i, namespaceDoc, s)=>{
@@ -168,6 +187,11 @@ export default class DocBuilder {
       s.load('name', this._buildDocLinkHTML(memberDoc, memberDoc.name, {inner: true}));
       s.load('signature', this._buildVariableSignatureHTML(memberDoc));
       s.load('description', this._shorten(memberDoc.description));
+      s.attr('name', 'data-deprecated', memberDoc.deprecated);
+      s.text('readonly', memberDoc.readonly ? 'readonly' : '');
+      s.text('access', memberDoc.access);
+      s.drop('sinceLabel', !memberDoc.since);
+      s.text('since', memberDoc.since);
     });
 
     return s;
@@ -183,6 +207,12 @@ export default class DocBuilder {
       s.load('name', this._buildDocLinkHTML(functionDoc, functionDoc.name, {inner: true}));
       s.load('signature', this._buildFunctionSignatureHTML(functionDoc));
       s.load('description', this._shorten(functionDoc.description));
+      s.text('virtual', functionDoc.virtual ? 'virtual' : '');
+      s.text('override', functionDoc.override ? 'override' : '');
+      s.attr('name', 'data-deprecated', functionDoc.deprecated);
+      s.text('access', functionDoc.access);
+      s.drop('sinceLabel', !functionDoc.since);
+      s.text('since', functionDoc.since);
     });
 
     return s;
@@ -198,6 +228,10 @@ export default class DocBuilder {
       s.load('name', this._buildDocLinkHTML(classDoc, classDoc.name, {inner: innerLink}));
       s.load('signature', this._buildFunctionSignatureHTML(classDoc));
       s.load('description', this._shorten(classDoc.description));
+      s.attr('name', 'data-deprecated', classDoc.deprecated);
+      s.text('access', classDoc.access);
+      s.drop('sinceLabel', !classDoc.since);
+      s.text('since', classDoc.since);
     });
 
     return s;
@@ -213,6 +247,10 @@ export default class DocBuilder {
       s.load('name', this._buildDocLinkHTML(namespaceDoc, namespaceDoc.name, {inner: false}));
       s.drop('signature');
       s.load('description', this._shorten(namespaceDoc.description));
+      s.attr('name', 'data-deprecated', namespaceDoc.deprecated);
+      s.text('access', namespaceDoc.access);
+      s.drop('sinceLabel', !namespaceDoc.since);
+      s.text('since', namespaceDoc.since);
     });
 
     return s;
@@ -274,6 +312,8 @@ export default class DocBuilder {
   }
 
   _buildVariableSignatureHTML(variableDoc) {
+    if (!variableDoc.type) return '';
+
     var types = [];
     for (var typeName of variableDoc.type.names) {
       types.push(this._buildDocLinkHTML(typeName, typeName));
@@ -290,6 +330,12 @@ export default class DocBuilder {
       s.text('name', functionDoc.name);
       s.load('signature', this._buildFunctionSignatureHTML(functionDoc));
       s.load('description', functionDoc.description);
+      s.text('virtual', functionDoc.virtual ? 'virtual' : '');
+      s.text('override', functionDoc.override ? 'override' : '');
+      s.text('access', functionDoc.access);
+      s.attr('name', 'data-deprecated', functionDoc.deprecated);
+      s.drop('sinceLabel', !functionDoc.since);
+      s.text('since', functionDoc.since);
 
       // params
       s.loop('param', functionDoc.params, (i, param, s)=>{
@@ -297,7 +343,7 @@ export default class DocBuilder {
         s.attr('param', 'data-depth', param.name.split('.').length - 1);
         s.text('name', param.name);
         s.attr('name', 'data-depth', param.name.split('.').length - 1);
-        s.load('description', param.description);
+        s.load('paramDescription', param.description);
 
         var typeNames = [];
         for (var typeName of param.type.names) {
@@ -305,11 +351,22 @@ export default class DocBuilder {
         }
         s.load('type', typeNames.join(' | '));
 
+        // appendix
         var appendix = [];
         if (param.optional) {
-          appendix.push('optional');
+          appendix.push('<li>optional</li>');
         }
-        s.text('appendix', appendix.join(', '));
+        if ('defaultvalue' in param) {
+          appendix.push(`<li>default: ${param.defaultvalue}</li>`);
+        }
+        if ('nullable' in param) {
+          appendix.push(`<li>nullable: ${param.nullable}</li>`);
+        }
+        if (appendix.length) {
+          s.load('appendix', `<ul>${appendix.join('\n')}</ul>`);
+        } else {
+          s.text('appendix', '');
+        }
       });
 
       if (!functionDoc.params) {
@@ -323,7 +380,12 @@ export default class DocBuilder {
         for (var typeName of functionDoc.returns[0].type.names) {
           typeNames.push(this._buildDocLinkHTML(typeName));
         }
-        s.load('returnType', typeNames.join(' | '));
+        if ('nullable' in functionDoc.returns[0]) {
+          var nullable = functionDoc.returns[0].nullable;
+          s.load('returnType', typeNames.join(' | ') + ` (nullable: ${nullable})`);
+        } else {
+          s.load('returnType', typeNames.join(' | '));
+        }
       } else {
         s.drop('returnParams');
       }
@@ -349,6 +411,11 @@ export default class DocBuilder {
       s.text('name', memberDoc.name);
       s.load('signature', this._buildVariableSignatureHTML(memberDoc));
       s.load('description', memberDoc.description);
+      s.text('access', memberDoc.access);
+      s.attr('name', 'data-deprecated', memberDoc.deprecated);
+      s.text('readonly', memberDoc.readonly ? 'readonly' : '');
+      s.drop('sinceLabel', !memberDoc.since);
+      s.text('since', memberDoc.since);
 
       // example
       var exampleDocs = memberDoc.examples;

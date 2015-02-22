@@ -13,23 +13,23 @@ describe('IndexDoc: ', ()=>{
 
   it('has summary of class', ()=>{
     find(doc, '[data-s="summaryClassDocs"] tr[data-s="target"]:nth-child(1)', (doc)=>{
-      assert.includes(doc, '', 'SampleClass1(p1: string, p2: number)');
-      assert.includes(doc, '', 'this is SampleClass1 desc.');
-      assert.includes(doc, 'a', 'SampleNamespace1.SampleClass1.html', 'href');
+      assert.includes(doc, '', 'Class1(p1: string, p2: number)');
+      assert.includes(doc, '', 'this is Class1 desc.');
+      assert.includes(doc, 'a', 'Class1.html', 'href');
     });
 
-    find(doc, '[data-s="summaryClassDocs"] tr[data-s="target"]:nth-child(2)', (doc)=>{
-      assert.includes(doc, '', 'SampleGlobalClass1(p1: string, p2: number)');
-      assert.includes(doc, '', 'this is SampleGlobalClass1 desc.');
-      assert.includes(doc, 'a', 'SampleGlobalClass1.html', 'href');
+    find(doc, '[data-s="summaryClassDocs"] tr[data-s="target"]:nth-child(3)', (doc)=>{
+      assert.includes(doc, '', 'Class1(p1: string, p2: number)');
+      assert.includes(doc, '', 'this is Class1 desc.');
+      assert.includes(doc, 'a', 'Namespace1.Class1.html', 'href');
     });
   });
 
   it('has summary of namespace', ()=>{
     find(doc, '[data-s="summaryNamespaceDocs"] tr[data-s="target"]:nth-child(1)', (doc)=>{
-      assert.includes(doc, '', 'SampleNamespace1');
-      assert.includes(doc, '', 'this is SampleNamespace1 desc.');
-      assert.includes(doc, 'a', 'SampleNamespace1.html', 'href');
+      assert.includes(doc, '', 'Namespace1');
+      assert.includes(doc, '', 'this is Namespace1 desc.');
+      assert.includes(doc, 'a', 'Namespace1.html', 'href');
     });
 
     find(doc, '[data-s="summaryNamespaceDocs"] tr[data-s="target"]:nth-child(2)', (doc)=>{

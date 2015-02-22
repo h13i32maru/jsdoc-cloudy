@@ -47,6 +47,7 @@ h2 {
 }
 
 h3 {
+  position: relative;
   font-size: 18px;
   margin-bottom: 12px;
   background-color: #E2E2E2;
@@ -122,8 +123,10 @@ h1 .url a {
   padding: 10px 50px 10px 20px;
 }
 
-.name-space {
+.classNotice {
+  font-size: 14px;
   color: #aaa;
+  margin: 0;
 }
 
 table.summary {
@@ -142,6 +145,22 @@ table.summary thead {
 table.summary td {
   border: solid 1px #ddd;
   padding: 4px 10px;
+}
+
+table.summary tbody td:nth-child(1) {
+  text-align: right;
+  white-space: nowrap;
+  min-width: 64px;
+}
+
+table.summary tbody td:nth-child(2) {
+  width: 100%;
+  border-right: none;
+}
+
+table.summary tbody td:nth-child(3) {
+  white-space: nowrap;
+  border-left: none;
 }
 
 table.summary td > div:nth-of-type(2) {
@@ -194,6 +213,20 @@ table.params td p {
 .return-desc {
   margin-left: 10px;
   margin-top: 4px;
+}
+
+[data-deprecated="true"] {
+  text-decoration: line-through;
+}
+
+.since {
+  color: #aaa;
+}
+
+h3 .since {
+  position: absolute;
+  right: 4px;
+  font-size: 14px;
 }
 
 footer {

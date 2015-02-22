@@ -32,10 +32,10 @@ export default class NamespaceDocBuilder extends DocBuilder {
 
     s.load('summaryClassDocs', this._buildSummaryClassDocs(classDocs));
     s.load('summaryMemberDocs', this._buildSummaryMemberDocs(memberDocs, 'Members'));
-    s.load('summaryFunctionDocs', this._buildSummaryFunctionDocs(functionDocs, 'Functions'));
+    s.load('summaryMethodDocs', this._buildSummaryFunctionDocs(functionDocs, 'Methods'));
     s.load('summaryNamespaceDocs', this._buildSummaryNamespaceDocs(namespaceDocs, 'Namespaces'));
     s.load('memberDocs', this._buildMemberDocs(memberDocs));
-    s.load('functionDocs', this._buildFunctionDocs(functionDocs));
+    s.load('methodDocs', this._buildFunctionDocs(functionDocs));
 
     return s;
   }
