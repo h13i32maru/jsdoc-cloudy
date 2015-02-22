@@ -1,6 +1,6 @@
 import {readDoc, assert, find} from './util.js';
 
-describe('ClassDoc: ', ()=>{
+describe('ClassDoc: SampleNamespace1.SampleClass1: ', ()=>{
 
   let doc = readDoc('SampleNamespace1.SampleClass1.html');
 
@@ -99,5 +99,16 @@ describe('ClassDoc: ', ()=>{
       assert.includes(doc, '[data-s="returnParams"] [data-s="returnType"]', 'Array.<string>');
       assert.includes(doc, '[data-s="returnParams"] [data-s="returnDescription"]', 'SampleClass1#method1 returns string array.');
     });
+  });
+});
+
+describe('ClassDoc: SampleGlobalClass1: ', ()=> {
+  let doc = readDoc('SampleGlobalClass1.html');
+
+  it('has basic information.', ()=>{
+    assert.includes(doc, '[data-s="nameSpace"]', '@global');
+    assert.includes(doc, 'h1[data-s="className"]', 'SampleGlobalClass1');
+    assert.includes(doc, '[data-s="classDesc"]', 'this is SampleGlobalClass1 classdesc.');
+    assert.includes(doc, '[data-s="fileexampleCode"]', "var foo = 'this is SampleGlobalClass1 fileexample';");
   });
 });

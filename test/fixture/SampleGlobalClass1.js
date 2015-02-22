@@ -13,6 +13,7 @@
  * @class
  * @example
  * var foo = 'this is SampleGlobalClass1 example';
+ * @global
  */
 function SampleGlobalClass1(p1, p2){
 
