@@ -150,10 +150,6 @@ export default class DocBuilder {
 
     // namespaces
     var namespaceDocs = this._find({kind: 'namespace'});
-    //var globalNamespaceDoc = getGlobalNamespaceDoc(data);
-    //if (globalNamespaceDoc) {
-    //  namespaceDocs.unshift(globalNamespaceDoc);
-    //}
     s.loop('namespaceDoc', namespaceDocs, (i, namespaceDoc, s)=>{
       s.text('namespace', namespaceDoc.longname);
       s.attr('namespace', 'href', `${namespaceDoc.longname}.html`);
