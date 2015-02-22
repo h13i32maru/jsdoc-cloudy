@@ -28,6 +28,7 @@ export default class DocBuilder {
     var inCode = false;
     for (var i = 0; i < desc.length; i++) {
       var char1 = desc.charAt(i);
+      var char2 = desc.charAt(i + 1);
       var char4 = desc.substr(i, 6);
       var char5 = desc.substr(i, 7);
       if (char1 === "'") inSQuote = !inSQuote;
@@ -37,7 +38,12 @@ export default class DocBuilder {
 
       if (inSQuote || inCode || inWQuote) continue;
 
-      if (char1 === '.' || char1 === '\n') {
+      if (char1 === '.') {
+        if (char2 === ' ' || char2 === '\n') {
+          len = i + 1;
+          break;
+        }
+      } else if (char1 === '\n') {
         len = i + 1;
         break;
       }
