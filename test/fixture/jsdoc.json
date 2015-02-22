@@ -1,0 +1,24 @@
+{
+  "plugins": ["plugins/markdown"],
+  "markdown": {
+    "parser": "gfm",
+    "hardwrap": true
+  },
+  "source": {
+    "include": "./out/test/fixture",
+    "includePattern": ".+\\.js$"
+  },
+  "opts": {
+    "template": "./out/src/",
+    "destination": "./out/test/fixture",
+    "recurse": true,
+    "readme": "./out/test/fixture/README.md",
+    "package": "./out/test/fixture/package.json"
+  },
+  "template": {
+    "title": "sample for test",
+    "description": "this is sample for test description.",
+    "stylesheet": ["hoge.css"],
+    "javascript": ["hoge.js"]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "no name",
+  "version": "1.2.3",
+  "description": "no desc",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/h13i32maru/jsdoc-cloudy"
+  }
+}
