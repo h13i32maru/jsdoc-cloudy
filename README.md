@@ -1,73 +1,73 @@
 [![Build Status](https://travis-ci.org/h13i32maru/jsdoc-cloudy.svg?branch=master)](https://travis-ci.org/h13i32maru/jsdoc-cloudy)
 
-# Required
+# Tag Support
 
-- Mac OSX
-- Google Chrome
-- Safari
-- [node](http://nodejs.org)
-- [npm](http://https://www.npmjs.com/)
-- [bower](http://bower.io/)
-- [WebStorm](https://www.jetbrains.com/webstorm/) (recommended)
 
-# Tech Stack
+| Tag | Support |
+|----------------------|---|
+| @abstract (synonyms: @virtual)  |  - |
+| @access | - |
+| @alias | - |
+| @augments (synonyms: @extends) | - |
+| @authro | - |
+| @borrows | - |
+| @callback | - |
+| @class (synonyms: @constructor) | Y |
+| @classdesc | Y |
+| @constant (synonyms: @const) | - |
+| @constructs | - | 
+| @copyright | - |
+| @default (synonyms: @defaultvalue) | - |
+| @deprecated | - |
+| @description (synonyms: @desc) | Y |
+| @enum | - |
+| @event | - |
+| @example | Y |
+| @exports | - |
+| @external (synonyms: @host) | - |
+| @file (synonyms: @fileoverview, @overview) | - |
+| @fires (synonyms: @emits) | - |
+| @function (synonyms: @func, @method) | Y |
+| @global | Y |
+| @ignore | - |
+| @implements | - |
+| @inheritdoc | - |
+| @inner | - |
+| @instance | Y |
+| @interface | - |
+| @kind | Y |
+| @lends | Y |
+| @license | - |
+| @listens | - |
+| @member (synonyms: @var) | - |
+| @memberof | Y |
+| @mixes | Y |
+| @mixin | - |
+| @module | - |
+| @name | Y |
+| @namespace | Y |
+| @override | - |
+| @param (synonyms: @arg, @argument) | Y |
+| @private | - |
+| @property (synonyms: @prop) | Y |
+| @protected | - |
+| @public | - |
+| @readonly | - |
+| @requires | - |
+| @returns (synonyms: @return) | Y |
+| @see | - |
+| @since | - |
+| @static | Y |
+| @summary | - |
+| @this | - |
+| @throws (synonyms: @exception) | - |
+| @todo | - |
+| @tutorial | - |
+| @type | Y |
+| @typedef | - |
+| @variation | - |
+| @version | - |
+| {@link} (synonyms: {@linkcode}, {@linkplain}) | Y |
+| {@tutorial} | - |
 
-- ES6
-  - [6to5](http://6to5.org/)
-- Module
-  - [Browserify](http://browserify.org/)
-- Test
-  - [mocha](http://mochajs.org/)
-  - [power-assert](https://github.com/twada/power-assert)
-  - [karma](http://karma-runner.github.io/0.12/index.html)
-- Doc
-  - [JSDoc3](http://usejsdoc.org/)
-- CI
-  - [Travis CI](https://travis-ci.org)
 
-# Entry Point
-- for node
-  - ``/out/src/index.js``
-- for browser
-  - ``/out/src/index-browser.js``
-
-# Setup
-
-```sh
-git clone git@github.com:h13i32maru/es6-skeleton.git your_app
-cd your_app
-rm -rf .git
-npm run init
-```
-
-# Development
-
-```sh
-vi src/Hello.js
-npm run build
-npm run start
-open http://localhost:8080/misc/index.html
-```
-
-# Test
-
-```sh
-vi test/HelloTest.js
-npm run test
-```
-
-# Documentation
-
-```sh
-vi src/Hello.js # write jsdoc
-npm run jsdoc
-npm run start
-open http://localhost:8080/out/doc/
-```
-
-# CI
-
-```sh
-vi build status in README.md
-push your_repo master
-```
