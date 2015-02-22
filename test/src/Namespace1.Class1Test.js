@@ -110,6 +110,10 @@ describe('Namespace1.Class1: ', ()=>{
       find(doc, '[data-s="summaryPublicMemberDocs"] tr[data-s="target"]:nth-child(5)', (doc)=>{
         assert.includes(doc, '', 'member7: string since 1.2.3');
       });
+
+      find(doc, '[data-s="summaryPublicMemberDocs"] tr[data-s="target"]:nth-child(6)', (doc)=>{
+        assert.includes(doc, '[data-s="signature"] a', 'https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest', 'href');
+      });
     });
 
     it('has protected', ()=>{
@@ -268,6 +272,10 @@ describe('Namespace1.Class1: ', ()=>{
       find(doc, '[data-s="publicMembers"] [data-s="member"]:nth-child(5)', (doc)=>{
         assert.includes(doc, '#instance-member7', 'member7: string since 1.2.3');
       });
+
+      find(doc, '[data-s="publicMembers"] [data-s="member"]:nth-child(6)', (doc)=>{
+        assert.includes(doc, '[data-s="signature"] a', 'https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest', 'href');
+      });
     });
 
     it('has protected', ()=>{
@@ -309,6 +317,11 @@ describe('Namespace1.Class1: ', ()=>{
 
       find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(13)', (doc)=>{
         assert.includes(doc, '#instance-method15', 'method15() since 1.2.3');
+      });
+
+      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(14)', (doc)=>{
+        assert.includes(doc, '[data-s="throw"]:nth-child(1)', 'Throw: Error this is throws desc.');
+        assert.includes(doc, '[data-s="throw"]:nth-child(2)', 'Throw: InvalidArgumentException this is throws desc.');
       });
     });
 

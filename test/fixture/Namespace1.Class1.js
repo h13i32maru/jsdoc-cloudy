@@ -5,6 +5,11 @@
 function Class0(){}
 
 /**
+ * @external XMLHttpRequest
+ * @see https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest
+ */
+
+/**
  * @classdesc
  * this is Class1 classdesc.
  *
@@ -71,6 +76,11 @@ function Class1(p1, p2){
    * @since 1.2.3
    */
   this.member7;
+
+  /**
+   * @member {external:XMLHttpRequest}
+   */
+  this.member8;
 
   /**
    * this is Class1#method1 desc.
@@ -163,6 +173,12 @@ function Class1(p1, p2){
    * @since 1.2.3
    */
   this.method15 = function(){};
+
+  /**
+   * @throws {Error} this is throws desc.
+   * @throws {InvalidArgumentException} this is throws desc.
+   */
+  this.method16 = function(){};
 }
 
 /**

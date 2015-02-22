@@ -269,9 +269,14 @@ export default class DocBuilder {
       return `<span><a href="@global.html">@global</a></span>`;
     }
 
-    var result = this._find({longname});
-    if (result && result.length === 1) {
-      return `<span><a href="${longname}.html">${text}</a></span>`;
+    var result = this._find({longname})[0];
+    if (result) {
+      if (result.kind === 'external') {
+        text = text.replace(/^external:\s*/, '');
+        return `<span><a href="${result.see[0]}">${text}</a></span>`;
+      } else {
+        return `<span><a href="${longname}.html">${text}</a></span>`;
+      }
     } else {
       var result = this._find({name: longname});
       if (result && result.length) {
@@ -388,6 +393,16 @@ export default class DocBuilder {
         }
       } else {
         s.drop('returnParams');
+      }
+
+      // throws
+      if (functionDoc.exceptions) {
+        s.loop('throw', functionDoc.exceptions, (i, exceptionDoc, s)=>{
+          s.load('throwName', this._buildDocLinkHTML(exceptionDoc.type.names[0]));
+          s.load('throwDesc', exceptionDoc.description);
+        });
+      } else {
+        s.drop('throws');
       }
 
       // example

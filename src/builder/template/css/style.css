@@ -229,6 +229,10 @@ h3 .since {
   font-size: 14px;
 }
 
+.throws h4 + div{
+  margin-left: 10px;
+}
+
 footer {
   text-align: right;
   font-style: italic;

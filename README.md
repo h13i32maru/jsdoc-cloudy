@@ -4,13 +4,12 @@
 - @constant (synonyms: @const)
 - @enum
 - @exports
-- @external (synonyms: @host)
 - @module
 - @property (synonyms: @prop)
 - @requires
 - @see
 - @summary
-- @throws (synonyms: @exception)
 - @typedef
 - @variation
 - @version
+- {@link}
