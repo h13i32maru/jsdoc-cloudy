@@ -107,20 +107,25 @@ export default class DocBuilder {
     function link(str) {
       if (!str) return str;
 
-      return str.replace(/\{@link ([\w\#_\-.]+)}/g, (str, longname)=>{
-        return `<a href="${url(longname)}">${longname}</a>`;
+      return str.replace(/\{@link ([\w\#_\-.:]+)}/g, (str, longname)=>{
+        return buildLinkHTML(longname);
+        //return `<a href="${url(longname)}">${longname}</a>`;
       });
     }
 
-    var url = (longname)=>{
+    var buildLinkHTML = (longname)=>{
       var doc = this._find({longname})[0];
       if (!doc) return;
 
       if (doc.kind === 'function' || doc.kind === 'member') {
         var parentLongname = doc.memberof || '@global';
-        return `${parentLongname}.html#${doc.scope}-${doc.name}`;
+        var url = `${parentLongname}.html#${doc.scope}-${doc.name}`;
+        return `<a href="${url}">${longname}</a>`;
+      } else if (doc.kind === 'external') {
+        return doc.see[0];
       } else {
-        return `${longname}.html`;
+        var url = `${longname}.html`;
+        return `<a href="${url}">${longname}</a>`;
       }
     };
 
@@ -153,6 +158,8 @@ export default class DocBuilder {
         for (var i = 0; i < v.see.length; i++) {
           if (v.see[i].indexOf('{@link') === 0) {
             v.see[i] = link(v.see[i]);
+          } else if(v.see[i].indexOf('<a href') === 0) {
+            // ignore
           } else {
             v.see[i] = `<a href="${v.see[i]}">${v.see[i]}</a>`;
           }
