@@ -212,6 +212,13 @@ export default class DocBuilder {
       s.attr('namespace', 'href', `${namespaceDoc.longname}.html`);
     });
 
+    // typedefs
+    var typedefDocs = this._find({kind: 'typedef'});
+    s.loop('typedefDoc', typedefDocs, (i, typedefDoc, s)=>{
+      s.text('typedef', typedefDoc.name);
+      s.attr('typedef', 'href', `@typedef.html#${typedefDoc.scope}-${typedefDoc.name}`);
+    });
+
     return s;
   }
 
@@ -294,6 +301,24 @@ export default class DocBuilder {
     return s;
   }
 
+  _buildSummaryTypedefDocs(typedefDocs = [], title = 'Typedefs') {
+    if (typedefDocs.length === 0) return '';
+
+    var s = new SpruceTemplate(this._readTemplate('summary.html'));
+    s.text('title', title);
+    s.loop('target', typedefDocs, (i, typedefDoc, s)=>{
+      s.load('name', this._buildDocLinkHTML(typedefDoc, typedefDoc.longname, {inner: true}));
+      s.load('signature', this._buildVariableSignatureHTML(typedefDoc));
+      s.load('description', this._shorten(typedefDoc.description));
+      s.text('access', typedefDoc.access);
+      s.drop('sinceLabel', !typedefDoc.since);
+      s.text('since', typedefDoc.since);
+      s.load('deprecated', this._buildDeprecatedHTML(typedefDoc));
+    });
+
+    return s;
+  }
+
   _buildDocLinkHTML(doc, text = doc.longname || doc, {inner = false} = {}) {
     text = escape(text);
 
@@ -363,7 +388,7 @@ export default class DocBuilder {
       types.push(this._buildDocLinkHTML(typeName, typeName));
     }
 
-    return ': ' + types.join(', ');
+    return ': ' + types.join(' | ');
   }
 
   _buildFunctionDocs(functionDocs) {
@@ -480,6 +505,42 @@ export default class DocBuilder {
       s.drop('sinceLabel', !memberDoc.since);
       s.text('since', memberDoc.since);
       s.load('deprecated', this._buildDeprecatedHTML(memberDoc));
+
+      // properties
+      s.loop('param', memberDoc.properties, (i, param, s)=>{
+        s.autoDrop = false;
+        s.attr('param', 'data-depth', param.name.split('.').length - 1);
+        s.text('name', param.name);
+        s.attr('name', 'data-depth', param.name.split('.').length - 1);
+        s.load('paramDescription', param.description);
+
+        var typeNames = [];
+        for (var typeName of param.type.names) {
+          typeNames.push(this._buildDocLinkHTML(typeName));
+        }
+        s.load('type', typeNames.join(' | '));
+
+        // appendix
+        var appendix = [];
+        if (param.optional) {
+          appendix.push('<li>optional</li>');
+        }
+        if ('defaultvalue' in param) {
+          appendix.push(`<li>default: ${param.defaultvalue}</li>`);
+        }
+        if ('nullable' in param) {
+          appendix.push(`<li>nullable: ${param.nullable}</li>`);
+        }
+        if (appendix.length) {
+          s.load('appendix', `<ul>${appendix.join('\n')}</ul>`);
+        } else {
+          s.text('appendix', '');
+        }
+      });
+
+      if (!memberDoc.properties) {
+        s.drop('properties');
+      }
 
       // example
       var exampleDocs = memberDoc.examples;
