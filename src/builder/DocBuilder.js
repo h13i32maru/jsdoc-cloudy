@@ -405,42 +405,7 @@ export default class DocBuilder {
       s.drop('sinceLabel', !functionDoc.since);
       s.text('since', functionDoc.since);
       s.load('deprecated', this._buildDeprecatedHTML(functionDoc));
-
-      // params
-      s.loop('param', functionDoc.params, (i, param, s)=>{
-        s.autoDrop = false;
-        s.attr('param', 'data-depth', param.name.split('.').length - 1);
-        s.text('name', param.name);
-        s.attr('name', 'data-depth', param.name.split('.').length - 1);
-        s.load('paramDescription', param.description);
-
-        var typeNames = [];
-        for (var typeName of param.type.names) {
-          typeNames.push(this._buildDocLinkHTML(typeName));
-        }
-        s.load('type', typeNames.join(' | '));
-
-        // appendix
-        var appendix = [];
-        if (param.optional) {
-          appendix.push('<li>optional</li>');
-        }
-        if ('defaultvalue' in param) {
-          appendix.push(`<li>default: ${param.defaultvalue}</li>`);
-        }
-        if ('nullable' in param) {
-          appendix.push(`<li>nullable: ${param.nullable}</li>`);
-        }
-        if (appendix.length) {
-          s.load('appendix', `<ul>${appendix.join('\n')}</ul>`);
-        } else {
-          s.text('appendix', '');
-        }
-      });
-
-      if (!functionDoc.params) {
-        s.drop('argumentParams');
-      }
+      s.load('argumentParams', this._buildProperties(functionDoc.params, 'Params:'));
 
       // return
       if (functionDoc.returns) {
@@ -455,6 +420,8 @@ export default class DocBuilder {
         } else {
           s.load('returnType', typeNames.join(' | '));
         }
+
+        s.load('returnProperties', this._buildProperties(functionDoc.properties, 'Return Properties:'));
       } else {
         s.drop('returnParams');
       }
@@ -505,42 +472,7 @@ export default class DocBuilder {
       s.drop('sinceLabel', !memberDoc.since);
       s.text('since', memberDoc.since);
       s.load('deprecated', this._buildDeprecatedHTML(memberDoc));
-
-      // properties
-      s.loop('param', memberDoc.properties, (i, param, s)=>{
-        s.autoDrop = false;
-        s.attr('param', 'data-depth', param.name.split('.').length - 1);
-        s.text('name', param.name);
-        s.attr('name', 'data-depth', param.name.split('.').length - 1);
-        s.load('paramDescription', param.description);
-
-        var typeNames = [];
-        for (var typeName of param.type.names) {
-          typeNames.push(this._buildDocLinkHTML(typeName));
-        }
-        s.load('type', typeNames.join(' | '));
-
-        // appendix
-        var appendix = [];
-        if (param.optional) {
-          appendix.push('<li>optional</li>');
-        }
-        if ('defaultvalue' in param) {
-          appendix.push(`<li>default: ${param.defaultvalue}</li>`);
-        }
-        if ('nullable' in param) {
-          appendix.push(`<li>nullable: ${param.nullable}</li>`);
-        }
-        if (appendix.length) {
-          s.load('appendix', `<ul>${appendix.join('\n')}</ul>`);
-        } else {
-          s.text('appendix', '');
-        }
-      });
-
-      if (!memberDoc.properties) {
-        s.drop('properties');
-      }
+      s.load('properties', this._buildProperties(memberDoc.properties, 'Properties:'));
 
       // example
       var exampleDocs = memberDoc.examples;
@@ -563,6 +495,49 @@ export default class DocBuilder {
     });
 
     return s.html;
+  }
+
+  _buildProperties(properties, title = 'Properties:') {
+    var s = new SpruceTemplate(this._readTemplate('properties.html'));
+
+    s.text('title', title);
+
+    s.loop('property', properties, (i, prop, s)=>{
+      s.autoDrop = false;
+      s.attr('property', 'data-depth', prop.name.split('.').length - 1);
+      s.text('name', prop.name);
+      s.attr('name', 'data-depth', prop.name.split('.').length - 1);
+      s.load('description', prop.description);
+
+      var typeNames = [];
+      for (var typeName of prop.type.names) {
+        typeNames.push(this._buildDocLinkHTML(typeName));
+      }
+      s.load('type', typeNames.join(' | '));
+
+      // appendix
+      var appendix = [];
+      if (prop.optional) {
+        appendix.push('<li>optional</li>');
+      }
+      if ('defaultvalue' in prop) {
+        appendix.push(`<li>default: ${prop.defaultvalue}</li>`);
+      }
+      if ('nullable' in prop) {
+        appendix.push(`<li>nullable: ${prop.nullable}</li>`);
+      }
+      if (appendix.length) {
+        s.load('appendix', `<ul>${appendix.join('\n')}</ul>`);
+      } else {
+        s.text('appendix', '');
+      }
+    });
+
+    if (!properties) {
+      s.drop('properties');
+    }
+
+    return s;
   }
 
   _buildDeprecatedHTML(doc) {

@@ -50,6 +50,10 @@ function Class1(p1, p2){
    * var foo = 'this is Class1#member1 example';
    * @see http://example.com
    * @see http://example.org
+   * @property {number} [member1.member2=10] this is member2 desc.
+   * @property {?string} member1.member3 this is member3 desc.
+   * @property {Object} member1.member4 this is member4 desc.
+   * @property {!boolean} member1.member4.member5 this is member5 desc.
    */
   this.member1 = null;
 
@@ -100,6 +104,10 @@ function Class1(p1, p2){
    * @param {boolean} p1 p1 is Class1#method1 1st param.
    * @param {Object} p2 p2 is Class1#method1 2nd param.
    * @return {string[]} Class1#method1 returns string array.
+   * @property {number} [member1.member2=10] this is member2 desc.
+   * @property {?string} member1.member3 this is member3 desc.
+   * @property {Object} member1.member4 this is member4 desc.
+   * @property {!boolean} member1.member4.member5 this is member5 desc.
    * @example
    * var foo = 'this is Class1#method1 example';
    * @see http://example.com

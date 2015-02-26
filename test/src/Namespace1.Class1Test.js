@@ -228,8 +228,8 @@ describe('Namespace1.Class1: ', ()=>{
       find(doc, '[data-s="staticPublicMethods"] [data-s="method"]:nth-child(1)', (doc)=>{
         assert.includes(doc, '#static-staticMethod1', 'staticMethod1(p1: boolean, p2: Object): Array.<string>');
         assert.includes(doc, '[data-s="description"]', 'this is Class1.staticMethod1 desc. after 2nd line are more information.');
-        assert.includes(doc, 'tr[data-s="param"]:nth-child(1)', 'p1 boolean p1 is Class1.staticMethod1 1st param.');
-        assert.includes(doc, 'tr[data-s="param"]:nth-child(2)', 'p2 Object p2 is Class1.staticMethod1 2nd param.');
+        assert.includes(doc, 'tr[data-s="property"]:nth-child(1)', 'p1 boolean p1 is Class1.staticMethod1 1st param.');
+        assert.includes(doc, 'tr[data-s="property"]:nth-child(2)', 'p2 Object p2 is Class1.staticMethod1 2nd param.');
         assert.includes(doc, '[data-s="exampleDoc"]', "var foo = 'this is Class1.staticMethod1 example';");
         assert.includes(doc, '[data-s="returnParams"] [data-s="returnType"]', 'Array.<string>');
         assert.includes(doc, '[data-s="returnParams"] [data-s="returnDescription"]', 'Class1.staticMethod1 returns string array.');
@@ -262,8 +262,8 @@ describe('Namespace1.Class1: ', ()=>{
       find(doc, '[data-s="constructor"]', (doc)=>{
         assert.includes(doc, '#static-Class1', 'Class1(p1: string, p2: number)');
         assert.includes(doc, '[data-s="description"]', 'this is Class1 desc. after 2nd line are more information.');
-        assert.includes(doc, 'tr[data-s="param"]:nth-child(1)', 'p1 string p1 is Class1 1st param.');
-        assert.includes(doc, 'tr[data-s="param"]:nth-child(2)', 'p2 number p2 is Class1 2nd param.');
+        assert.includes(doc, 'tr[data-s="property"]:nth-child(1)', 'p1 string p1 is Class1 1st param.');
+        assert.includes(doc, 'tr[data-s="property"]:nth-child(2)', 'p2 number p2 is Class1 2nd param.');
         assert.includes(doc, '[data-s="exampleDoc"]', "var foo = 'this is Class1 example';");
       });
     });
@@ -275,6 +275,11 @@ describe('Namespace1.Class1: ', ()=>{
         assert.includes(doc, '#instance-member1', 'member1: string');
         assert.includes(doc, '[data-s="description"]', 'this is Class1#member1 desc. after 2nd line are more information.');
         assert.includes(doc, '[data-s="exampleDoc"]', "var foo = 'this is Class1#member1 example';");
+
+        assert.includes(doc, '[data-s="property"]:nth-child(1)', 'member1.member2 number optional default: 10 this is member2 desc.');
+        assert.includes(doc, '[data-s="property"]:nth-child(2)', 'member1.member3 string nullable: true this is member3 desc.');
+        assert.includes(doc, '[data-s="property"]:nth-child(3)', 'member1.member4 Object this is member4 desc.');
+        assert.includes(doc, '[data-s="property"]:nth-child(4)', 'member1.member4.member5 boolean nullable: false this is member5 desc.');
       });
 
       find(doc, '[data-s="publicMembers"] [data-s="member"]:nth-child(2)', (doc)=>{
@@ -316,11 +321,16 @@ describe('Namespace1.Class1: ', ()=>{
       find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(1)', (doc)=>{
         assert.includes(doc, '#instance-method1', 'method1(p1: boolean, p2: Object)');
         assert.includes(doc, '[data-s="description"]', 'this is Class1#method1 desc. after 2nd line are more information.');
-        assert.includes(doc, 'tr[data-s="param"]:nth-child(1)', 'p1 boolean p1 is Class1#method1 1st param.');
-        assert.includes(doc, 'tr[data-s="param"]:nth-child(2)', 'p2 Object p2 is Class1#method1 2nd param.');
+        assert.includes(doc, 'tr[data-s="property"]:nth-child(1)', 'p1 boolean p1 is Class1#method1 1st param.');
+        assert.includes(doc, 'tr[data-s="property"]:nth-child(2)', 'p2 Object p2 is Class1#method1 2nd param.');
         assert.includes(doc, '[data-s="exampleDoc"]', "var foo = 'this is Class1#method1 example';");
         assert.includes(doc, '[data-s="returnParams"] [data-s="returnType"]', 'Array.<string>');
         assert.includes(doc, '[data-s="returnParams"] [data-s="returnDescription"]', 'Class1#method1 returns string array.');
+
+        assert.includes(doc, '[data-s="returnProperties"] [data-s="property"]:nth-child(1)', 'member1.member2 number optional default: 10 this is member2 desc.');
+        assert.includes(doc, '[data-s="returnProperties"] [data-s="property"]:nth-child(2)', 'member1.member3 string nullable: true this is member3 desc.');
+        assert.includes(doc, '[data-s="returnProperties"] [data-s="property"]:nth-child(3)', 'member1.member4 Object this is member4 desc.');
+        assert.includes(doc, '[data-s="returnProperties"] [data-s="property"]:nth-child(4)', 'member1.member4.member5 boolean nullable: false this is member5 desc.');
       });
 
       find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(10)', (doc)=>{
@@ -359,35 +369,35 @@ describe('Namespace1.Class1: ', ()=>{
 
     it('has complex param method', ()=>{
       find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(3)', (doc)=>{
-        assert.includes(doc, 'tr[data-s="param"]:nth-child(1)', 'p1 Object');
-        assert.includes(doc, 'tr[data-s="param"]:nth-child(2)', 'p1.p2 string this is p1.p2 desc.');
-        assert.includes(doc, 'tr[data-s="param"]:nth-child(3)', 'p1.p3 Object');
-        assert.includes(doc, 'tr[data-s="param"]:nth-child(4)', 'p1.p3.p4 number this is p1.p3.p4 desc.');
+        assert.includes(doc, 'tr[data-s="property"]:nth-child(1)', 'p1 Object');
+        assert.includes(doc, 'tr[data-s="property"]:nth-child(2)', 'p1.p2 string this is p1.p2 desc.');
+        assert.includes(doc, 'tr[data-s="property"]:nth-child(3)', 'p1.p3 Object');
+        assert.includes(doc, 'tr[data-s="property"]:nth-child(4)', 'p1.p3.p4 number this is p1.p3.p4 desc.');
       });
     });
 
     it('has optional param method', ()=>{
       find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(4)', (doc)=>{
-        assert.includes(doc, 'tr[data-s="param"]:nth-child(1)', 'p1 string optional this is p1 desc.');
+        assert.includes(doc, 'tr[data-s="property"]:nth-child(1)', 'p1 string optional this is p1 desc.');
       });
     });
 
     it('has default param method', ()=>{
       find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(5)', (doc)=>{
-        assert.includes(doc, 'tr[data-s="param"]:nth-child(1)', 'p1 number optional default: 123 this is p1 desc.');
+        assert.includes(doc, 'tr[data-s="property"]:nth-child(1)', 'p1 number optional default: 123 this is p1 desc.');
       });
     });
 
     it('has nullable param method', ()=>{
       find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(6)', (doc)=>{
-        assert.includes(doc, 'tr[data-s="param"]:nth-child(1)', 'p1 number nullable: true this is p1 desc.');
+        assert.includes(doc, 'tr[data-s="property"]:nth-child(1)', 'p1 number nullable: true this is p1 desc.');
         assert.includes(doc, '[data-s="returnParams"] [data-s="returnType"]', 'string (nullable: true)');
       });
     });
 
     it('has non-nullable param method', ()=>{
       find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(7)', (doc)=>{
-        assert.includes(doc, 'tr[data-s="param"]:nth-child(1)', 'p1 number nullable: false this is p1 desc.');
+        assert.includes(doc, 'tr[data-s="property"]:nth-child(1)', 'p1 number nullable: false this is p1 desc.');
         assert.includes(doc, '[data-s="returnParams"] [data-s="returnType"]', 'string (nullable: false)');
       });
     });

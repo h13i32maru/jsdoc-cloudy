@@ -44,9 +44,9 @@ describe('Typedef: ', ()=> {
   find(doc, '[data-s="privateTypedefs"] [data-s="member"]:nth-child(1)', (doc)=>{
     assert.includes(doc, '#global-typedef3', 'private typedef3: Object');
     assert.includes(doc, '[data-s="description"]', 'this is typedef3 desc.');
-    assert.includes(doc, '[data-s="param"]:nth-child(1)', 'typedef3.member1 number optional default: 10 this is member1 desc.');
-    assert.includes(doc, '[data-s="param"]:nth-child(2)', 'typedef3.member2 string nullable: true this is member2 desc.');
-    assert.includes(doc, '[data-s="param"]:nth-child(3)', 'typedef3.member3 Object this is member3 desc.');
-    assert.includes(doc, '[data-s="param"]:nth-child(4)', 'typedef3.member3.member4 boolean nullable: false this is member4 desc.');
+    assert.includes(doc, '[data-s="property"]:nth-child(1)', 'typedef3.member1 number optional default: 10 this is member1 desc.');
+    assert.includes(doc, '[data-s="property"]:nth-child(2)', 'typedef3.member2 string nullable: true this is member2 desc.');
+    assert.includes(doc, '[data-s="property"]:nth-child(3)', 'typedef3.member3 Object this is member3 desc.');
+    assert.includes(doc, '[data-s="property"]:nth-child(4)', 'typedef3.member3.member4 boolean nullable: false this is member4 desc.');
   });
 });

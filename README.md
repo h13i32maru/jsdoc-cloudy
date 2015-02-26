@@ -9,9 +9,7 @@
 - @enum
 - @exports
 - @module
-- @property (synonyms: @prop)
 - @requires
 - @summary
-- @typedef
 - @variation
 - @version
