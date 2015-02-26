@@ -117,8 +117,7 @@ export default class DocBuilder {
       if (!doc) return;
 
       if (doc.kind === 'function' || doc.kind === 'member') {
-        var parentLongname = longname.replace(doc.name, '').replace(/.$/, '');
-        if (!parentLongname) parentLongname = '@global';
+        var parentLongname = doc.memberof || '@global';
         return `${parentLongname}.html#${doc.scope}-${doc.name}`;
       } else {
         return `${longname}.html`;
