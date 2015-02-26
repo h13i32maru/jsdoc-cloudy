@@ -38,6 +38,10 @@ function getActual(doc, selector, attr) {
     actual = node.textContent.replace(/\s+/g, ' ');
   }
 
+  if (actual === null) {
+    assert(false, `actual is null. selector = ${selector}, attr = ${attr}`);
+  }
+
   return actual;
 }
 
