@@ -9,9 +9,6 @@ export default class NamespaceDocBuilder extends DocBuilder {
       s.load('content', this._buildNamespaceDoc(namespaceDoc));
       callback(s.html, `${namespaceDoc.longname}.html`);
     }
-
-    var doc = this._find({kind: 'constant'});
-    console.log(JSON.stringify(doc, null, 2));
   }
 
   _buildNamespaceDoc(namespaceDoc) {
@@ -65,6 +62,18 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.text('kind', namespaceDoc.kind);
     s.text('namespace', namespaceDoc.name);
     s.load('namespaceDesc', namespaceDoc.description);
+
+    // variation
+    var variationDocs = this._find({memberof: namespaceDoc.longname, name: namespaceDoc.name, variation: {'isUndefined': false}});
+    var variationHTML = [];
+    for (var variationDoc of variationDocs) {
+      variationHTML.push(this._buildDocLinkHTML(variationDoc, `(${variationDoc.variation})`, {inner: true}));
+    }
+    if (variationHTML.length) {
+      s.load('variation', `this ${namespaceDoc.kind} has some variation(s). ${variationHTML.join(', ')}`);
+    } else {
+      s.drop('variation');
+    }
 
     s.drop('fileexampleDocs', !namespaceDoc.fileexamples);
     s.loop('fileexampleDoc', namespaceDoc.fileexamples, (i, fileexample, s)=>{
