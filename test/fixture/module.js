@@ -128,6 +128,8 @@ function Interface3(){}
  * @throws {Error} this is throws Error desc.
  * @throws {InvalidArgumentException} this is throws InvalidArgumentException desc.
  * @virtual
+ * @fires module:Module1~Event1
+ * @fires module:Module1~Event2
  */
 function method1(p1, p2, p3){}
 
@@ -229,7 +231,7 @@ var member3 = null;
  */
 
 /**
- * @event module:Module1~Event3
+ * @event module:Module1~Event2
  * @protected
  */
 

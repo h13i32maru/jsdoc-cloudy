@@ -353,7 +353,8 @@ export default class DocBuilder {
     var longname = doc.longname || doc;
 
     if (inner) {
-      return `<span><a href=#${doc.scope}-${doc.name}>${text}</a></span>`;
+      var url = `${encodeURIComponent(doc.memberof)}.html#${doc.scope}-${doc.name}`;
+      return `<span><a href="${url}">${text}</a></span>`;
     }
 
     if (longname === '@global') {
@@ -437,6 +438,17 @@ export default class DocBuilder {
       s.text('since', functionDoc.since);
       s.load('deprecated', this._buildDeprecatedHTML(functionDoc));
       s.load('argumentParams', this._buildProperties(functionDoc.params, 'Params:'));
+
+      // fire
+      if (functionDoc.fires) {
+        s.loop('fire', functionDoc.fires, (i, fire, s)=>{
+          var eventDoc = this._find({longname: fire})[0];
+          var link = this._buildDocLinkHTML(eventDoc, eventDoc.name, {inner: true});
+          s.load('event', link);
+        });
+      } else {
+        s.drop('fires');
+      }
 
       // return
       if (functionDoc.returns) {
