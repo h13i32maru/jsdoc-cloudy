@@ -165,8 +165,9 @@ function method3(){}
  * @see http://example.com
  * @see {@link Namespace1.Class1#member1}
  * @readonly
+ * @default 999
  */
-var member1 = null;
+var member111 = null;
 
 /**
  * @protected

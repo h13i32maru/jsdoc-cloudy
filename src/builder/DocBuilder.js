@@ -520,6 +520,13 @@ export default class DocBuilder {
       s.load('deprecated', this._buildDeprecatedHTML(memberDoc));
       s.load('properties', this._buildProperties(memberDoc.properties, 'Properties:'));
 
+      // default
+      if ('defaultvalue' in memberDoc) {
+        s.text('defaultvalue', memberDoc.defaultvalue);
+      } else {
+        s.drop('defaultvalueWrap');
+      }
+
       // example
       var exampleDocs = memberDoc.examples;
       s.loop('exampleDoc', exampleDocs, (i, exampleDoc, s)=>{
