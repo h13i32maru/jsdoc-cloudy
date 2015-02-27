@@ -6,8 +6,8 @@ describe('Namespace1.Class1: ', ()=>{
 
   describe('basic information', ()=>{
     it('has basic information.', ()=>{
-      assert.includes(doc, '[data-s="nameSpace"]', 'Namespace1');
-      assert.includes(doc, '[data-s="nameSpace"] a', 'Namespace1.html', 'href');
+      assert.includes(doc, '[data-s="namespace"]', 'Namespace1');
+      assert.includes(doc, '[data-s="namespace"] a', 'Namespace1.html', 'href');
 
       assert.includes(doc, '[data-s="extendsClassName"]', 'Class0');
       assert.includes(doc, '[data-s="extendsClassName"]', 'Namespace1.Class0.html', 'href');
@@ -199,25 +199,25 @@ describe('Namespace1.Class1: ', ()=>{
 
   describe('static member detail: ', ()=>{
     it('has public.', ()=>{
-      find(doc, '[data-s="staticPublicMembers"] [data-s="member"]:nth-child(1)', (doc)=>{
+      find(doc, '[data-s="staticPublicMembers"] [data-s="member"]:nth-of-type(1)', (doc)=>{
         assert.includes(doc, '#static-staticMember1', 'staticMember1: string');
         assert.includes(doc, '[data-s="description"]', 'this is Class1.staticMember1 desc. after 2nd line are more information.');
         assert.includes(doc, '[data-s="exampleDoc"]', "var foo = 'this is Class1.staticMember1 example';");
       });
 
-      find(doc, '[data-s="staticPublicMembers"] [data-s="member"]:nth-child(2)', (doc)=>{
+      find(doc, '[data-s="staticPublicMembers"] [data-s="member"]:nth-of-type(2)', (doc)=>{
         assert.includes(doc, '#static-staticMember2', 'staticMember2: string');
       });
     });
 
     it('has protected', ()=>{
-      find(doc, '[data-s="staticProtectedMembers"] [data-s="member"]:nth-child(1)', (doc)=>{
+      find(doc, '[data-s="staticProtectedMembers"] [data-s="member"]:nth-of-type(1)', (doc)=>{
         assert.includes(doc, '#static-staticMember3', 'staticMember3: string');
       });
     });
 
     it('has private', ()=>{
-      find(doc, '[data-s="staticPrivateMembers"] [data-s="member"]:nth-child(1)', (doc)=>{
+      find(doc, '[data-s="staticPrivateMembers"] [data-s="member"]:nth-of-type(1)', (doc)=>{
         assert.includes(doc, '#static-staticMember4', 'staticMember4: string');
       });
     });
@@ -225,7 +225,7 @@ describe('Namespace1.Class1: ', ()=>{
 
   describe('static method detail: ', ()=>{
     it('has public', ()=>{
-      find(doc, '[data-s="staticPublicMethods"] [data-s="method"]:nth-child(1)', (doc)=>{
+      find(doc, '[data-s="staticPublicMethods"] [data-s="method"]:nth-of-type(1)', (doc)=>{
         assert.includes(doc, '#static-staticMethod1', 'staticMethod1(p1: boolean, p2: Object): Array.<string>');
         assert.includes(doc, '[data-s="description"]', 'this is Class1.staticMethod1 desc. after 2nd line are more information.');
         assert.includes(doc, 'tr[data-s="property"]:nth-child(1)', 'p1 boolean p1 is Class1.staticMethod1 1st param.');
@@ -235,23 +235,23 @@ describe('Namespace1.Class1: ', ()=>{
         assert.includes(doc, '[data-s="returnParams"] [data-s="returnDescription"]', 'Class1.staticMethod1 returns string array.');
       });
 
-      find(doc, '[data-s="staticPublicMethods"] [data-s="method"]:nth-child(2)', (doc)=>{
+      find(doc, '[data-s="staticPublicMethods"] [data-s="method"]:nth-of-type(2)', (doc)=>{
         assert.includes(doc, '#static-staticMethod2', 'staticMethod2()');
       });
 
-      find(doc, '[data-s="staticPublicMethods"] [data-s="method"]:nth-child(3)', (doc)=>{
+      find(doc, '[data-s="staticPublicMethods"] [data-s="method"]:nth-of-type(3)', (doc)=>{
         assert.includes(doc, '#static-staticMethod5', 'override staticMethod5()');
       });
     });
 
     it('has protected', ()=>{
-      find(doc, '[data-s="staticProtectedMethods"] [data-s="method"]:nth-child(1)', (doc)=>{
+      find(doc, '[data-s="staticProtectedMethods"] [data-s="method"]:nth-of-type(1)', (doc)=>{
         assert.includes(doc, '#static-staticMethod3', 'staticMethod3()');
       });
     });
 
     it('has private', ()=>{
-      find(doc, '[data-s="staticPrivateMethods"] [data-s="method"]:nth-child(1)', (doc)=>{
+      find(doc, '[data-s="staticPrivateMethods"] [data-s="method"]:nth-of-type(1)', (doc)=>{
         assert.includes(doc, '#static-staticMethod4', 'staticMethod4()');
       });
     });
@@ -271,7 +271,7 @@ describe('Namespace1.Class1: ', ()=>{
 
   describe('member detail:', ()=>{
     it('has public', ()=>{
-      find(doc, '[data-s="publicMembers"] [data-s="member"]:nth-child(1)', (doc)=>{
+      find(doc, '[data-s="publicMembers"] [data-s="member"]:nth-of-type(1)', (doc)=>{
         assert.includes(doc, '#instance-member1', 'member1: string');
         assert.includes(doc, '[data-s="description"]', 'this is Class1#member1 desc. after 2nd line are more information.');
         assert.includes(doc, '[data-s="exampleDoc"]', "var foo = 'this is Class1#member1 example';");
@@ -282,35 +282,35 @@ describe('Namespace1.Class1: ', ()=>{
         assert.includes(doc, '[data-s="property"]:nth-child(4)', 'member1.member4.member5 boolean nullable: false this is member5 desc.');
       });
 
-      find(doc, '[data-s="publicMembers"] [data-s="member"]:nth-child(2)', (doc)=>{
+      find(doc, '[data-s="publicMembers"] [data-s="member"]:nth-of-type(2)', (doc)=>{
         assert.includes(doc, '#instance-member2', 'member2: number');
       });
 
-      find(doc, '[data-s="publicMembers"] [data-s="member"]:nth-child(3)', (doc)=>{
+      find(doc, '[data-s="publicMembers"] [data-s="member"]:nth-of-type(3)', (doc)=>{
         assert.includes(doc, '[data-s="deprecated"]', 'this member was deprecated. since 1.0.0');
       });
 
-      find(doc, '[data-s="publicMembers"] [data-s="member"]:nth-child(4)', (doc)=>{
+      find(doc, '[data-s="publicMembers"] [data-s="member"]:nth-of-type(4)', (doc)=>{
         assert.includes(doc, '#instance-member6', 'readonly member6: string');
       });
 
-      find(doc, '[data-s="publicMembers"] [data-s="member"]:nth-child(5)', (doc)=>{
+      find(doc, '[data-s="publicMembers"] [data-s="member"]:nth-of-type(5)', (doc)=>{
         assert.includes(doc, '#instance-member7', 'member7: string since 1.2.3');
       });
 
-      find(doc, '[data-s="publicMembers"] [data-s="member"]:nth-child(6)', (doc)=>{
+      find(doc, '[data-s="publicMembers"] [data-s="member"]:nth-of-type(6)', (doc)=>{
         assert.includes(doc, '[data-s="signature"] a', 'https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest', 'href');
       });
     });
 
     it('has protected', ()=>{
-      find(doc, '[data-s="protectedMembers"] [data-s="member"]:nth-child(1)', (doc)=>{
+      find(doc, '[data-s="protectedMembers"] [data-s="member"]:nth-of-type(1)', (doc)=>{
         assert.includes(doc, '#instance-member3', 'member3: number');
       });
     });
 
     it('has private', ()=>{
-      find(doc, '[data-s="privateMembers"] [data-s="member"]:nth-child(1)', (doc)=>{
+      find(doc, '[data-s="privateMembers"] [data-s="member"]:nth-of-type(1)', (doc)=>{
         assert.includes(doc, '#instance-member4', 'member4: number');
       });
     });
@@ -318,7 +318,7 @@ describe('Namespace1.Class1: ', ()=>{
 
   describe('method detail:', ()=>{
     it('has public', ()=>{
-      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(1)', (doc)=>{
+      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-of-type(1)', (doc)=>{
         assert.includes(doc, '#instance-method1', 'method1(p1: boolean, p2: Object)');
         assert.includes(doc, '[data-s="description"]', 'this is Class1#method1 desc. after 2nd line are more information.');
         assert.includes(doc, 'tr[data-s="property"]:nth-child(1)', 'p1 boolean p1 is Class1#method1 1st param.');
@@ -333,42 +333,42 @@ describe('Namespace1.Class1: ', ()=>{
         assert.includes(doc, '[data-s="returnProperties"] [data-s="property"]:nth-child(4)', 'member1.member4.member5 boolean nullable: false this is member5 desc.');
       });
 
-      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(10)', (doc)=>{
+      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-of-type(10)', (doc)=>{
         assert.includes(doc, '#instance-method10', 'method10()');
       });
 
-      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(11)', (doc)=>{
+      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-of-type(11)', (doc)=>{
         assert.includes(doc, '#instance-method13', 'override method13()');
       });
 
-      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(12)', (doc)=>{
+      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-of-type(12)', (doc)=>{
         assert.includes(doc, '[data-s="deprecated"]', 'this method was deprecated. since 1.0.0');
       });
 
-      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(13)', (doc)=>{
+      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-of-type(13)', (doc)=>{
         assert.includes(doc, '#instance-method15', 'method15() since 1.2.3');
       });
 
-      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(14)', (doc)=>{
+      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-of-type(14)', (doc)=>{
         assert.includes(doc, '[data-s="throw"]:nth-child(1)', 'Throw: Error this is throws desc.');
         assert.includes(doc, '[data-s="throw"]:nth-child(2)', 'Throw: InvalidArgumentException this is throws desc.');
       });
     });
 
     it('has protected', ()=>{
-      find(doc, '[data-s="protectedMethods"] [data-s="method"]:nth-child(1)', (doc)=>{
+      find(doc, '[data-s="protectedMethods"] [data-s="method"]:nth-of-type(1)', (doc)=>{
         assert.includes(doc, '#instance-method11', 'method11()');
       });
     });
 
     it('has private', ()=>{
-      find(doc, '[data-s="privateMethods"] [data-s="method"]:nth-child(1)', (doc)=>{
+      find(doc, '[data-s="privateMethods"] [data-s="method"]:nth-of-type(1)', (doc)=>{
         assert.includes(doc, '#instance-method12', 'method12()');
       });
     });
 
     it('has complex param method', ()=>{
-      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(3)', (doc)=>{
+      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-of-type(3)', (doc)=>{
         assert.includes(doc, 'tr[data-s="property"]:nth-child(1)', 'p1 Object');
         assert.includes(doc, 'tr[data-s="property"]:nth-child(2)', 'p1.p2 string this is p1.p2 desc.');
         assert.includes(doc, 'tr[data-s="property"]:nth-child(3)', 'p1.p3 Object');
@@ -377,26 +377,26 @@ describe('Namespace1.Class1: ', ()=>{
     });
 
     it('has optional param method', ()=>{
-      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(4)', (doc)=>{
+      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-of-type(4)', (doc)=>{
         assert.includes(doc, 'tr[data-s="property"]:nth-child(1)', 'p1 string optional this is p1 desc.');
       });
     });
 
     it('has default param method', ()=>{
-      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(5)', (doc)=>{
+      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-of-type(5)', (doc)=>{
         assert.includes(doc, 'tr[data-s="property"]:nth-child(1)', 'p1 number optional default: 123 this is p1 desc.');
       });
     });
 
     it('has nullable param method', ()=>{
-      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(6)', (doc)=>{
+      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-of-type(6)', (doc)=>{
         assert.includes(doc, 'tr[data-s="property"]:nth-child(1)', 'p1 number nullable: true this is p1 desc.');
         assert.includes(doc, '[data-s="returnParams"] [data-s="returnType"]', 'string (nullable: true)');
       });
     });
 
     it('has non-nullable param method', ()=>{
-      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-child(7)', (doc)=>{
+      find(doc, '[data-s="publicMethods"] [data-s="method"]:nth-of-type(7)', (doc)=>{
         assert.includes(doc, 'tr[data-s="property"]:nth-child(1)', 'p1 number nullable: false this is p1 desc.');
         assert.includes(doc, '[data-s="returnParams"] [data-s="returnType"]', 'string (nullable: false)');
       });

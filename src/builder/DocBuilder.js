@@ -82,23 +82,20 @@ export default class DocBuilder {
   }
 
   _resolveFileExample() {
-    var docs = this._find({kind: ['class', 'interface', 'namespace']});
+    if (this._data.__RESOLVED_FILE_EXAMPLE__) return;
+
+    var docs = this._find({tags: {isUndefined: false}});
     for (var doc of docs) {
-      if (doc.__RESOLVED_FILE_EXAMPLE__) continue;
-
-      var matched = doc.comment.match(/^\s*\*\s@fileexample((?:.|\n)*?)\n\s*\*(?:(?:\s@[a-z])|[/])/m);
-      if (matched && matched[1]) {
-        var lines = [];
-        for (var temp of matched[1].split('\n')) {
-          if (!temp) continue;
-          temp = temp.replace(/^\s*\*? ?/, '');
-          lines.push(temp);
+      var tags = doc.tags;
+      for (var tag of tags) {
+        if (tag.originalTitle === 'fileexample') {
+          if (!doc.fileexamples) doc.fileexamples = [];
+          doc.fileexamples.push(tag.text);
         }
-        doc.fileexample = lines.join('\n');
       }
-
-      doc.__RESOLVED_FILE_EXAMPLE__ = true;
     }
+
+    this._data.__RESOLVED_FILE_EXAMPLE__ = true;
   }
 
   _resolveLink() {
@@ -195,28 +192,35 @@ export default class DocBuilder {
     var classDocs = this._find({kind: 'class'});
     s.loop('classDoc', classDocs, (i, classDoc, s)=>{
       s.text('className', classDoc.name);
-      s.attr('className', 'href', `./${classDoc.longname}.html`)
+      s.attr('className', 'href', `${encodeURIComponent(classDoc.longname)}.html`)
     });
 
     // interfaces
     var interfaceDocs = this._find({kind: 'interface'});
     s.loop('interfaceDoc', interfaceDocs, (i, interfaceDoc, s)=>{
       s.text('interfaceName', interfaceDoc.name);
-      s.attr('interfaceName', 'href', `./${interfaceDoc.longname}.html`)
+      s.attr('interfaceName', 'href', `${encodeURIComponent(interfaceDoc.longname)}.html`)
     });
 
     // namespaces
     var namespaceDocs = this._find({kind: 'namespace'});
     s.loop('namespaceDoc', namespaceDocs, (i, namespaceDoc, s)=>{
-      s.text('namespace', namespaceDoc.longname);
-      s.attr('namespace', 'href', `${namespaceDoc.longname}.html`);
+      s.text('namespace', namespaceDoc.name);
+      s.attr('namespace', 'href', `${encodeURIComponent(namespaceDoc.longname)}.html`);
+    });
+
+    // modules
+    var moduleDocs = this._find({kind: 'module'});
+    s.loop('moduleDoc', moduleDocs, (i, moduleDoc, s)=>{
+      s.text('module', moduleDoc.name);
+      s.attr('module', 'href', `${encodeURIComponent(moduleDoc.longname)}.html`);
     });
 
     // typedefs
     var typedefDocs = this._find({kind: 'typedef'});
     s.loop('typedefDoc', typedefDocs, (i, typedefDoc, s)=>{
       s.text('typedef', typedefDoc.name);
-      s.attr('typedef', 'href', `@typedef.html#${typedefDoc.scope}-${typedefDoc.name}`);
+      s.attr('typedef', 'href', `${encodeURIComponent(typedefDoc.longname)}.html`);
     });
 
     return s;
@@ -263,16 +267,16 @@ export default class DocBuilder {
     return s;
   }
 
-  _buildSummaryClassDocs(classDocs = [], innerLink = false) {
+  _buildSummaryClassDocs(classDocs = [], innerLink = false, title = 'Classes') {
     if (classDocs.length === 0) return '';
 
     var s = new SpruceTemplate(this._readTemplate('summary.html'));
 
-    s.text('title', 'Classes');
+    s.text('title', title);
     s.loop('target', classDocs, (i, classDoc, s)=>{
       s.load('name', this._buildDocLinkHTML(classDoc, classDoc.name, {inner: innerLink}));
       s.load('signature', this._buildFunctionSignatureHTML(classDoc));
-      s.load('description', this._shorten(classDoc.description));
+      s.load('description', this._shorten(classDoc.classdesc));
       s.text('access', classDoc.access);
       s.drop('sinceLabel', !classDoc.since);
       s.text('since', classDoc.since);
@@ -339,12 +343,12 @@ export default class DocBuilder {
         var aTag = result.see[0].replace(/>.*?</, `>${text}<`);
         return `<span>${aTag}</span>`;
       } else {
-        return `<span><a href="${longname}.html">${text}</a></span>`;
+        return `<span><a href="${encodeURIComponent(longname)}.html">${text}</a></span>`;
       }
     } else {
       var result = this._find({name: longname});
       if (result && result.length) {
-        return `<span><a href="${result[0].longname}.html">${text}</a></span>`;
+        return `<span><a href="${encodeURIComponent(result[0].longname)}.html">${text}</a></span>`;
       } else {
         return `<span>${text}</span>`;
       }
@@ -391,8 +395,11 @@ export default class DocBuilder {
     return ': ' + types.join(' | ');
   }
 
-  _buildFunctionDocs(functionDocs) {
+  _buildFunctionDocs(functionDocs, title) {
     var s = new SpruceTemplate(this._readTemplate('methods.html'));
+
+    s.text('title', title);
+    s.drop('title', !functionDocs.length);
 
     s.loop('method', functionDocs, (i, functionDoc, s)=>{
       s.attr('anchor', 'id', `${functionDoc.scope}-${functionDoc.name}`);
@@ -459,8 +466,11 @@ export default class DocBuilder {
     return s.html;
   }
 
-  _buildMemberDocs(memberDocs) {
+  _buildMemberDocs(memberDocs, title) {
     var s = new SpruceTemplate(this._readTemplate('members.html'));
+
+    s.text('title', title);
+    s.drop('title', !memberDocs.length);
 
     s.loop('member', memberDocs, (i, memberDoc, s)=>{
       s.attr('anchor', 'id', `${memberDoc.scope}-${memberDoc.name}`);

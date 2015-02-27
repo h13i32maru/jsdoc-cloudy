@@ -7,6 +7,7 @@ import ReadmeDocBuilder from './builder/ReadmeDocBuilder.js';
 import ClassDocBuilder from './builder/ClassDocBuilder.js';
 import NamespaceDocBuilder from './builder/NamespaceDocBuilder.js';
 import TypedefDocBuilder from './builder/TypedefDocBuilder.js';
+import ModuleDocBuilder from './builder/ModuleDocBuilder.js';
 
 /**
  * @param {TaffyDB} data see http://www.taffydb.com/
@@ -28,6 +29,7 @@ exports.publish = function(data, config, tutorials) {
   new ReadmeDocBuilder(data, config).exec(writeHTML);
   new ClassDocBuilder(data).exec(writeHTML);
   new NamespaceDocBuilder(data).exec(writeHTML);
-  new TypedefDocBuilder(data).exec(writeHTML);
+  //new TypedefDocBuilder(data).exec(writeHTML);
+  //new ModuleDocBuilder(data).exec(writeHTML);
   new StaticFileBuilder().exec(copy);
 };

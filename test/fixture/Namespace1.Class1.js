@@ -16,6 +16,11 @@ function Class0(){}
  *
  * @fileexample
  * var foo = Class1;
+ * console.log(foo);
+ *
+ * @fileexample
+ * var bar = Class1;
+ * console.log(bar);
  *
  * @desc
  * this is Class1 desc.
