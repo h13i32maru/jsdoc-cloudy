@@ -134,8 +134,9 @@ function Interface3(){}
  * @fires module:Module1~Event2
  * @listens module:Module1~Event1
  * @listens module:Module1~Event2
+ * @this module:Module1~Class1
  */
-function method1(p1, p2, p3){}
+function method111(p1, p2, p3){}
 
 /**
  * @protected

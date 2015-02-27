@@ -439,6 +439,12 @@ export default class DocBuilder {
       s.load('deprecated', this._buildDeprecatedHTML(functionDoc));
       s.load('argumentParams', this._buildProperties(functionDoc.params, 'Params:'));
 
+      if (functionDoc.this) {
+        s.load('this', this._buildDocLinkHTML(functionDoc.this));
+      } else {
+        s.drop('thisWrap');
+      }
+
       // fire
       if (functionDoc.fires) {
         s.loop('fireEvent', functionDoc.fires, (i, fire, s)=>{
