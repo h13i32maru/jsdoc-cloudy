@@ -71,6 +71,12 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.text('namespace', namespaceDoc.name);
     s.load('namespaceDesc', namespaceDoc.description);
 
+    // requires
+    s.drop('requiresLabel', !namespaceDoc.requires);
+    s.loop('require', namespaceDoc.requires, (i, require, s)=>{
+      s.load('require', this._buildDocLinkHTML(require));
+    });
+
     // mixes
     s.drop('mixesLabel', !namespaceDoc.mixes);
     s.loop('mixes', namespaceDoc.mixes, (i, mixes, s)=>{
