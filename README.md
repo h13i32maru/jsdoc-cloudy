@@ -14,11 +14,6 @@
 - @default (synonyms: @defaultvalue)
 - @ignore
 - @inheritdoc
-- @linkでmoduleにリンク晴れていない
-- {function(a: number)}に対応できる？
-- ClassDocBuilderとNamespaceDocBuilderを統一する
-- classsummaryとnamespacesummmaryも統一できそう
-- test整理
 - @license
 - @listens
 - @mixes
@@ -26,7 +21,15 @@
 - @summary
 - @this
 - @todo
+- @experimental実装
+- commentのrawを表示する
+- @linkでmoduleにリンク晴れていない
+- {function(a: number)}に対応できる？
+- ClassDocBuilderとNamespaceDocBuilderを統一する
+- classsummaryとnamespacesummmaryも統一できそう
+- test整理
 
 # Not Support
 - @file
 - @tutorial
+- @property入れ子

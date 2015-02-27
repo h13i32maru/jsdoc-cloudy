@@ -9,6 +9,9 @@ export default class NamespaceDocBuilder extends DocBuilder {
       s.load('content', this._buildNamespaceDoc(namespaceDoc));
       callback(s.html, `${namespaceDoc.longname}.html`);
     }
+
+    var doc = this._find({name: 'enum1'});
+    console.log(JSON.stringify(doc, null, 2));
   }
 
   _buildNamespaceDoc(namespaceDoc) {
@@ -27,9 +30,9 @@ export default class NamespaceDocBuilder extends DocBuilder {
     var protectedMethodDocs = this._find({kind: 'function', memberof, access: 'protected'});
     var privateMethodDocs = this._find({kind: 'function', memberof, access: 'private'});
 
-    var publicMemberDocs = this._find({kind: 'member', memberof, access: 'public'});
-    var protectedMemberDocs = this._find({kind: 'member', memberof, access: 'protected'});
-    var privateMemberDocs = this._find({kind: 'member', memberof, access: 'private'});
+    var publicMemberDocs = this._find({kind: 'member', memberof, access: 'public', isEnum: {isUndefined: true}});
+    var protectedMemberDocs = this._find({kind: 'member', memberof, access: 'protected', isEnum: {isUndefined: true}});
+    var privateMemberDocs = this._find({kind: 'member', memberof, access: 'private', isEnum: {isUndefined: true}});
 
     var publicClassDocs = this._find({kind: 'class', memberof, access: 'public'});
     var protectedClassDocs = this._find({kind: 'class', memberof, access: 'protected'});
@@ -54,6 +57,10 @@ export default class NamespaceDocBuilder extends DocBuilder {
     var publicConstDocs = this._find({kind: 'constant', memberof, access: 'public'});
     var protectedConstDocs = this._find({kind: 'constant', memberof, access: 'protected'});
     var privateConstDocs = this._find({kind: 'constant', memberof, access: 'private'});
+
+    var publicEnumDocs = this._find({kind: 'member', memberof, access: 'public', isEnum: true});
+    var protectedEnumDocs = this._find({kind: 'member', memberof, access: 'protected', isEnum: true});
+    var privateEnumDocs = this._find({kind: 'member', memberof, access: 'private', isEnum: true});
 
     var s = new SpruceTemplate(this._readTemplate('namespace.html'));
 
@@ -131,6 +138,11 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.load('summaryProtectedConstDocs', this._buildSummaryMemberDocs(protectedConstDocs, 'Protected Constants'));
     s.load('summaryPrivateConstDocs', this._buildSummaryMemberDocs(privateConstDocs, 'Private Constants'));
 
+    s.drop('enumSummary', !(publicEnumDocs.length + protectedEnumDocs.length + privateEnumDocs.length));
+    s.load('summaryPublicEnumDocs', this._buildSummaryMemberDocs(publicEnumDocs, 'Public Enums'));
+    s.load('summaryProtectedEnumDocs', this._buildSummaryMemberDocs(protectedEnumDocs, 'Protected Enums'));
+    s.load('summaryPrivateEnumDocs', this._buildSummaryMemberDocs(privateEnumDocs, 'Private Enums'));
+
     s.load('publicMemberDocs', this._buildMemberDocs(publicMemberDocs, 'Public Members'));
     s.load('protectedMemberDocs', this._buildMemberDocs(protectedMemberDocs, 'Protected Members'));
     s.load('privateMemberDocs', this._buildMemberDocs(privateMemberDocs, 'Private Members'));
@@ -150,6 +162,10 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.load('publicConstDocs', this._buildMemberDocs(publicConstDocs, 'Public Constants'));
     s.load('protectedConstDocs', this._buildMemberDocs(protectedConstDocs, 'Protected Constants'));
     s.load('privateConstDocs', this._buildMemberDocs(privateConstDocs, 'Private Constants'));
+
+    s.load('publicEnumDocs', this._buildMemberDocs(publicEnumDocs, 'Public Enums'));
+    s.load('protectedEnumDocs', this._buildMemberDocs(protectedEnumDocs, 'Protected Enums'));
+    s.load('privateEnumDocs', this._buildMemberDocs(privateEnumDocs, 'Private Enums'));
 
     return s;
   }

@@ -298,3 +298,46 @@ const CONST3 = {};
  * @virtual
  */
 function Module1(p1, p2, p3){}
+
+/**
+ * this is enum1 desc.
+ * @enum {number}
+ * @since 1.2.3
+ * @deprecated
+ * @public
+ * @example
+ * var foo = enum1;
+ * console.log(foo);
+ * @example
+ * var bar = enum1;
+ * console.log(bar);
+ * @see http://example.com
+ * @see {@link module:Module1~Class1#member1}
+ */
+var enum1 = {
+  /**
+   * this is enum1.CONST1 desc.
+   */
+  CONST1: 1,
+  /**
+   * this is enum1.CONST2 desc.
+   * @type {Object}
+   * @property {!(string|number)} CONST2.p1 this is p1 desc.
+   * @property {?string} CONST2.p2 this is p2 desc.
+   * @property {Object} CONST2.p3 this is p3 desc.
+   * @property {string[]} CONST2.p3.p4 this is p4 desc.
+   */
+  CONST2: null
+};
+
+/**
+ * @enum {number}
+ * @protected
+ */
+var enum2;
+
+/**
+ * @enum {number}
+ * @private
+ */
+var enum3;
