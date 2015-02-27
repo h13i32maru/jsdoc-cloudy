@@ -11,6 +11,7 @@ export default class DocBuilder {
     this._resolveAccess();
     this._resolveGlobalNamespace();
     this._resolveLink();
+    this._resolveCallback();
   }
 
   /**
@@ -166,6 +167,21 @@ export default class DocBuilder {
     });
 
     this._data.__RESOLVED_LINK__ = true;
+  }
+
+  _resolveCallback() {
+    if (this._data.__RESOLVE_CALLBACK) return;
+
+    var typedefDocs = this._find({kind: 'typedef'});
+    for (var typedefDoc of typedefDocs) {
+      if (typedefDoc.comment.search(/\* +@callback +[\w_$]+/) !== -1) {
+        typedefDoc._custom_is_callback = true;
+      } else {
+        typedefDoc._custom_is_callback = false;
+      }
+    }
+
+    this._data.__RESOLVE_CALLBACK = true;
   }
 
   _find(...cond) {
@@ -561,7 +577,10 @@ export default class DocBuilder {
   _buildDeprecatedHTML(doc) {
     if (doc.deprecated) {
       var kind = doc.kind;
+
       if (kind === 'function') kind = 'method';
+      else if(kind === 'typedef' && doc.params) kind = 'callback';
+
       var deprecated = [`this ${kind} was deprecated.`];
       if (typeof doc.deprecated === 'string') deprecated.push(doc.deprecated);
       return deprecated.join(' ');

@@ -39,9 +39,9 @@ export default class NamespaceDocBuilder extends DocBuilder {
     var protectedInterfaceDocs = this._find({kind: 'interface', memberof, access: 'protected'});
     var privateInterfaceDocs = this._find({kind: 'interface', memberof, access: 'private'});
 
-    var publicTypedefDocs = this._find({kind: 'typedef', memberof, access: 'public'});
-    var protectedTypedefDocs = this._find({kind: 'typedef', memberof, access: 'protected'});
-    var privateTypedefDocs = this._find({kind: 'typedef', memberof, access: 'private'});
+    var publicTypedefDocs = this._find({kind: 'typedef', memberof, access: 'public', _custom_is_callback: false});
+    var protectedTypedefDocs = this._find({kind: 'typedef', memberof, access: 'protected', _custom_is_callback: false});
+    var privateTypedefDocs = this._find({kind: 'typedef', memberof, access: 'private', _custom_is_callback: false});
 
     var publicEventDocs = this._find({kind: 'event', memberof, access: 'public'});
     var protectedEventDocs = this._find({kind: 'event', memberof, access: 'protected'});
@@ -58,6 +58,10 @@ export default class NamespaceDocBuilder extends DocBuilder {
     var publicEnumDocs = this._find({kind: 'member', memberof, access: 'public', isEnum: true});
     var protectedEnumDocs = this._find({kind: 'member', memberof, access: 'protected', isEnum: true});
     var privateEnumDocs = this._find({kind: 'member', memberof, access: 'private', isEnum: true});
+
+    var publicCallbackDocs = this._find({kind: 'typedef', memberof, access: 'public', _custom_is_callback: true});
+    var protectedCallbackDocs = this._find({kind: 'typedef', memberof, access: 'protected', _custom_is_callback: true});
+    var privateCallbackDocs = this._find({kind: 'typedef', memberof, access: 'private', _custom_is_callback: true});
 
     var s = new SpruceTemplate(this._readTemplate('namespace.html'));
 
@@ -146,6 +150,11 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.load('summaryProtectedEnumDocs', this._buildSummaryMemberDocs(protectedEnumDocs, 'Protected Enums'));
     s.load('summaryPrivateEnumDocs', this._buildSummaryMemberDocs(privateEnumDocs, 'Private Enums'));
 
+    s.drop('callbackSummary', !(publicCallbackDocs.length + protectedCallbackDocs.length + privateCallbackDocs.length));
+    s.load('summaryPublicCallbackDocs', this._buildSummaryFunctionDocs(publicCallbackDocs, 'Public Callbacks'));
+    s.load('summaryProtectedCallbackDocs', this._buildSummaryFunctionDocs(protectedCallbackDocs, 'Protected Callbacks'));
+    s.load('summaryPrivateCallbackDocs', this._buildSummaryFunctionDocs(privateCallbackDocs, 'Private Callbacks'));
+
     s.load('publicMemberDocs', this._buildMemberDocs(publicMemberDocs, 'Public Members'));
     s.load('protectedMemberDocs', this._buildMemberDocs(protectedMemberDocs, 'Protected Members'));
     s.load('privateMemberDocs', this._buildMemberDocs(privateMemberDocs, 'Private Members'));
@@ -169,6 +178,10 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.load('publicEnumDocs', this._buildMemberDocs(publicEnumDocs, 'Public Enums'));
     s.load('protectedEnumDocs', this._buildMemberDocs(protectedEnumDocs, 'Protected Enums'));
     s.load('privateEnumDocs', this._buildMemberDocs(privateEnumDocs, 'Private Enums'));
+
+    s.load('publicCallbackDocs', this._buildFunctionDocs(publicCallbackDocs, 'Public Callbacks'));
+    s.load('protectedCallbackDocs', this._buildFunctionDocs(protectedCallbackDocs, 'Protected Callbacks'));
+    s.load('privateCallbackDocs', this._buildFunctionDocs(privateCallbackDocs, 'Private Callbacks'));
 
     return s;
   }
