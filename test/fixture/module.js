@@ -235,3 +235,37 @@ var member3 = null;
  * @event module:Module1~Event3
  * @private
  */
+
+/**
+ * this is CONST1 desc.
+ * this is second line.
+ * @const {Object}
+ * @property {!(string|number)} CONST1.p1 this is p1 desc.
+ * @property {?string} CONST1.p2 this is p2 desc.
+ * @property {Object} CONST1.p3 this is p3 desc.
+ * @property {string[]} CONST1.p3.p4 this is p4 desc.
+ * @since 1.2.3
+ * @deprecated
+ * @public
+ * @example
+ * var foo = CONST1;
+ * console.log(foo);
+ * @example
+ * var bar = CONST1;
+ * console.log(bar);
+ * @see http://example.com
+ * @see {@link module:Module1~Class1#member1}
+ */
+const CONST1 = {};
+
+/**
+ * @const {number}
+ * @protected
+ */
+const CONST2 = {};
+
+/**
+ * @const {number}
+ * @private
+ */
+const CONST3 = {};

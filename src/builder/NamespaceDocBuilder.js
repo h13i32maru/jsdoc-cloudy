@@ -9,6 +9,9 @@ export default class NamespaceDocBuilder extends DocBuilder {
       s.load('content', this._buildNamespaceDoc(namespaceDoc));
       callback(s.html, `${namespaceDoc.longname}.html`);
     }
+
+    var doc = this._find({kind: 'constant'});
+    console.log(JSON.stringify(doc, null, 2));
   }
 
   _buildNamespaceDoc(namespaceDoc) {
@@ -50,6 +53,10 @@ export default class NamespaceDocBuilder extends DocBuilder {
     var publicMixinDocs = this._find({kind: 'mixin', memberof, access: 'public'});
     var protectedMixinDocs = this._find({kind: 'mixin', memberof, access: 'protected'});
     var privateMixinDocs = this._find({kind: 'mixin', memberof, access: 'private'});
+
+    var publicConstDocs = this._find({kind: 'constant', memberof, access: 'public'});
+    var protectedConstDocs = this._find({kind: 'constant', memberof, access: 'protected'});
+    var privateConstDocs = this._find({kind: 'constant', memberof, access: 'private'});
 
     var s = new SpruceTemplate(this._readTemplate('namespace.html'));
 
@@ -110,6 +117,11 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.load('summaryProtectedMixinDocs', this._buildSummaryNamespaceDocs(protectedMixinDocs, 'Protected Mixins'));
     s.load('summaryPrivateMixinDocs', this._buildSummaryNamespaceDocs(privateMixinDocs, 'Private Mixins'));
 
+    s.drop('constSummary', !(publicConstDocs.length + protectedConstDocs.length + privateConstDocs.length));
+    s.load('summaryPublicConstDocs', this._buildSummaryMemberDocs(publicConstDocs, 'Public Constants'));
+    s.load('summaryProtectedConstDocs', this._buildSummaryMemberDocs(protectedConstDocs, 'Protected Constants'));
+    s.load('summaryPrivateConstDocs', this._buildSummaryMemberDocs(privateConstDocs, 'Private Constants'));
+
     s.load('publicMemberDocs', this._buildMemberDocs(publicMemberDocs, 'Public Members'));
     s.load('protectedMemberDocs', this._buildMemberDocs(protectedMemberDocs, 'Protected Members'));
     s.load('privateMemberDocs', this._buildMemberDocs(privateMemberDocs, 'Private Members'));
@@ -125,6 +137,10 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.load('publicEventDocs', this._buildMemberDocs(publicEventDocs, 'Public Events'));
     s.load('protectedEventDocs', this._buildMemberDocs(protectedEventDocs, 'Protected Events'));
     s.load('privateEventDocs', this._buildMemberDocs(privateEventDocs, 'Private Events'));
+
+    s.load('publicConstDocs', this._buildMemberDocs(publicConstDocs, 'Public Constants'));
+    s.load('protectedConstDocs', this._buildMemberDocs(protectedConstDocs, 'Protected Constants'));
+    s.load('privateConstDocs', this._buildMemberDocs(privateConstDocs, 'Private Constants'));
 
     return s;
   }
