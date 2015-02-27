@@ -1,24 +1,20 @@
 [![Build Status](https://travis-ci.org/h13i32maru/jsdoc-cloudy.svg?branch=master)](https://travis-ci.org/h13i32maru/jsdoc-cloudy)
 
 # TODO
-- @enum
-- @requires
-- @summary
-- @version
+- @borrows
 - @callback
 - @fire
-- @borrows
+- @requires
 - @alias
+- @default (synonyms: @defaultvalue)
+- @summary
+- @version
 - @author
 - @copyright
-- @default (synonyms: @defaultvalue)
 - @ignore
 - @inheritdoc
 - @license
 - @listens
-- @mixes
-- @requires
-- @summary
 - @this
 - @todo
 - @experimental実装
@@ -28,6 +24,7 @@
 - ClassDocBuilderとNamespaceDocBuilderを統一する
 - classsummaryとnamespacesummmaryも統一できそう
 - test整理
+- extendsのヒエラルキー
 
 # Not Support
 - @file

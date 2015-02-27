@@ -13,6 +13,8 @@
  * console.log(bar);
  * @see http://example.com
  * @see {@link module1:Module~Class1#method1}
+ * @mixes module:Module1.Mixin1
+ * @mixes module:Module1.Mixin2
  */
 
 /**

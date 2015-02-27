@@ -9,9 +9,6 @@ export default class NamespaceDocBuilder extends DocBuilder {
       s.load('content', this._buildNamespaceDoc(namespaceDoc));
       callback(s.html, `${namespaceDoc.longname}.html`);
     }
-
-    var doc = this._find({name: 'enum1'});
-    console.log(JSON.stringify(doc, null, 2));
   }
 
   _buildNamespaceDoc(namespaceDoc) {
@@ -69,6 +66,12 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.text('kind', namespaceDoc.kind);
     s.text('namespace', namespaceDoc.name);
     s.load('namespaceDesc', namespaceDoc.description);
+
+    // mixes
+    s.drop('mixesLabel', !namespaceDoc.mixes);
+    s.loop('mixes', namespaceDoc.mixes, (i, mixes, s)=>{
+      s.load('mixes', this._buildDocLinkHTML(mixes));
+    });
 
     // variation
     var variationDocs = this._find({memberof: namespaceDoc.longname, name: namespaceDoc.name, variation: {'isUndefined': false}});
