@@ -441,13 +441,24 @@ export default class DocBuilder {
 
       // fire
       if (functionDoc.fires) {
-        s.loop('fire', functionDoc.fires, (i, fire, s)=>{
+        s.loop('fireEvent', functionDoc.fires, (i, fire, s)=>{
           var eventDoc = this._find({longname: fire})[0];
-          var link = this._buildDocLinkHTML(eventDoc, eventDoc.name, {inner: true});
+          var link = this._buildDocLinkHTML(eventDoc, eventDoc.longname, {inner: true});
           s.load('event', link);
         });
       } else {
         s.drop('fires');
+      }
+
+      // listen
+      if (functionDoc.listens) {
+        s.loop('listenEvent', functionDoc.listens, (i, listen, s)=>{
+          var eventDoc = this._find({longname: listen})[0];
+          var link = this._buildDocLinkHTML(eventDoc, eventDoc.longname, {inner: true});
+          s.load('event', link);
+        });
+      } else {
+        s.drop('listens');
       }
 
       // return

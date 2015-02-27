@@ -132,6 +132,8 @@ function Interface3(){}
  * @virtual
  * @fires module:Module1~Event1
  * @fires module:Module1~Event2
+ * @listens module:Module1~Event1
+ * @listens module:Module1~Event2
  */
 function method1(p1, p2, p3){}
 
