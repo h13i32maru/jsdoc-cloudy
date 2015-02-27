@@ -219,8 +219,16 @@ export default class DocBuilder {
     // typedefs
     var typedefDocs = this._find({kind: 'typedef'});
     s.loop('typedefDoc', typedefDocs, (i, typedefDoc, s)=>{
+      var fileName = encodeURIComponent(`${typedefDoc.memberof}.html#${typedefDoc.scope}-${typedefDoc.name}`);
       s.text('typedef', typedefDoc.name);
-      s.attr('typedef', 'href', `${encodeURIComponent(typedefDoc.longname)}.html`);
+      s.attr('typedef', 'href', fileName);
+    });
+
+    // mixin
+    var mixinDocs = this._find({kind: 'mixin'});
+    s.loop('mixinDoc', mixinDocs, (i, mixinDoc, s)=>{
+      s.text('mixin', mixinDoc.name);
+      s.attr('mixin', 'href', `${encodeURIComponent(mixinDoc.longname)}.html`);
     });
 
     return s;
@@ -305,23 +313,23 @@ export default class DocBuilder {
     return s;
   }
 
-  _buildSummaryTypedefDocs(typedefDocs = [], title = 'Typedefs') {
-    if (typedefDocs.length === 0) return '';
-
-    var s = new SpruceTemplate(this._readTemplate('summary.html'));
-    s.text('title', title);
-    s.loop('target', typedefDocs, (i, typedefDoc, s)=>{
-      s.load('name', this._buildDocLinkHTML(typedefDoc, typedefDoc.longname, {inner: true}));
-      s.load('signature', this._buildVariableSignatureHTML(typedefDoc));
-      s.load('description', this._shorten(typedefDoc.description));
-      s.text('access', typedefDoc.access);
-      s.drop('sinceLabel', !typedefDoc.since);
-      s.text('since', typedefDoc.since);
-      s.load('deprecated', this._buildDeprecatedHTML(typedefDoc));
-    });
-
-    return s;
-  }
+  //_buildSummaryTypedefDocs(typedefDocs = [], title = 'Typedefs') {
+  //  if (typedefDocs.length === 0) return '';
+  //
+  //  var s = new SpruceTemplate(this._readTemplate('summary.html'));
+  //  s.text('title', title);
+  //  s.loop('target', typedefDocs, (i, typedefDoc, s)=>{
+  //    s.load('name', this._buildDocLinkHTML(typedefDoc, typedefDoc.longname, {inner: true}));
+  //    s.load('signature', this._buildVariableSignatureHTML(typedefDoc));
+  //    s.load('description', this._shorten(typedefDoc.description));
+  //    s.text('access', typedefDoc.access);
+  //    s.drop('sinceLabel', !typedefDoc.since);
+  //    s.text('since', typedefDoc.since);
+  //    s.load('deprecated', this._buildDeprecatedHTML(typedefDoc));
+  //  });
+  //
+  //  return s;
+  //}
 
   _buildDocLinkHTML(doc, text = doc.longname || doc, {inner = false} = {}) {
     text = escape(text);

@@ -269,3 +269,33 @@ Class1.staticMember3 = null;
  */
 Class1.staticMember4 = null;
 
+/**
+ * this is Event1 desc.
+ * @event Namespace1.Class#Event1
+ * @type {Object}
+ * @property {!(string|number)} Event1.p1 this is p1 desc.
+ * @property {?string} Event1.p2 this is p2 desc.
+ * @property {Object} Event1.p3 this is p3 desc.
+ * @property {string[]} Event1.p3.p4 this is p4 desc.
+ * @since 1.2.3
+ * @deprecated
+ * @public
+ * @example
+ * var foo = Event1;
+ * console.log(foo);
+ * @example
+ * var bar = Event1;
+ * console.log(bar);
+ * @see http://example.com
+ * @see {@link module:Module1~Class1#member1}
+ */
+
+/**
+ * @event Namespace1.Class#Event2
+ * @protected
+ */
+
+/**
+ * @event Namespace1.Class#Event3
+ * @private
+ */

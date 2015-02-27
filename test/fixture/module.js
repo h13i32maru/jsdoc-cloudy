@@ -125,6 +125,7 @@ function Interface3(){}
  * @property {string} return.p2.p3 this is p3 desc.
  * @throws {Error} this is throws Error desc.
  * @throws {InvalidArgumentException} this is throws InvalidArgumentException desc.
+ * @virtual
  */
 function method1(p1, p2, p3){}
 
@@ -206,7 +207,7 @@ var member3 = null;
 
 /**
  * this is Event1 desc.
- * @event module:Module1#Event1
+ * @event module:Module1~Event1
  * @type {Object}
  * @property {!(string|number)} Event1.p1 this is p1 desc.
  * @property {?string} Event1.p2 this is p2 desc.
@@ -223,4 +224,14 @@ var member3 = null;
  * console.log(bar);
  * @see http://example.com
  * @see {@link module:Module1~Class1#member1}
+ */
+
+/**
+ * @event module:Module1~Event3
+ * @protected
+ */
+
+/**
+ * @event module:Module1~Event3
+ * @private
  */

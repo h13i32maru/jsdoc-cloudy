@@ -1,18 +1,77 @@
 [![Build Status](https://travis-ci.org/h13i32maru/jsdoc-cloudy.svg?branch=master)](https://travis-ci.org/h13i32maru/jsdoc-cloudy)
 
 # TODO
-- @event
 - @constant (synonyms: @const)
 - @variation
-- @file
-- @mixin
 - {function(a: number)}に対応できる？
-- namespace test
-- nav test
-- index test
-- readme test
 - @enum
 - @requires
 - @summary
 - @version
 - @callback
+- @fire
+- @borrows
+- @alias
+- @author
+- @copyright
+- @default (synonyms: @defaultvalue)
+- @ignore
+- @inheritdoc
+- @linkでmoduleにリンク晴れていない
+- ClassDocBuilderとNamespaceDocBuilderを統一する
+- classsummaryとnamespacesummmaryも統一できそう
+- test整理
+- @license
+- @listens
+- @mixes
+- @requires
+- @summary
+- @this
+- @todo
+- @tutorial
+- @file
+
+# Support
+- @abstract (synonyms: @virtual)
+- @access
+- @augments (synonyms: @extends)
+- @class (synonyms: @constructor)
+- @classdesc
+- @constant (synonyms: @const)
+- @constructs
+- @deprecated
+- @description (synonyms: @desc)
+- @event
+- @example
+- @exports
+- @external (synonyms: @host)
+- @function (synonyms: @func, @method)
+- @global
+- @implements
+- @inner
+- @instance
+- @interface
+- @kind
+- @member (synonyms: @var)
+- @memberof
+- @mixin
+- @module
+- @name
+- @namespace
+- @override
+- @param (synonyms: @arg, @argument)
+- @private
+- @property (synonyms: @prop)
+- @protected
+- @public
+- @readonly
+- @returns (synonyms: @return)
+- @see
+- @since
+- @static
+- @throws (synonyms: @exception)
+- @type
+- @typedef
+- @variation
+- @version
+

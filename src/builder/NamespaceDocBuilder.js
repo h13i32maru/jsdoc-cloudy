@@ -4,7 +4,7 @@ import DocBuilder from './DocBuilder.js';
 export default class NamespaceDocBuilder extends DocBuilder {
   exec(callback) {
     var s = this._buildLayoutDoc();
-    var namespaceDocs = this._find({kind: ['namespace', 'module']});
+    var namespaceDocs = this._find({kind: ['namespace', 'module', 'mixin']});
     for (var namespaceDoc of namespaceDocs) {
       s.load('content', this._buildNamespaceDoc(namespaceDoc));
       callback(s.html, `${namespaceDoc.longname}.html`);
@@ -43,6 +43,14 @@ export default class NamespaceDocBuilder extends DocBuilder {
     var protectedTypedefDocs = this._find({kind: 'typedef', memberof, access: 'protected'});
     var privateTypedefDocs = this._find({kind: 'typedef', memberof, access: 'private'});
 
+    var publicEventDocs = this._find({kind: 'event', memberof, access: 'public'});
+    var protectedEventDocs = this._find({kind: 'event', memberof, access: 'protected'});
+    var privateEventDocs = this._find({kind: 'event', memberof, access: 'private'});
+
+    var publicMixinDocs = this._find({kind: 'mixin', memberof, access: 'public'});
+    var protectedMixinDocs = this._find({kind: 'mixin', memberof, access: 'protected'});
+    var privateMixinDocs = this._find({kind: 'mixin', memberof, access: 'private'});
+
     var s = new SpruceTemplate(this._readTemplate('namespace.html'));
 
     s.load('parentNamespace', this._buildDocLinkHTML(namespaceDoc.memberof || '@global'));
@@ -62,6 +70,11 @@ export default class NamespaceDocBuilder extends DocBuilder {
       s.drop('sinceLabel');
     }
 
+    s.drop('namespaceSummary', !(publicNamespaceDocs.length + protectedNamespaceDocs.length + privateNamespaceDocs.length));
+    s.load('summaryPublicNamespaceDocs', this._buildSummaryNamespaceDocs(publicNamespaceDocs, 'Public Namespaces'));
+    s.load('summaryProtectedNamespaceDocs', this._buildSummaryNamespaceDocs(protectedNamespaceDocs, 'Protected Namespaces'));
+    s.load('summaryPrivateNamespaceDocs', this._buildSummaryNamespaceDocs(privateNamespaceDocs, 'Private Namespaces'));
+
     s.drop('classSummary', !(publicClassDocs.length + protectedClassDocs.length + privateClassDocs.length));
     s.load('summaryPublicClassDocs', this._buildSummaryClassDocs(publicClassDocs, false, 'Public Classes'));
     s.load('summaryProtectedClassDocs', this._buildSummaryClassDocs(protectedClassDocs, false, 'Protected Classes'));
@@ -71,11 +84,6 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.load('summaryPublicInterfaceDocs', this._buildSummaryClassDocs(publicInterfaceDocs, false, 'Public Interfaces'));
     s.load('summaryProtectedInterfaceDocs', this._buildSummaryClassDocs(protectedInterfaceDocs, false, 'Protected Interfaces'));
     s.load('summaryPrivateInterfaceDocs', this._buildSummaryClassDocs(privateInterfaceDocs, false, 'Private Interfaces'));
-
-    s.drop('typedefSummary', !(publicTypedefDocs.length + protectedTypedefDocs.length + privateTypedefDocs.length));
-    s.load('summaryPublicTypedefDocs', this._buildSummaryMemberDocs(publicTypedefDocs, 'Public Typedefs'));
-    s.load('summaryProtectedTypedefDocs', this._buildSummaryMemberDocs(protectedTypedefDocs, 'Protected Typedefs'));
-    s.load('summaryPrivateTypedefDocs', this._buildSummaryMemberDocs(privateTypedefDocs, 'Private Typedefs'));
 
     s.drop('memberSummary', !(publicMemberDocs.length + protectedMemberDocs.length + privateMemberDocs.length));
     s.load('summaryPublicMemberDocs', this._buildSummaryMemberDocs(publicMemberDocs, 'Public Members'));
@@ -87,10 +95,20 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.load('summaryProtectedMethodDocs', this._buildSummaryFunctionDocs(protectedMethodDocs, 'Protected Methods'));
     s.load('summaryPrivateMethodDocs', this._buildSummaryFunctionDocs(privateMethodDocs, 'Private Methods'));
 
-    s.drop('namespaceSummary', !(publicNamespaceDocs.length + protectedNamespaceDocs.length + privateNamespaceDocs.length));
-    s.load('summaryPublicNamespaceDocs', this._buildSummaryNamespaceDocs(publicNamespaceDocs, 'Public Namespaces'));
-    s.load('summaryProtectedNamespaceDocs', this._buildSummaryNamespaceDocs(protectedNamespaceDocs, 'Protected Namespaces'));
-    s.load('summaryPrivateNamespaceDocs', this._buildSummaryNamespaceDocs(privateNamespaceDocs, 'Private Namespaces'));
+    s.drop('typedefSummary', !(publicTypedefDocs.length + protectedTypedefDocs.length + privateTypedefDocs.length));
+    s.load('summaryPublicTypedefDocs', this._buildSummaryMemberDocs(publicTypedefDocs, 'Public Typedefs'));
+    s.load('summaryProtectedTypedefDocs', this._buildSummaryMemberDocs(protectedTypedefDocs, 'Protected Typedefs'));
+    s.load('summaryPrivateTypedefDocs', this._buildSummaryMemberDocs(privateTypedefDocs, 'Private Typedefs'));
+
+    s.drop('eventSummary', !(publicEventDocs.length + protectedEventDocs.length + privateEventDocs.length));
+    s.load('summaryPublicEventDocs', this._buildSummaryMemberDocs(publicEventDocs, 'Public Events'));
+    s.load('summaryProtectedEventDocs', this._buildSummaryMemberDocs(protectedEventDocs, 'Protected Events'));
+    s.load('summaryPrivateEventDocs', this._buildSummaryMemberDocs(privateEventDocs, 'Private Events'));
+
+    s.drop('mixinSummary', !(publicMixinDocs.length + protectedMixinDocs.length + privateMixinDocs.length));
+    s.load('summaryPublicMixinDocs', this._buildSummaryNamespaceDocs(publicMixinDocs, 'Public Mixins'));
+    s.load('summaryProtectedMixinDocs', this._buildSummaryNamespaceDocs(protectedMixinDocs, 'Protected Mixins'));
+    s.load('summaryPrivateMixinDocs', this._buildSummaryNamespaceDocs(privateMixinDocs, 'Private Mixins'));
 
     s.load('publicMemberDocs', this._buildMemberDocs(publicMemberDocs, 'Public Members'));
     s.load('protectedMemberDocs', this._buildMemberDocs(protectedMemberDocs, 'Protected Members'));
@@ -103,6 +121,10 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.load('publicTypedefDocs', this._buildMemberDocs(publicTypedefDocs, 'Public Typedefs'));
     s.load('protectedTypedefDocs', this._buildMemberDocs(protectedTypedefDocs, 'Protected Typedefs'));
     s.load('privateTypedefDocs', this._buildMemberDocs(privateTypedefDocs, 'Private Typedefs'));
+
+    s.load('publicEventDocs', this._buildMemberDocs(publicEventDocs, 'Public Events'));
+    s.load('protectedEventDocs', this._buildMemberDocs(protectedEventDocs, 'Protected Events'));
+    s.load('privateEventDocs', this._buildMemberDocs(privateEventDocs, 'Private Events'));
 
     return s;
   }
