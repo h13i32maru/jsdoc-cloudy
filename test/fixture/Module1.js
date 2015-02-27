@@ -384,3 +384,9 @@ var enum3;
  * @callback callback3
  * @private
  */
+
+/**
+ * @alias module:Module2~AliasX
+ * @class
+ */
+function Alias1(){}
