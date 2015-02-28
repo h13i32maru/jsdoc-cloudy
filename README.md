@@ -1,9 +1,6 @@
 [![Build Status](https://travis-ci.org/h13i32maru/jsdoc-cloudy.svg?branch=master)](https://travis-ci.org/h13i32maru/jsdoc-cloudy)
 
 # TODO
-- @copyright
-- @license
-- @file
 - @todo
 - @experimental実装
 - commentのrawを表示する

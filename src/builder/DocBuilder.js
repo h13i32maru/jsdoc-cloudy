@@ -13,6 +13,7 @@ export default class DocBuilder {
     this._resolveAccess();
     this._resolveLink();
     this._resolveCallback();
+    this._resolveSourceCode();
   }
 
   /**
@@ -209,6 +210,19 @@ export default class DocBuilder {
     this._data.__RESOLVED_CALLBACK__ = true;
   }
 
+  _resolveSourceCode() {
+    if (this._data.__RESOLVED_SOURCE_CODE__) return;
+
+    var docs = this._find({kind: 'file'});
+    for (var doc of docs) {
+      var filePath = path.resolve(doc.meta.path, doc.meta.filename);
+      var sourceCode = fs.readFileSync(filePath, {encode: 'utf-8'});
+      doc._custom_source_code = sourceCode;
+    }
+
+    this._data.__RESOLVED_SOURCE_CODE__ = true;
+  }
+
   _find(...cond) {
     return this._data(...cond).map(v => v);
   }
@@ -258,18 +272,26 @@ export default class DocBuilder {
     });
 
     // typedefs
-    var typedefDocs = this._find({kind: 'typedef'});
-    s.loop('typedefDoc', typedefDocs, (i, typedefDoc, s)=>{
-      var fileName = encodeURIComponent(`${typedefDoc.memberof}.html#${typedefDoc.scope}-${typedefDoc.name}`);
-      s.text('typedef', typedefDoc.name);
-      s.attr('typedef', 'href', fileName);
-    });
+    //var typedefDocs = this._find({kind: 'typedef'});
+    //s.loop('typedefDoc', typedefDocs, (i, typedefDoc, s)=>{
+    //  var fileName = encodeURIComponent(`${typedefDoc.memberof}.html#${typedefDoc.scope}-${typedefDoc.name}`);
+    //  s.text('typedef', typedefDoc.name);
+    //  s.attr('typedef', 'href', fileName);
+    //});
 
     // mixin
     var mixinDocs = this._find({kind: 'mixin'});
     s.loop('mixinDoc', mixinDocs, (i, mixinDoc, s)=>{
       s.text('mixin', mixinDoc.name);
       s.attr('mixin', 'href', `${encodeURIComponent(mixinDoc.longname)}.html`);
+    });
+
+
+    // files
+    var fileDocs = this._find({kind: 'file'});
+    s.loop('fileDoc', fileDocs, (i, fileDoc, s)=>{
+      s.text('file', fileDoc.name);
+      s.attr('file', 'href', `@file-${fileDoc.longname}.html`);
     });
 
     return s;

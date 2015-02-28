@@ -1,4 +1,28 @@
 /**
+ * @file this is Module1.js desc.
+ * this is second line.
+ * @since 1.2.3
+ * @version 0.0.1
+ * @private
+ * @fileexample
+ * var foo = Module1;
+ * console.log(foo);
+ * @fileexample
+ * var bar = Module1;
+ * console.log(bar);
+ * @see http://example.com
+ * @see {@link module1:Module~Class1#method1}
+ * @requires module:Module1
+ * @requires module:Module2
+ * @author foo <foo@example.com>
+ * @author bar <http://twitter.com/bar>
+ * @copyright this is Module1.js copyright
+ * this is second line.
+ * @license MIT
+ */
+
+
+/**
  * this is Module1 desc.
  * this is second line.
  * @module Module1

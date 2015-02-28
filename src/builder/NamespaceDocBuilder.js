@@ -4,11 +4,12 @@ import DocBuilder from './DocBuilder.js';
 export default class NamespaceDocBuilder extends DocBuilder {
   exec(callback) {
     var s = this._buildLayoutDoc();
-    var namespaceDocs = this._find({kind: ['namespace', 'module', 'mixin']});
+    var namespaceDocs = this._find({kind: ['namespace', 'module', 'mixin', 'file']});
     for (var namespaceDoc of namespaceDocs) {
       s.load('content', this._buildNamespaceDoc(namespaceDoc));
       s.load('fileFooter', this._buildFileFooterHTML(namespaceDoc));
-      callback(s.html, `${namespaceDoc.longname}.html`);
+      var prefix = namespaceDoc.kind === 'file' ? '@file-' : '';
+      callback(s.html, `${prefix}${namespaceDoc.longname}.html`);
     }
   }
 
@@ -200,6 +201,9 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.load('publicCallbackDocs', this._buildFunctionDocs(publicCallbackDocs, 'Public Callbacks'));
     s.load('protectedCallbackDocs', this._buildFunctionDocs(protectedCallbackDocs, 'Protected Callbacks'));
     s.load('privateCallbackDocs', this._buildFunctionDocs(privateCallbackDocs, 'Private Callbacks'));
+
+    s.drop('sourceCodeWrap', !namespaceDoc._custom_source_code);
+    s.text('sourceCode', namespaceDoc._custom_source_code);
 
     return s;
   }
