@@ -368,12 +368,12 @@ export default class DocBuilder {
     return s;
   }
 
-  _buildSummaryNamespaceDocs(namespaceDocs = []) {
+  _buildSummaryNamespaceDocs(namespaceDocs = [], title = 'Namespaces') {
     if (namespaceDocs.length === 0) return '';
 
     var s = new SpruceTemplate(this._readTemplate('summary.html'));
 
-    s.text('title', 'Namespaces');
+    s.text('title', title);
     s.loop('target', namespaceDocs, (i, namespaceDoc, s)=>{
       s.load('name', this._buildDocLinkHTML(namespaceDoc.longname));
       s.drop('signature');
@@ -388,6 +388,22 @@ export default class DocBuilder {
     });
 
     return s;
+  }
+
+  _getOutputFileName(doc) {
+    var prefix = doc.kind === 'file' ? '@file-' : '';
+    return `${prefix}${doc.longname}.html`;
+  }
+
+  _buildFileDocLinkHTML(doc) {
+    if (!doc) return;
+    if (!doc.meta) return;
+
+    var fileName = doc.meta.filename;
+    var fileDoc = this._find({kind: 'file', name: fileName})[0];
+    if (!fileDoc) return;
+
+    return `<span><a href="@file-${fileDoc.longname}.html">${fileDoc.name}</a></span>`;
   }
 
   _buildDocLinkHTML(longname, text = null, inner = false) {

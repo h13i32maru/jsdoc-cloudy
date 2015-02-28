@@ -8,8 +8,8 @@ export default class NamespaceDocBuilder extends DocBuilder {
     for (var namespaceDoc of namespaceDocs) {
       s.load('content', this._buildNamespaceDoc(namespaceDoc));
       s.load('fileFooter', this._buildFileFooterHTML(namespaceDoc));
-      var prefix = namespaceDoc.kind === 'file' ? '@file-' : '';
-      callback(s.html, `${prefix}${namespaceDoc.longname}.html`);
+      var fileName = this._getOutputFileName(namespaceDoc);
+      callback(s.html, fileName);
     }
   }
 
@@ -67,6 +67,11 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.text('kind', namespaceDoc.kind);
     s.text('namespace', namespaceDoc.name);
     s.load('namespaceDesc', namespaceDoc.description);
+
+    // file
+    var fileLink = this._buildFileDocLinkHTML(namespaceDoc);
+    s.drop('fileLabel', !fileLink);
+    s.load('file', fileLink);
 
     // author
     s.drop('authorLabel', !namespaceDoc.author);
