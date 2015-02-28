@@ -20,6 +20,9 @@
  * @requires module:Module2
  * @author foo <foo@example.com>
  * @author bar <http://twitter.com/bar>
+ * @copyright this is Module1 copyright
+ * this is second line.
+ * @license MIT
  */
 
 /**

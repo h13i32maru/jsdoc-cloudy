@@ -227,7 +227,6 @@ table.params td p {
   color: #aaa;
 }
 
-/*h3 .sincen {*/
 h3 .right-info {
   position: absolute;
   right: 4px;
@@ -250,7 +249,7 @@ h3 .right-info {
   margin: 4px 0;
 }
 
-footer {
+footer, .file-footer {
   text-align: right;
   font-style: italic;
   font-weight: 100;

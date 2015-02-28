@@ -701,4 +701,24 @@ export default class DocBuilder {
 
     return html.join(', ');
   }
+
+  _buildFileFooterHTML(doc) {
+    if (!doc) return '';
+
+    var s = new SpruceTemplate(this._readTemplate('file-footer.html'));
+
+    var flag = false;
+
+    if (doc.copyright) {
+      flag = true;
+      s.text('copyright', doc.copyright);
+    }
+
+    if (doc.license) {
+      flag = true;
+      s.text('license', doc.license);
+    }
+
+    return flag ? s.html : '';
+  }
 }

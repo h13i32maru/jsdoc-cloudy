@@ -3,6 +3,7 @@
 # TODO
 - @copyright
 - @license
+- @file
 - @todo
 - @experimental実装
 - commentのrawを表示する
@@ -14,7 +15,6 @@
 - {function(a: number)}に対応できる？
 
 # Not Support
-- @file
 - @tutorial
 - @property入れ子
 - @borrows

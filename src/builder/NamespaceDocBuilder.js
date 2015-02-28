@@ -7,6 +7,7 @@ export default class NamespaceDocBuilder extends DocBuilder {
     var namespaceDocs = this._find({kind: ['namespace', 'module', 'mixin']});
     for (var namespaceDoc of namespaceDocs) {
       s.load('content', this._buildNamespaceDoc(namespaceDoc));
+      s.load('fileFooter', this._buildFileFooterHTML(namespaceDoc));
       callback(s.html, `${namespaceDoc.longname}.html`);
     }
   }
