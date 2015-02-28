@@ -7,9 +7,10 @@ export default class DocBuilder {
   constructor(data) {
     this._data = data;
 
+    this._resolveGlobalNamespace();
+    this._resolveIgnore();
     this._resolveFileExample();
     this._resolveAccess();
-    this._resolveGlobalNamespace();
     this._resolveLink();
     this._resolveCallback();
   }
@@ -54,6 +55,19 @@ export default class DocBuilder {
     return desc.substr(0, len);
   }
 
+  _resolveIgnore() {
+    if (this._data.__RESOLVED_IGNORE__) return;
+
+    var docs = this._find({ignore: true});
+    for (var doc of docs) {
+      var regex = new RegExp(`^${doc.longname}[.~#]`);
+      this._data({longname: {regex: regex}}).remove();
+    }
+    this._data({ignore: true}).remove();
+
+    this._data.__RESOLVED_IGNORE__ = true;
+  }
+
   _resolveAccess() {
     if (this._data.__RESOLVED_ACCESS__) return;
 
@@ -68,7 +82,12 @@ export default class DocBuilder {
   _resolveGlobalNamespace() {
     if (this._data.__RESOLVED_GLOBAL_NAMESPACE__) return;
 
-    if (this._find({memberof: {isUndefined: true}}).length) {
+    var docs = this._find({memberof: {isUndefined: true}});
+    if (docs.length) {
+      for (var doc of docs) {
+        doc.memberof = '@global';
+      }
+
       var globalNamespaceDoc = {
         comment: '',
         longname: '@global',

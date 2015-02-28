@@ -1,15 +1,14 @@
 [![Build Status](https://travis-ci.org/h13i32maru/jsdoc-cloudy.svg?branch=master)](https://travis-ci.org/h13i32maru/jsdoc-cloudy)
 
 # TODO
-- @experimental実装
+- @inheritdoc
 - @summary
 - @version
 - @author
 - @copyright
-- @ignore
-- @inheritdoc
 - @license
 - @todo
+- @experimental実装
 - commentのrawを表示する
 - @linkでmoduleにリンク晴れていない
 - {function(a: number)}に対応できる？
