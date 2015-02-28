@@ -71,6 +71,11 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.text('namespace', namespaceDoc.name);
     s.load('namespaceDesc', namespaceDoc.description);
 
+    // author
+    s.drop('authorLabel', !namespaceDoc.author);
+    s.load('author', this._buildAuthorHTML(namespaceDoc));
+
+    // version
     if (namespaceDoc.version) {
       s.text('version', namespaceDoc.version);
     } else {

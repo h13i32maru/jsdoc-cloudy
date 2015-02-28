@@ -18,6 +18,8 @@
  * @mixes module:Module1.Mixin2
  * @requires module:Module1
  * @requires module:Module2
+ * @author foo <foo@example.com>
+ * @author bar <http://twitter.com/bar>
  */
 
 /**
@@ -38,6 +40,8 @@
  * console.log(bar);
  * @see http://example.com
  * @see {@link Namespace1}
+ * @author foo <foo@example.com>
+ * @author bar <http://twitter.com/bar>
  */
 var Namespace1;
 
@@ -69,6 +73,8 @@ var Namespace3;
  * console.log(foo);
  * @see http://example.com
  * @see {@link Namespace1.Class1}
+ * @author foo <foo@example.com>
+ * @author bar <http://twitter.com/bar>
  */
 function Class1(){}
 
@@ -100,6 +106,8 @@ function Class3(){}
  * console.log(foo);
  * @see http://example.com
  * @see {@link Namespace1.Interface1}
+ * @author foo <foo@example.com>
+ * @author bar <http://twitter.com/bar>
  */
 function Interface1(){}
 
@@ -142,6 +150,8 @@ function Interface3(){}
  * @listens module:Module1~Event1
  * @listens module:Module1~Event2
  * @this module:Module1~Class1
+ * @author foo <foo@example.com>
+ * @author bar <http://twitter.com/bar>
  */
 function method1(p1, p2, p3){}
 
@@ -177,6 +187,8 @@ function method3(){}
  * @see {@link Namespace1.Class1#member1}
  * @readonly
  * @default 999
+ * @author foo <foo@example.com>
+ * @author bar <http://twitter.com/bar>
  */
 var member111 = null;
 
@@ -212,6 +224,8 @@ var member3 = null;
  * console.log(bar);
  * @see http://example.com
  * @see {@link Typedef1}
+ * @author foo <foo@example.com>
+ * @author bar <http://twitter.com/bar>
  */
 
 /**
@@ -244,6 +258,8 @@ var member3 = null;
  * console.log(bar);
  * @see http://example.com
  * @see {@link module:Module1~Class1#member1}
+ * @author foo <foo@example.com>
+ * @author bar <http://twitter.com/bar>
  */
 
 /**
@@ -276,6 +292,8 @@ var member3 = null;
  * console.log(bar);
  * @see http://example.com
  * @see {@link module:Module1~Class1#member1}
+ * @author foo <foo@example.com>
+ * @author bar <http://twitter.com/bar>
  */
 const CONST1 = {};
 
@@ -318,6 +336,8 @@ const CONST3 = {};
  * @throws {Error} this is throws Error desc.
  * @throws {InvalidArgumentException} this is throws InvalidArgumentException desc.
  * @virtual
+ * @author foo <foo@example.com>
+ * @author bar <http://twitter.com/bar>
  */
 function Module1(p1, p2, p3){}
 
@@ -336,6 +356,8 @@ function Module1(p1, p2, p3){}
  * console.log(bar);
  * @see http://example.com
  * @see {@link module:Module1~Class1#member1}
+ * @author foo <foo@example.com>
+ * @author bar <http://twitter.com/bar>
  */
 var enum1 = {
   /**
@@ -391,6 +413,8 @@ var enum3;
  * @property {string} return.p2.p3 this is p3 desc.
  * @throws {Error} this is throws Error desc.
  * @throws {InvalidArgumentException} this is throws InvalidArgumentException desc.
+ * @author foo <foo@example.com>
+ * @author bar <http://twitter.com/bar>
  */
 
 /**

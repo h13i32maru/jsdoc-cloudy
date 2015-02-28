@@ -459,6 +459,10 @@ export default class DocBuilder {
       s.load('deprecated', this._buildDeprecatedHTML(functionDoc));
       s.load('argumentParams', this._buildProperties(functionDoc.params, 'Params:'));
 
+      // author
+      s.drop('authorWrap', !functionDoc.author);
+      s.load('author', this._buildAuthorHTML(functionDoc));
+
       // version
       if (functionDoc.version) {
         s.text('version', functionDoc.version);
@@ -570,6 +574,10 @@ export default class DocBuilder {
       s.load('deprecated', this._buildDeprecatedHTML(memberDoc));
       s.load('properties', this._buildProperties(memberDoc.properties, 'Properties:'));
 
+      // author
+      s.drop('authorWrap', !memberDoc.author);
+      s.load('author', this._buildAuthorHTML(memberDoc));
+
       // version
       if (memberDoc.version) {
         s.text('version', memberDoc.version);
@@ -670,5 +678,27 @@ export default class DocBuilder {
     } else {
       return '';
     }
+  }
+
+  _buildAuthorHTML(doc) {
+    if (!doc.author) return '';
+
+    var html = [];
+    for (var author of doc.author) {
+      var matched = author.match(/(.*?) *<(.*?)>/);
+      if (matched) {
+        var name = matched[1];
+        var link = matched[2];
+        if (link.indexOf('http') === 0) {
+          html.push(`<span><a href="${link}">${name}</a></span>`)
+        } else {
+          html.push(`<span><a href="mailto:${link}">${name}</a></span>`)
+        }
+      } else {
+        html.push(`<span>${author}</span>`)
+      }
+    }
+
+    return html.join(', ');
   }
 }

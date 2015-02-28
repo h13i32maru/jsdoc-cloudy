@@ -1,8 +1,6 @@
 [![Build Status](https://travis-ci.org/h13i32maru/jsdoc-cloudy.svg?branch=master)](https://travis-ci.org/h13i32maru/jsdoc-cloudy)
 
 # TODO
-- @version
-- @author
 - @copyright
 - @license
 - @todo
@@ -24,3 +22,4 @@
 # Custom Support
 - @fileexample
 - @experimental
+- @author httpにも対応
