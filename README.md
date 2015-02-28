@@ -1,8 +1,9 @@
 [![Build Status](https://travis-ci.org/h13i32maru/jsdoc-cloudy.svg?branch=master)](https://travis-ci.org/h13i32maru/jsdoc-cloudy)
 
 # TODO
-- @globalを上にする
 - @experimental実装
+- home実装
+- readme実装
 - commentのrawを表示する
 - @linkでmoduleにリンク晴れていない
 - extendsのヒエラルキー

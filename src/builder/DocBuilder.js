@@ -224,7 +224,7 @@ export default class DocBuilder {
   }
 
   _find(...cond) {
-    return this._data(...cond).map(v => v);
+    return this._data(...cond).order('name asec').map(v => v);
   }
 
   _readTemplate(fileName) {
