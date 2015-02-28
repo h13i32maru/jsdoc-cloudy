@@ -119,6 +119,11 @@ export default class NamespaceDocBuilder extends DocBuilder {
       s.drop('sinceLabel');
     }
 
+    s.drop('todoWrap', !namespaceDoc.todo);
+    s.loop('todo', namespaceDoc.todo, (i, todo, s)=>{
+      s.load('todo', todo);
+    });
+
     s.drop('namespaceSummary', !(publicNamespaceDocs.length + protectedNamespaceDocs.length + privateNamespaceDocs.length));
     s.load('summaryPublicNamespaceDocs', this._buildSummaryNamespaceDocs(publicNamespaceDocs, 'Public Namespaces'));
     s.load('summaryProtectedNamespaceDocs', this._buildSummaryNamespaceDocs(protectedNamespaceDocs, 'Protected Namespaces'));

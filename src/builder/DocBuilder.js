@@ -573,6 +573,11 @@ export default class DocBuilder {
       } else {
         s.drop('seeWrap');
       }
+
+      s.drop('todoWrap', !functionDoc.todo);
+      s.loop('todo', functionDoc.todo, (i, todo, s)=>{
+        s.load('todo', todo);
+      });
     });
 
     return s.html;
@@ -639,6 +644,11 @@ export default class DocBuilder {
       } else {
         s.drop('seeWrap');
       }
+
+      s.drop('todoWrap', !memberDoc.todo);
+      s.loop('todo', memberDoc.todo, (i, todo, s)=>{
+        s.load('todo', todo);
+      });
     });
 
     return s.html;

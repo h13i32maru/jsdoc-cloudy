@@ -19,6 +19,8 @@
  * @copyright this is Module1.js copyright
  * this is second line.
  * @license MIT
+ * @todo this is Module1 1st todo.
+ * @todo this is Module1 2nd todo.
  */
 
 
@@ -47,6 +49,8 @@
  * @copyright this is Module1 copyright
  * this is second line.
  * @license MIT
+ * @todo this is Module1 1st todo.
+ * @todo this is Module1 2nd todo.
  */
 
 /**
@@ -69,6 +73,8 @@
  * @see {@link Namespace1}
  * @author foo <foo@example.com>
  * @author bar <http://twitter.com/bar>
+ * @todo this is Module1 1st todo.
+ * @todo this is Module1 2nd todo.
  */
 var Namespace1;
 
@@ -102,6 +108,8 @@ var Namespace3;
  * @see {@link Namespace1.Class1}
  * @author foo <foo@example.com>
  * @author bar <http://twitter.com/bar>
+ * @todo this is Module1 1st todo.
+ * @todo this is Module1 2nd todo.
  */
 function Class1(){}
 
@@ -135,6 +143,8 @@ function Class3(){}
  * @see {@link Namespace1.Interface1}
  * @author foo <foo@example.com>
  * @author bar <http://twitter.com/bar>
+ * @todo this is Module1 1st todo.
+ * @todo this is Module1 2nd todo.
  */
 function Interface1(){}
 
@@ -179,6 +189,8 @@ function Interface3(){}
  * @this module:Module1~Class1
  * @author foo <foo@example.com>
  * @author bar <http://twitter.com/bar>
+ * @todo this is Module1 1st todo.
+ * @todo this is Module1 2nd todo.
  */
 function method1(p1, p2, p3){}
 
@@ -216,8 +228,10 @@ function method3(){}
  * @default 999
  * @author foo <foo@example.com>
  * @author bar <http://twitter.com/bar>
+ * @todo this is Module1 1st todo.
+ * @todo this is Module1 2nd todo.
  */
-var member111 = null;
+var member1 = null;
 
 /**
  * @protected
@@ -253,6 +267,8 @@ var member3 = null;
  * @see {@link Typedef1}
  * @author foo <foo@example.com>
  * @author bar <http://twitter.com/bar>
+ * @todo this is Module1 1st todo.
+ * @todo this is Module1 2nd todo.
  */
 
 /**
@@ -287,6 +303,8 @@ var member3 = null;
  * @see {@link module:Module1~Class1#member1}
  * @author foo <foo@example.com>
  * @author bar <http://twitter.com/bar>
+ * @todo this is Module1 1st todo.
+ * @todo this is Module1 2nd todo.
  */
 
 /**
@@ -321,6 +339,8 @@ var member3 = null;
  * @see {@link module:Module1~Class1#member1}
  * @author foo <foo@example.com>
  * @author bar <http://twitter.com/bar>
+ * @todo this is Module1 1st todo.
+ * @todo this is Module1 2nd todo.
  */
 const CONST1 = {};
 
@@ -365,6 +385,8 @@ const CONST3 = {};
  * @virtual
  * @author foo <foo@example.com>
  * @author bar <http://twitter.com/bar>
+ * @todo this is Module1 1st todo.
+ * @todo this is Module1 2nd todo.
  */
 function Module1(p1, p2, p3){}
 
@@ -385,6 +407,8 @@ function Module1(p1, p2, p3){}
  * @see {@link module:Module1~Class1#member1}
  * @author foo <foo@example.com>
  * @author bar <http://twitter.com/bar>
+ * @todo this is Module1 1st todo.
+ * @todo this is Module1 2nd todo.
  */
 var enum1 = {
   /**
@@ -442,6 +466,8 @@ var enum3;
  * @throws {InvalidArgumentException} this is throws InvalidArgumentException desc.
  * @author foo <foo@example.com>
  * @author bar <http://twitter.com/bar>
+ * @todo this is Module1 1st todo.
+ * @todo this is Module1 2nd todo.
  */
 
 /**
