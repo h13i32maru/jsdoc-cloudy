@@ -189,7 +189,7 @@ export default class DocBuilder {
   }
 
   _resolveCallback() {
-    if (this._data.__RESOLVE_CALLBACK) return;
+    if (this._data.__RESOLVED_CALLBACK__) return;
 
     var typedefDocs = this._find({kind: 'typedef'});
     for (var typedefDoc of typedefDocs) {
@@ -200,7 +200,7 @@ export default class DocBuilder {
       }
     }
 
-    this._data.__RESOLVE_CALLBACK = true;
+    this._data.__RESOLVED_CALLBACK__ = true;
   }
 
   _find(...cond) {
@@ -399,6 +399,30 @@ export default class DocBuilder {
     }
   }
 
+  _buildDocLinkHTML_new(longname) {
+    if (typeof longname !== 'string') throw new Error(JSON.stringify(longname));
+
+    var doc = this._find({longname})[0];
+    if (!doc) {
+      var text = escape(doc.name);
+      return `<span>${text}</span>`;
+    }
+
+    if (['function', 'member', 'typedef', 'constant', 'event', 'mixin'].indexOf(doc.kind) !== -1) {
+      var text = escape(doc.name);
+      var url = `${encodeURIComponent(doc.memberof)}.html#${doc.scope}-${doc.name}`;
+      return `<span><a href="${url}">${text}</a></span>`;
+    } else if(doc.kind === 'external') {
+      var text = doc.longname.replace(/^external:\s*/, '');
+      var aTag = doc.see[0].replace(/>.*?</, `>${text}<`);
+      return `<span>${aTag}</span>`;
+    } else {
+      var text = escape(doc.name);
+      return `<span><a href="${encodeURIComponent(longname)}.html">${text}</a></span>`;
+    }
+
+  }
+
   _buildFunctionSignatureHTML(functionDoc) {
     var params = functionDoc.params || [];
     var signatures = [];
@@ -458,6 +482,14 @@ export default class DocBuilder {
       s.load('deprecated', this._buildDeprecatedHTML(functionDoc));
       s.load('argumentParams', this._buildProperties(functionDoc.params, 'Params:'));
 
+      // inherits
+      if (functionDoc.inherits) {
+        s.load('inherit', this._buildDocLinkHTML_new(functionDoc.inherits));
+      } else {
+        s.drop('inheritWrap');
+      }
+
+      // this
       if (functionDoc.this) {
         s.load('this', this._buildDocLinkHTML(functionDoc.this));
       } else {
@@ -555,6 +587,13 @@ export default class DocBuilder {
       s.text('since', memberDoc.since);
       s.load('deprecated', this._buildDeprecatedHTML(memberDoc));
       s.load('properties', this._buildProperties(memberDoc.properties, 'Properties:'));
+
+      // inherits
+      if (memberDoc.inherits) {
+        s.load('inherit', this._buildDocLinkHTML_new(memberDoc.inherits));
+      } else {
+        s.drop('inheritWrap');
+      }
 
       // default
       if ('defaultvalue' in memberDoc) {

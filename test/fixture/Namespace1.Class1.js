@@ -2,7 +2,17 @@
  * @class
  * @memberof Namespace1
  */
-function Class0(){}
+function Class0(){
+  /**
+   * this is methodX desc.
+   */
+  this.methodX = function(){};
+
+  /**
+   * this is memberX desc.
+   */
+  this.memberX;
+}
 
 /**
  * @external XMLHttpRequest
@@ -102,6 +112,8 @@ function Class1(p1, p2){
    * @member {external:XMLHttpRequest}
    */
   this.member8;
+
+  this.memberX;
 
   /**
    * this is Class1#method1 desc.
@@ -209,6 +221,11 @@ function Class1(p1, p2){
    * @return {string} link to {@link Namespace1}.
    */
   this.method16 = function(p1){};
+
+  /**
+   * @override
+   */
+  this.methodX = function(){};
 }
 
 /**
