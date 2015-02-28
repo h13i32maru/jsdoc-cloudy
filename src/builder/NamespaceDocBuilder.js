@@ -14,12 +14,7 @@ export default class NamespaceDocBuilder extends DocBuilder {
   }
 
   _buildNamespaceDoc(namespaceDoc) {
-    var memberof;
-    if (namespaceDoc.longname === '@global') {
-      memberof = {isUndefined: true};
-    } else {
-      memberof = namespaceDoc.longname;
-    }
+    var memberof = namespaceDoc.longname;
 
     var publicNamespaceDocs = this._find({kind: 'namespace', memberof, access: 'public'});
     var protectedNamespaceDocs = this._find({kind: 'namespace', memberof, access: 'protected'});

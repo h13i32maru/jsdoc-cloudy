@@ -3,6 +3,7 @@
 # TODO
 - home実装
 - readme実装
+- namespaceのheader-noticeにファイル名を入れる
 - @linkでmoduleにリンク晴れていない
 - extendsのヒエラルキー
 - test整理
