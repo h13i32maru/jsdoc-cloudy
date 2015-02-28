@@ -22,7 +22,12 @@ export default class DocBuilder {
   exec(callback) {
   }
 
-  _shorten(desc) {
+  _shorten(doc) {
+    if (!doc) return '';
+
+    if (doc.summary) return doc.summary;
+
+    var desc = doc.description;
     if (!desc) return '';
 
     var len = desc.length;
@@ -279,7 +284,7 @@ export default class DocBuilder {
     s.loop('target', memberDocs, (i, memberDoc, s)=>{
       s.load('name', this._buildDocLinkHTML(memberDoc.longname));
       s.load('signature', this._buildVariableSignatureHTML(memberDoc));
-      s.load('description', this._shorten(memberDoc.description));
+      s.load('description', this._shorten(memberDoc));
       s.text('readonly', memberDoc.readonly ? 'readonly' : '');
       s.text('access', memberDoc.access);
       s.drop('sinceLabel', !memberDoc.since);
@@ -299,7 +304,7 @@ export default class DocBuilder {
     s.loop('target', functionDocs, (i, functionDoc, s)=>{
       s.load('name', this._buildDocLinkHTML(functionDoc.longname, null, true));
       s.load('signature', this._buildFunctionSignatureHTML(functionDoc));
-      s.load('description', this._shorten(functionDoc.description));
+      s.load('description', this._shorten(functionDoc));
       s.text('virtual', functionDoc.virtual ? 'virtual' : '');
       s.text('override', functionDoc.override ? 'override' : '');
       s.text('access', functionDoc.access);
@@ -320,7 +325,7 @@ export default class DocBuilder {
     s.loop('target', classDocs, (i, classDoc, s)=>{
       s.load('name', this._buildDocLinkHTML(classDoc.longname));
       s.load('signature', this._buildFunctionSignatureHTML(classDoc));
-      s.load('description', this._shorten(classDoc.classdesc));
+      s.load('description', this._shorten(classDoc));
       s.text('access', classDoc.access);
       s.drop('sinceLabel', !classDoc.since);
       s.text('since', classDoc.since);
@@ -339,7 +344,7 @@ export default class DocBuilder {
     s.loop('target', namespaceDocs, (i, namespaceDoc, s)=>{
       s.load('name', this._buildDocLinkHTML(namespaceDoc.longname));
       s.drop('signature');
-      s.load('description', this._shorten(namespaceDoc.description));
+      s.load('description', this._shorten(namespaceDoc));
       s.text('access', namespaceDoc.access);
       s.drop('sinceLabel', !namespaceDoc.since);
       s.text('since', namespaceDoc.since);

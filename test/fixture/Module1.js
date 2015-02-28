@@ -22,6 +22,8 @@
 /**
  * this is Namespace1 desc.
  * this is second line.
+ * @summary this is Namespace1 summary.
+ * this is second line.
  * @namespace
  * @since 1.2.3
  * @public

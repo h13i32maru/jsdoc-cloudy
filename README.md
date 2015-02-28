@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.org/h13i32maru/jsdoc-cloudy.svg?branch=master)](https://travis-ci.org/h13i32maru/jsdoc-cloudy)
 
 # TODO
-- @summary
 - @version
 - @author
 - @copyright
@@ -10,11 +9,11 @@
 - @experimental実装
 - commentのrawを表示する
 - @linkでmoduleにリンク晴れていない
-- {function(a: number)}に対応できる？
+- extendsのヒエラルキー
+- test整理
 - ClassDocBuilderとNamespaceDocBuilderを統一する
 - classsummaryとnamespacesummmaryも統一できそう
-- test整理
-- extendsのヒエラルキー
+- {function(a: number)}に対応できる？
 
 # Not Support
 - @file
