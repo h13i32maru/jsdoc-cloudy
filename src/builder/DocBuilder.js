@@ -9,7 +9,7 @@ export default class DocBuilder {
 
     this._resolveGlobalNamespace();
     this._resolveIgnore();
-    this._resolveFileExample();
+    this._resolveCustomTag();
     this._resolveAccess();
     this._resolveLink();
     this._resolveCallback();
@@ -108,8 +108,8 @@ export default class DocBuilder {
     this._data.__RESOLVED_GLOBAL_NAMESPACE__ = true;
   }
 
-  _resolveFileExample() {
-    if (this._data.__RESOLVED_FILE_EXAMPLE__) return;
+  _resolveCustomTag() {
+    if (this._data.__RESOLVED_CUSTOM_TAG__) return;
 
     var docs = this._find({tags: {isUndefined: false}});
     for (var doc of docs) {
@@ -118,11 +118,13 @@ export default class DocBuilder {
         if (tag.originalTitle === 'fileexample') {
           if (!doc.fileexamples) doc.fileexamples = [];
           doc.fileexamples.push(tag.text);
+        } else if (tag.originalTitle === 'experimental') {
+          doc.experimental = tag.text;
         }
       }
     }
 
-    this._data.__RESOLVED_FILE_EXAMPLE__ = true;
+    this._data.__RESOLVED_CUSTOM_TAG__ = true;
   }
 
   _resolveLink() {
@@ -312,6 +314,7 @@ export default class DocBuilder {
       s.drop('sinceLabel', !memberDoc.since);
       s.text('since', memberDoc.since);
       s.load('deprecated', this._buildDeprecatedHTML(memberDoc));
+      s.load('experimental', this._buildExperimentalHTML(memberDoc));
       s.drop('versionLabel', !memberDoc.version);
       s.text('version', memberDoc.version);
     });
@@ -335,6 +338,7 @@ export default class DocBuilder {
       s.drop('sinceLabel', !functionDoc.since);
       s.text('since', functionDoc.since);
       s.load('deprecated', this._buildDeprecatedHTML(functionDoc));
+      s.load('experimental', this._buildExperimentalHTML(functionDoc));
       s.drop('versionLabel', !functionDoc.version);
       s.text('version', functionDoc.version);
     });
@@ -356,6 +360,7 @@ export default class DocBuilder {
       s.drop('sinceLabel', !classDoc.since);
       s.text('since', classDoc.since);
       s.load('deprecated', this._buildDeprecatedHTML(classDoc));
+      s.load('experimental', this._buildExperimentalHTML(classDoc));
       s.drop('versionLabel', !classDoc.version);
       s.text('version', classDoc.version);
     });
@@ -377,6 +382,7 @@ export default class DocBuilder {
       s.drop('sinceLabel', !namespaceDoc.since);
       s.text('since', namespaceDoc.since);
       s.load('deprecated', this._buildDeprecatedHTML(namespaceDoc));
+      s.load('experimental', this._buildExperimentalHTML(namespaceDoc));
       s.drop('versionLabel', !namespaceDoc.version);
       s.text('version', namespaceDoc.version);
     });
@@ -479,6 +485,7 @@ export default class DocBuilder {
       s.drop('sinceLabel', !functionDoc.since);
       s.text('since', functionDoc.since);
       s.load('deprecated', this._buildDeprecatedHTML(functionDoc));
+      s.load('experimental', this._buildExperimentalHTML(functionDoc));
       s.load('argumentParams', this._buildProperties(functionDoc.params, 'Params:'));
 
       // author
@@ -599,6 +606,7 @@ export default class DocBuilder {
       s.drop('sinceLabel', !memberDoc.since);
       s.text('since', memberDoc.since);
       s.load('deprecated', this._buildDeprecatedHTML(memberDoc));
+      s.load('experimental', this._buildExperimentalHTML(memberDoc));
       s.load('properties', this._buildProperties(memberDoc.properties, 'Properties:'));
 
       // author
@@ -702,11 +710,26 @@ export default class DocBuilder {
       var kind = doc.kind;
 
       if (kind === 'function') kind = 'method';
-      else if(kind === 'typedef' && doc.params) kind = 'callback';
+      else if(kind === 'typedef' && doc._custom_is_callback) kind = 'callback';
 
       var deprecated = [`this ${kind} was deprecated.`];
       if (typeof doc.deprecated === 'string') deprecated.push(doc.deprecated);
       return deprecated.join(' ');
+    } else {
+      return '';
+    }
+  }
+
+  _buildExperimentalHTML(doc) {
+    if (doc.experimental) {
+      var kind = doc.kind;
+
+      if (kind === 'function') kind = 'method';
+      else if(kind === 'typedef' && doc._custom_is_callback) kind = 'callback';
+
+      var experimental = [`this ${kind} is experimental.`];
+      if (typeof doc.experimental === 'string') experimental.push(doc.experimental);
+      return experimental.join(' ');
     } else {
       return '';
     }

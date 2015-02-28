@@ -217,7 +217,7 @@ table.params td p {
   margin-top: 4px;
 }
 
-.deprecated {
+.deprecated, .experimental {
   border-left: solid 5px orange;
   padding-left: 4px;
   margin: 4px 0;

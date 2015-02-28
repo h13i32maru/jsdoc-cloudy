@@ -15,6 +15,7 @@
  * @see http://example.com
  * @see {@link module1:Module~Class1#method1}
  * @memberof module:Module1
+ * @experimental this is Mixin1 experimental.
  */
 var Mixin1 = {
   /**

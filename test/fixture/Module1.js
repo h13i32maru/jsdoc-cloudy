@@ -4,6 +4,7 @@
  * @since 1.2.3
  * @version 0.0.1
  * @private
+ * @deprecated
  * @fileexample
  * var foo = Module1;
  * console.log(foo);
@@ -21,6 +22,7 @@
  * @license MIT
  * @todo this is Module1 1st todo.
  * @todo this is Module1 2nd todo.
+ * @experimental this is Module1 experimental
  */
 
 
@@ -51,6 +53,7 @@
  * @license MIT
  * @todo this is Module1 1st todo.
  * @todo this is Module1 2nd todo.
+ * @experimental this is Module1 experimental
  */
 
 /**
@@ -75,6 +78,7 @@
  * @author bar <http://twitter.com/bar>
  * @todo this is Module1 1st todo.
  * @todo this is Module1 2nd todo.
+ * @experimental this is Module1 experimental
  */
 var Namespace1;
 
@@ -110,6 +114,7 @@ var Namespace3;
  * @author bar <http://twitter.com/bar>
  * @todo this is Module1 1st todo.
  * @todo this is Module1 2nd todo.
+ * @experimental this is Module1 experimental
  */
 function Class1(){}
 
@@ -145,6 +150,7 @@ function Class3(){}
  * @author bar <http://twitter.com/bar>
  * @todo this is Module1 1st todo.
  * @todo this is Module1 2nd todo.
+ * @experimental this is Module1 experimental
  */
 function Interface1(){}
 
@@ -191,6 +197,7 @@ function Interface3(){}
  * @author bar <http://twitter.com/bar>
  * @todo this is Module1 1st todo.
  * @todo this is Module1 2nd todo.
+ * @experimental this is Module1 experimental
  */
 function method1(p1, p2, p3){}
 
@@ -230,6 +237,7 @@ function method3(){}
  * @author bar <http://twitter.com/bar>
  * @todo this is Module1 1st todo.
  * @todo this is Module1 2nd todo.
+ * @experimental this is Module1 experimental
  */
 var member1 = null;
 
@@ -269,6 +277,7 @@ var member3 = null;
  * @author bar <http://twitter.com/bar>
  * @todo this is Module1 1st todo.
  * @todo this is Module1 2nd todo.
+ * @experimental this is Module1 experimental
  */
 
 /**
@@ -305,6 +314,7 @@ var member3 = null;
  * @author bar <http://twitter.com/bar>
  * @todo this is Module1 1st todo.
  * @todo this is Module1 2nd todo.
+ * @experimental this is Module1 experimental
  */
 
 /**
@@ -341,6 +351,7 @@ var member3 = null;
  * @author bar <http://twitter.com/bar>
  * @todo this is Module1 1st todo.
  * @todo this is Module1 2nd todo.
+ * @experimental this is Module1 experimental
  */
 const CONST1 = {};
 
@@ -387,6 +398,7 @@ const CONST3 = {};
  * @author bar <http://twitter.com/bar>
  * @todo this is Module1 1st todo.
  * @todo this is Module1 2nd todo.
+ * @experimental this is Module1 experimental
  */
 function Module1(p1, p2, p3){}
 
@@ -409,6 +421,7 @@ function Module1(p1, p2, p3){}
  * @author bar <http://twitter.com/bar>
  * @todo this is Module1 1st todo.
  * @todo this is Module1 2nd todo.
+ * @experimental this is Module1 experimental
  */
 var enum1 = {
   /**
@@ -468,6 +481,7 @@ var enum3;
  * @author bar <http://twitter.com/bar>
  * @todo this is Module1 1st todo.
  * @todo this is Module1 2nd todo.
+ * @experimental this is Module1 experimental
  */
 
 /**

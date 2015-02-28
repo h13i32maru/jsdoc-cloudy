@@ -108,6 +108,12 @@ export default class NamespaceDocBuilder extends DocBuilder {
       s.drop('variation');
     }
 
+    // deprecated
+    s.load('deprecated', this._buildDeprecatedHTML(namespaceDoc));
+
+    // experimental
+    s.load('experimental', this._buildExperimentalHTML(namespaceDoc));
+
     s.drop('fileexampleDocs', !namespaceDoc.fileexamples);
     s.loop('fileexampleDoc', namespaceDoc.fileexamples, (i, fileexample, s)=>{
       s.text('fileexampleCode', fileexample);
