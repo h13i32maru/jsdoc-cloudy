@@ -4,6 +4,7 @@
  * @mixin
  * @public
  * @since 1.2.3
+ * @version 0.0.1
  * @deprecated
  * @fileexample
  * var foo = Mixin1;
@@ -20,6 +21,7 @@ var Mixin1 = {
    * this is method1 desc.
    * this is second line.
    * @since 1.2.3
+   * @version 0.0.1
    * @public
    * @deprecated
    * @example
@@ -59,6 +61,7 @@ var Mixin1 = {
    * @property {Object} member.p3 this is p3 desc.
    * @property {string[]} member.p3.p4 this is p4 desc.
    * @since 1.2.3
+   * @version 0.0.1
    * @public
    * @deprecated
    * @example

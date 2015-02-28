@@ -290,6 +290,8 @@ export default class DocBuilder {
       s.drop('sinceLabel', !memberDoc.since);
       s.text('since', memberDoc.since);
       s.load('deprecated', this._buildDeprecatedHTML(memberDoc));
+      s.drop('versionLabel', !memberDoc.version);
+      s.text('version', memberDoc.version);
     });
 
     return s;
@@ -311,6 +313,8 @@ export default class DocBuilder {
       s.drop('sinceLabel', !functionDoc.since);
       s.text('since', functionDoc.since);
       s.load('deprecated', this._buildDeprecatedHTML(functionDoc));
+      s.drop('versionLabel', !functionDoc.version);
+      s.text('version', functionDoc.version);
     });
 
     return s;
@@ -330,6 +334,8 @@ export default class DocBuilder {
       s.drop('sinceLabel', !classDoc.since);
       s.text('since', classDoc.since);
       s.load('deprecated', this._buildDeprecatedHTML(classDoc));
+      s.drop('versionLabel', !classDoc.version);
+      s.text('version', classDoc.version);
     });
 
     return s;
@@ -349,6 +355,8 @@ export default class DocBuilder {
       s.drop('sinceLabel', !namespaceDoc.since);
       s.text('since', namespaceDoc.since);
       s.load('deprecated', this._buildDeprecatedHTML(namespaceDoc));
+      s.drop('versionLabel', !namespaceDoc.version);
+      s.text('version', namespaceDoc.version);
     });
 
     return s;
@@ -366,7 +374,7 @@ export default class DocBuilder {
     text = escape(text || doc.name);
 
     // inner?
-    if (['function', 'member', 'typedef', 'constant', 'event', 'mixin'].indexOf(doc.kind) !== -1) {
+    if (['function', 'member', 'typedef', 'constant', 'event'].indexOf(doc.kind) !== -1) {
       inner = true;
       var innerFile = doc.memberof;
     } else {
@@ -450,6 +458,13 @@ export default class DocBuilder {
       s.text('since', functionDoc.since);
       s.load('deprecated', this._buildDeprecatedHTML(functionDoc));
       s.load('argumentParams', this._buildProperties(functionDoc.params, 'Params:'));
+
+      // version
+      if (functionDoc.version) {
+        s.text('version', functionDoc.version);
+      } else {
+        s.drop('versionWrap');
+      }
 
       // inherits
       if (functionDoc.inherits) {
@@ -554,6 +569,13 @@ export default class DocBuilder {
       s.text('since', memberDoc.since);
       s.load('deprecated', this._buildDeprecatedHTML(memberDoc));
       s.load('properties', this._buildProperties(memberDoc.properties, 'Properties:'));
+
+      // version
+      if (memberDoc.version) {
+        s.text('version', memberDoc.version);
+      } else {
+        s.drop('versionWrap');
+      }
 
       // inherits
       if (memberDoc.inherits) {

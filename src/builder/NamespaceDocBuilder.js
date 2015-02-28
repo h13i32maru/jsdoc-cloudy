@@ -71,6 +71,12 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.text('namespace', namespaceDoc.name);
     s.load('namespaceDesc', namespaceDoc.description);
 
+    if (namespaceDoc.version) {
+      s.text('version', namespaceDoc.version);
+    } else {
+      s.drop('versionLabel');
+    }
+
     // requires
     s.drop('requiresLabel', !namespaceDoc.requires);
     s.loop('require', namespaceDoc.requires, (i, require, s)=>{

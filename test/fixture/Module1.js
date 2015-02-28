@@ -3,6 +3,7 @@
  * this is second line.
  * @module Module1
  * @since 1.2.3
+ * @version 0.0.1
  * @private
  * @deprecated
  * @fileexample
@@ -26,6 +27,7 @@
  * this is second line.
  * @namespace
  * @since 1.2.3
+ * @version 0.0.1
  * @public
  * @deprecated
  * @example
@@ -59,6 +61,7 @@ var Namespace3;
  * this is Class1 classdesc.
  * this is second line.
  * @since 1.2.3
+ * @version 0.0.1
  * @public
  * @deprecated
  * @example
@@ -89,6 +92,7 @@ function Class3(){}
  * this is Interface1 classdesc.
  * this is second line.
  * @since 1.2.3
+ * @version 0.0.1
  * @public
  * @deprecated
  * @example
@@ -115,6 +119,7 @@ function Interface3(){}
  * this is method1 desc.
  * this is second line.
  * @since 1.2.3
+ * @version 0.0.1
  * @public
  * @deprecated
  * @example
@@ -159,6 +164,7 @@ function method3(){}
  * @property {Object} member.p3 this is p3 desc.
  * @property {string[]} member.p3.p4 this is p4 desc.
  * @since 1.2.3
+ * @version 0.0.1
  * @public
  * @deprecated
  * @example
@@ -195,6 +201,7 @@ var member3 = null;
  * @property {Object} Typedef1.p3 this is p3 desc.
  * @property {string[]} Typedef1.p3.p4 this is p4 desc.
  * @since 1.2.3
+ * @version 0.0.1
  * @deprecated
  * @public
  * @example
@@ -226,6 +233,7 @@ var member3 = null;
  * @property {Object} Event1.p3 this is p3 desc.
  * @property {string[]} Event1.p3.p4 this is p4 desc.
  * @since 1.2.3
+ * @version 0.0.1
  * @deprecated
  * @public
  * @example
@@ -257,6 +265,7 @@ var member3 = null;
  * @property {Object} CONST1.p3 this is p3 desc.
  * @property {string[]} CONST1.p3.p4 this is p4 desc.
  * @since 1.2.3
+ * @version 0.0.1
  * @deprecated
  * @public
  * @example
@@ -287,6 +296,7 @@ const CONST3 = {};
  * this is second line.
  * @variation 2
  * @since 1.2.3
+ * @version 0.0.1
  * @public
  * @deprecated
  * @example
@@ -315,6 +325,7 @@ function Module1(p1, p2, p3){}
  * this is enum1 desc.
  * @enum {number}
  * @since 1.2.3
+ * @version 0.0.1
  * @deprecated
  * @public
  * @example
@@ -359,6 +370,7 @@ var enum3;
  * this is second line.
  * @callback callback1
  * @since 1.2.3
+ * @version 0.0.1
  * @public
  * @deprecated
  * @example

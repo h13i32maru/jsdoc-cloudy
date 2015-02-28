@@ -223,14 +223,19 @@ table.params td p {
   margin: 4px 0;
 }
 
-.since {
+.version, .since {
   color: #aaa;
 }
 
-h3 .since {
+/*h3 .sincen {*/
+h3 .right-info {
   position: absolute;
   right: 4px;
   font-size: 14px;
+}
+
+.version + .since:before {
+  content: '| ';
 }
 
 .throws h4 + div{
