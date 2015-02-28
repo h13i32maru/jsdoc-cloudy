@@ -65,7 +65,7 @@ export default class NamespaceDocBuilder extends DocBuilder {
 
     var s = new SpruceTemplate(this._readTemplate('namespace.html'));
 
-    s.load('parentNamespace', this._buildDocLinkHTML(namespaceDoc.memberof || '@global'));
+    s.load('parentNamespace', this._buildDocLinkHTML(namespaceDoc.memberof));
     s.text('access', namespaceDoc.access);
     s.text('kind', namespaceDoc.kind);
     s.text('namespace', namespaceDoc.name);
@@ -87,7 +87,7 @@ export default class NamespaceDocBuilder extends DocBuilder {
     var variationDocs = this._find({memberof: namespaceDoc.longname, name: namespaceDoc.name, variation: {'isUndefined': false}});
     var variationHTML = [];
     for (var variationDoc of variationDocs) {
-      variationHTML.push(this._buildDocLinkHTML(variationDoc, `(${variationDoc.variation})`, {inner: true}));
+      variationHTML.push(this._buildDocLinkHTML(variationDoc.longname, `(${variationDoc.variation})`));
     }
     if (variationHTML.length) {
       s.load('variation', `this ${namespaceDoc.kind} has some variation(s). ${variationHTML.join(', ')}`);

@@ -33,13 +33,13 @@ export default class ClassDocBuilder extends DocBuilder {
       extendsClassDoc = this._find({longname: classDoc.augments[0]})[0];
     }
 
-    if (classDoc.implements) {
-      var implementsDocs = this._find({longname: classDoc.implements});
-    }
+    //if (classDoc.implements) {
+    //  var implementsDocs = this._find({longname: classDoc.implements});
+    //}
 
     var s = new SpruceTemplate(this._readTemplate('class.html'));
 
-    s.load('namespace', this._buildDocLinkHTML(classDoc.memberof || '@global'));
+    s.load('namespace', this._buildDocLinkHTML(classDoc.memberof));
 
     s.text('access', classDoc.access);
     s.drop('extends', !extendsClassDoc.name);
@@ -59,10 +59,11 @@ export default class ClassDocBuilder extends DocBuilder {
     });
     s.load('deprecated', this._buildDeprecatedHTML(classDoc));
 
-    if (implementsDocs) {
+    // implement
+    if (classDoc.implements) {
       var temp = [];
-      for (var implementsDoc of implementsDocs) {
-        temp.push(this._buildDocLinkHTML(implementsDoc, implementsDoc.name));
+      for (var implementsLongname of classDoc.implements) {
+        temp.push(this._buildDocLinkHTML(implementsLongname));
       }
       s.load('implementsClassName', temp.join(', '));
     } else {

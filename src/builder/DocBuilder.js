@@ -93,7 +93,8 @@ export default class DocBuilder {
         longname: '@global',
         name: '@global',
         kind: 'namespace',
-        description: 'global object.'
+        description: 'global object.',
+        memberof: '@global'
       };
       this._data.insert(globalNamespaceDoc);
     }
@@ -276,7 +277,7 @@ export default class DocBuilder {
 
     s.text('title', title);
     s.loop('target', memberDocs, (i, memberDoc, s)=>{
-      s.load('name', this._buildDocLinkHTML(memberDoc, memberDoc.name, {inner: true}));
+      s.load('name', this._buildDocLinkHTML(memberDoc.longname));
       s.load('signature', this._buildVariableSignatureHTML(memberDoc));
       s.load('description', this._shorten(memberDoc.description));
       s.text('readonly', memberDoc.readonly ? 'readonly' : '');
@@ -296,7 +297,7 @@ export default class DocBuilder {
 
     s.text('title', title);
     s.loop('target', functionDocs, (i, functionDoc, s)=>{
-      s.load('name', this._buildDocLinkHTML(functionDoc, functionDoc.name, {inner: true}));
+      s.load('name', this._buildDocLinkHTML(functionDoc.longname, null, true));
       s.load('signature', this._buildFunctionSignatureHTML(functionDoc));
       s.load('description', this._shorten(functionDoc.description));
       s.text('virtual', functionDoc.virtual ? 'virtual' : '');
@@ -317,7 +318,7 @@ export default class DocBuilder {
 
     s.text('title', title);
     s.loop('target', classDocs, (i, classDoc, s)=>{
-      s.load('name', this._buildDocLinkHTML(classDoc, classDoc.name, {inner: innerLink}));
+      s.load('name', this._buildDocLinkHTML(classDoc.longname));
       s.load('signature', this._buildFunctionSignatureHTML(classDoc));
       s.load('description', this._shorten(classDoc.classdesc));
       s.text('access', classDoc.access);
@@ -336,7 +337,7 @@ export default class DocBuilder {
 
     s.text('title', 'Namespaces');
     s.loop('target', namespaceDocs, (i, namespaceDoc, s)=>{
-      s.load('name', this._buildDocLinkHTML(namespaceDoc, namespaceDoc.name, {inner: false}));
+      s.load('name', this._buildDocLinkHTML(namespaceDoc.longname));
       s.drop('signature');
       s.load('description', this._shorten(namespaceDoc.description));
       s.text('access', namespaceDoc.access);
@@ -348,76 +349,39 @@ export default class DocBuilder {
     return s;
   }
 
-  //_buildSummaryTypedefDocs(typedefDocs = [], title = 'Typedefs') {
-  //  if (typedefDocs.length === 0) return '';
-  //
-  //  var s = new SpruceTemplate(this._readTemplate('summary.html'));
-  //  s.text('title', title);
-  //  s.loop('target', typedefDocs, (i, typedefDoc, s)=>{
-  //    s.load('name', this._buildDocLinkHTML(typedefDoc, typedefDoc.longname, {inner: true}));
-  //    s.load('signature', this._buildVariableSignatureHTML(typedefDoc));
-  //    s.load('description', this._shorten(typedefDoc.description));
-  //    s.text('access', typedefDoc.access);
-  //    s.drop('sinceLabel', !typedefDoc.since);
-  //    s.text('since', typedefDoc.since);
-  //    s.load('deprecated', this._buildDeprecatedHTML(typedefDoc));
-  //  });
-  //
-  //  return s;
-  //}
-
-  _buildDocLinkHTML(doc, text = doc.longname || doc, {inner = false} = {}) {
-    text = escape(text);
-
-    var longname = doc.longname || doc;
-
-    if (inner) {
-      var url = `${encodeURIComponent(doc.memberof)}.html#${doc.scope}-${doc.name}`;
-      return `<span><a href="${url}">${text}</a></span>`;
-    }
-
-    if (longname === '@global') {
-      return `<span><a href="@global.html">@global</a></span>`;
-    }
-
-    var result = this._find({longname})[0];
-    if (result) {
-      if (result.kind === 'external') {
-        text = text.replace(/^external:\s*/, '');
-        var aTag = result.see[0].replace(/>.*?</, `>${text}<`);
-        return `<span>${aTag}</span>`;
-      } else {
-        return `<span><a href="${encodeURIComponent(longname)}.html">${text}</a></span>`;
-      }
-    } else {
-      var result = this._find({name: longname});
-      if (result && result.length) {
-        return `<span><a href="${encodeURIComponent(result[0].longname)}.html">${text}</a></span>`;
-      } else {
-        return `<span>${text}</span>`;
-      }
-    }
-  }
-
-  _buildDocLinkHTML_new(longname) {
+  _buildDocLinkHTML(longname, text = null, inner = false) {
     if (typeof longname !== 'string') throw new Error(JSON.stringify(longname));
 
     var doc = this._find({longname})[0];
+
     if (!doc) {
-      var text = escape(doc.name);
-      return `<span>${text}</span>`;
+      return `<span>${escape(longname)}</span>`;
     }
 
+    text = escape(text || doc.name);
+
+    // inner?
     if (['function', 'member', 'typedef', 'constant', 'event', 'mixin'].indexOf(doc.kind) !== -1) {
-      var text = escape(doc.name);
-      var url = `${encodeURIComponent(doc.memberof)}.html#${doc.scope}-${doc.name}`;
+      inner = true;
+      var innerFile = doc.memberof;
+    } else {
+      if (inner) {
+        if (['class', 'interface'].indexOf(doc.kind) !== -1) {
+          var innerFile = doc.longname;
+        } else {
+          throw new Error('inner option is only used ith class or interface.');
+        }
+      }
+    }
+
+    if (inner) {
+      var url = `${encodeURIComponent(innerFile)}.html#${doc.scope}-${doc.name}`;
       return `<span><a href="${url}">${text}</a></span>`;
     } else if(doc.kind === 'external') {
       var text = doc.longname.replace(/^external:\s*/, '');
       var aTag = doc.see[0].replace(/>.*?</, `>${text}<`);
       return `<span>${aTag}</span>`;
     } else {
-      var text = escape(doc.name);
       return `<span><a href="${encodeURIComponent(longname)}.html">${text}</a></span>`;
     }
 
@@ -432,7 +396,7 @@ export default class DocBuilder {
 
       var types = [];
       for (var typeName of param.type.names) {
-        types.push(this._buildDocLinkHTML(typeName, typeName));
+        types.push(this._buildDocLinkHTML(typeName));
       }
 
       signatures.push(`${paramName}: ${types.join(' | ')}`);
@@ -441,7 +405,7 @@ export default class DocBuilder {
     var returnSignatures = [];
     if (functionDoc.returns) {
       for (var typeName of functionDoc.returns[0].type.names) {
-        returnSignatures.push(this._buildDocLinkHTML(typeName, typeName));
+        returnSignatures.push(this._buildDocLinkHTML(typeName));
       }
     }
 
@@ -457,7 +421,7 @@ export default class DocBuilder {
 
     var types = [];
     for (var typeName of variableDoc.type.names) {
-      types.push(this._buildDocLinkHTML(typeName, typeName));
+      types.push(this._buildDocLinkHTML(typeName));
     }
 
     return ': ' + types.join(' | ');
@@ -484,7 +448,7 @@ export default class DocBuilder {
 
       // inherits
       if (functionDoc.inherits) {
-        s.load('inherit', this._buildDocLinkHTML_new(functionDoc.inherits));
+        s.load('inherit', this._buildDocLinkHTML(functionDoc.inherits));
       } else {
         s.drop('inheritWrap');
       }
@@ -499,8 +463,7 @@ export default class DocBuilder {
       // fire
       if (functionDoc.fires) {
         s.loop('fireEvent', functionDoc.fires, (i, fire, s)=>{
-          var eventDoc = this._find({longname: fire})[0];
-          var link = this._buildDocLinkHTML(eventDoc, eventDoc.longname, {inner: true});
+          var link = this._buildDocLinkHTML(fire);
           s.load('event', link);
         });
       } else {
@@ -510,8 +473,7 @@ export default class DocBuilder {
       // listen
       if (functionDoc.listens) {
         s.loop('listenEvent', functionDoc.listens, (i, listen, s)=>{
-          var eventDoc = this._find({longname: listen})[0];
-          var link = this._buildDocLinkHTML(eventDoc, eventDoc.longname, {inner: true});
+          var link = this._buildDocLinkHTML(listen);
           s.load('event', link);
         });
       } else {
@@ -590,7 +552,7 @@ export default class DocBuilder {
 
       // inherits
       if (memberDoc.inherits) {
-        s.load('inherit', this._buildDocLinkHTML_new(memberDoc.inherits));
+        s.load('inherit', this._buildDocLinkHTML(memberDoc.inherits));
       } else {
         s.drop('inheritWrap');
       }

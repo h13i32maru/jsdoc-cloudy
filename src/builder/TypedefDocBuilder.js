@@ -13,7 +13,7 @@ export default class TypedefDocBuilder extends DocBuilder {
 
   _buildTypedefDoc(typedefDoc) {
     var s = new SpruceTemplate(this._readTemplate('typedef.html'));
-    s.load('namespace', this._buildDocLinkHTML(typedefDoc.memberof || '@global'));
+    s.load('namespace', this._buildDocLinkHTML(typedefDoc.memberof));
     s.text('access', typedefDoc.access);
     s.text('kind', typedefDoc.kind);
     s.drop('sinceLabel', !typedefDoc.since);
