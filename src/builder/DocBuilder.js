@@ -504,83 +504,47 @@ export default class DocBuilder {
         return `<span>${text}</span>`;
       }
     }
-
-    // inner?
-    //if (['function', 'member', 'typedef', 'constant', 'event'].indexOf(doc.kind) !== -1) {
-    //  inner = true;
-    //  var innerFile = doc.memberof;
-    //} else {
-    //  if (inner) {
-    //    if (['class', 'interface'].indexOf(doc.kind) !== -1) {
-    //      var innerFile = doc.longname;
-    //    } else {
-    //      throw new Error('inner option is only used ith class or interface.');
-    //    }
-    //  }
-    //}
-
-    //if (inner) {
-    //  //var url = `${encodeURIComponent(innerFile)}.html#${doc.scope}-${doc.name}`;
-    //  var url = this._getURL(doc, inner);
-    //  return `<span><a href="${url}">${text}</a></span>`;
-    //} else if(doc.kind === 'external') {
-    //  var text = doc.longname.replace(/^external:\s*/, '');
-    //  var aTag = doc.see[0].replace(/>.*?</, `>${text}<`);
-    //  return `<span>${aTag}</span>`;
-    //} else {
-    //  var url = this._getURL(doc, inner);
-    //  //return `<span><a href="${encodeURIComponent(longname)}.html">${text}</a></span>`;
-    //  return `<span><a href="${url}">${text}</a></span>`;
-    //}
-
   }
 
   _buildSignatureHTML(doc) {
-    if (doc.kind === 'function' || doc.kind === 'class') {
-      return this._buildFunctionSignatureHTML(doc);
-    } else {
-      return this._buildVariableSignatureHTML(doc);
-    }
-  }
+    // call signature
+    var callSignatures = [];
+    if (doc.params) {
+      for (var param of doc.params) {
+        var paramName = param.name;
+        if (paramName.indexOf('.') !== -1) continue;
 
-  _buildFunctionSignatureHTML(functionDoc) {
-    var params = functionDoc.params || [];
-    var signatures = [];
-    for (var param of params) {
-      var paramName = param.name;
-      if (paramName.indexOf('.') !== -1) continue;
+        var types = [];
+        for (var typeName of param.type.names) {
+          types.push(this._buildDocLinkHTML(typeName));
+        }
 
-      var types = [];
-      for (var typeName of param.type.names) {
-        types.push(this._buildDocLinkHTML(typeName));
+        callSignatures.push(`${paramName}: ${types.join(' | ')}`);
       }
-
-      signatures.push(`${paramName}: ${types.join(' | ')}`);
     }
 
+    // return signature
     var returnSignatures = [];
-    if (functionDoc.returns) {
-      for (var typeName of functionDoc.returns[0].type.names) {
+    if (doc.returns) {
+      for (var typeName of doc.returns[0].type.names) {
         returnSignatures.push(this._buildDocLinkHTML(typeName));
       }
     }
 
-    if (returnSignatures.length) {
-      return '(' + signatures.join(', ') + '): ' + returnSignatures.join(' | ');
-    } else {
-      return '(' + signatures.join(', ') + ')';
-    }
-  }
-
-  _buildVariableSignatureHTML(variableDoc) {
-    if (!variableDoc.type) return '';
-
-    var types = [];
-    for (var typeName of variableDoc.type.names) {
-      types.push(this._buildDocLinkHTML(typeName));
+    // type signature
+    var typeSignatures = [];
+    if (doc.type) {
+      for (var typeName of doc.type.names) {
+        typeSignatures.push(this._buildDocLinkHTML(typeName));
+      }
     }
 
-    return ': ' + types.join(' | ');
+    var html = '';
+    if (callSignatures.length) html = `(${callSignatures.join(', ')})`;
+    if (returnSignatures.length) html = `${html}: ${returnSignatures.join(' | ')}`;
+    if (typeSignatures.length) html = `${html}: ${typeSignatures.join(' | ')}`;
+
+    return html;
   }
 
   _buildDetailDocs(docs, title) {
