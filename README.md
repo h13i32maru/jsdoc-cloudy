@@ -6,9 +6,10 @@
 - classsummaryとnamespacesummmaryも統一できそう
 - home実装
 - readme実装
+- private, protectedの表示制御
 - {function(a: number)}に対応できる？
-- search
-- commentのrawを表示する
+- search identifier
+- show raw jsdoc comment
 
 # Not Support
 - @tutorial
@@ -18,4 +19,4 @@
 # Custom Support
 - @fileexample
 - @experimental
-- @author httpにも対応
+- @author support http

@@ -106,23 +106,23 @@ export default class ClassDocBuilder extends DocBuilder {
     s.load('summaryProtectedMethodDocs', this._buildSummaryFunctionDocs(protectedMethodDocs, 'Protected Methods'));
     s.load('summaryPublicMethodDocs', this._buildSummaryFunctionDocs(publicMethodDocs, 'Public Methods'));
 
-    s.load('staticPrivateMembers', this._buildMemberDocs(staticPrivateMemberDocs, 'Static Private Members'));
-    s.load('staticProtectedMembers', this._buildMemberDocs(staticProtectedMemberDocs, 'Static Protected Members'));
-    s.load('staticPublicMembers', this._buildMemberDocs(staticPublicMemberDocs, 'Static Public Members'));
+    s.load('staticPrivateMembers', this._buildDetailDocs(staticPrivateMemberDocs, 'Static Private Members'));
+    s.load('staticProtectedMembers', this._buildDetailDocs(staticProtectedMemberDocs, 'Static Protected Members'));
+    s.load('staticPublicMembers', this._buildDetailDocs(staticPublicMemberDocs, 'Static Public Members'));
 
-    s.load('staticPrivateMethods', this._buildFunctionDocs(staticPrivateMethodDocs, 'Static Private Methods'));
-    s.load('staticProtectedMethods', this._buildFunctionDocs(staticProtectedMethodDocs, 'Static Protected Methods'));
-    s.load('staticPublicMethods', this._buildFunctionDocs(staticPublicMethodDocs, 'Static Public Methods'));
+    s.load('staticPrivateMethods', this._buildDetailDocs(staticPrivateMethodDocs, 'Static Private Methods'));
+    s.load('staticProtectedMethods', this._buildDetailDocs(staticProtectedMethodDocs, 'Static Protected Methods'));
+    s.load('staticPublicMethods', this._buildDetailDocs(staticPublicMethodDocs, 'Static Public Methods'));
 
-    s.load('constructor', this._buildFunctionDocs([classDoc], 'Constructor'));
+    s.load('constructor', this._buildDetailDocs([classDoc], 'Constructor'));
 
-    s.load('privateMembers', this._buildMemberDocs(privateMemberDocs, 'Private Members'));
-    s.load('protectedMembers', this._buildMemberDocs(protectedMemberDocs, 'Protected Members'));
-    s.load('publicMembers', this._buildMemberDocs(publicMemberDocs, 'Public Members'));
+    s.load('privateMembers', this._buildDetailDocs(privateMemberDocs, 'Private Members'));
+    s.load('protectedMembers', this._buildDetailDocs(protectedMemberDocs, 'Protected Members'));
+    s.load('publicMembers', this._buildDetailDocs(publicMemberDocs, 'Public Members'));
 
-    s.load('privateMethods', this._buildFunctionDocs(privateMethodDocs, 'Private Methods'));
-    s.load('protectedMethods', this._buildFunctionDocs(protectedMethodDocs, 'Protected Methods'));
-    s.load('publicMethods', this._buildFunctionDocs(publicMethodDocs, 'Public Methods'));
+    s.load('privateMethods', this._buildDetailDocs(privateMethodDocs, 'Private Methods'));
+    s.load('protectedMethods', this._buildDetailDocs(protectedMethodDocs, 'Protected Methods'));
+    s.load('publicMethods', this._buildDetailDocs(publicMethodDocs, 'Public Methods'));
 
     return s;
   }

@@ -192,33 +192,33 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.load('summaryProtectedCallbackDocs', this._buildSummaryFunctionDocs(protectedCallbackDocs, 'Protected Callbacks'));
     s.load('summaryPrivateCallbackDocs', this._buildSummaryFunctionDocs(privateCallbackDocs, 'Private Callbacks'));
 
-    s.load('publicMemberDocs', this._buildMemberDocs(publicMemberDocs, 'Public Members'));
-    s.load('protectedMemberDocs', this._buildMemberDocs(protectedMemberDocs, 'Protected Members'));
-    s.load('privateMemberDocs', this._buildMemberDocs(privateMemberDocs, 'Private Members'));
+    s.load('publicMemberDocs', this._buildDetailDocs(publicMemberDocs, 'Public Members'));
+    s.load('protectedMemberDocs', this._buildDetailDocs(protectedMemberDocs, 'Protected Members'));
+    s.load('privateMemberDocs', this._buildDetailDocs(privateMemberDocs, 'Private Members'));
 
-    s.load('publicMethodDocs', this._buildFunctionDocs(publicMethodDocs, 'Public Methods'));
-    s.load('protectedMethodDocs', this._buildFunctionDocs(protectedMethodDocs, 'Protected Methods'));
-    s.load('privateMethodDocs', this._buildFunctionDocs(privateMethodDocs, 'Private Methods'));
+    s.load('publicMethodDocs', this._buildDetailDocs(publicMethodDocs, 'Public Methods'));
+    s.load('protectedMethodDocs', this._buildDetailDocs(protectedMethodDocs, 'Protected Methods'));
+    s.load('privateMethodDocs', this._buildDetailDocs(privateMethodDocs, 'Private Methods'));
 
-    s.load('publicTypedefDocs', this._buildMemberDocs(publicTypedefDocs, 'Public Typedefs'));
-    s.load('protectedTypedefDocs', this._buildMemberDocs(protectedTypedefDocs, 'Protected Typedefs'));
-    s.load('privateTypedefDocs', this._buildMemberDocs(privateTypedefDocs, 'Private Typedefs'));
+    s.load('publicTypedefDocs', this._buildDetailDocs(publicTypedefDocs, 'Public Typedefs'));
+    s.load('protectedTypedefDocs', this._buildDetailDocs(protectedTypedefDocs, 'Protected Typedefs'));
+    s.load('privateTypedefDocs', this._buildDetailDocs(privateTypedefDocs, 'Private Typedefs'));
 
-    s.load('publicEventDocs', this._buildMemberDocs(publicEventDocs, 'Public Events'));
-    s.load('protectedEventDocs', this._buildMemberDocs(protectedEventDocs, 'Protected Events'));
-    s.load('privateEventDocs', this._buildMemberDocs(privateEventDocs, 'Private Events'));
+    s.load('publicEventDocs', this._buildDetailDocs(publicEventDocs, 'Public Events'));
+    s.load('protectedEventDocs', this._buildDetailDocs(protectedEventDocs, 'Protected Events'));
+    s.load('privateEventDocs', this._buildDetailDocs(privateEventDocs, 'Private Events'));
 
-    s.load('publicConstDocs', this._buildMemberDocs(publicConstDocs, 'Public Constants'));
-    s.load('protectedConstDocs', this._buildMemberDocs(protectedConstDocs, 'Protected Constants'));
-    s.load('privateConstDocs', this._buildMemberDocs(privateConstDocs, 'Private Constants'));
+    s.load('publicConstDocs', this._buildDetailDocs(publicConstDocs, 'Public Constants'));
+    s.load('protectedConstDocs', this._buildDetailDocs(protectedConstDocs, 'Protected Constants'));
+    s.load('privateConstDocs', this._buildDetailDocs(privateConstDocs, 'Private Constants'));
 
-    s.load('publicEnumDocs', this._buildMemberDocs(publicEnumDocs, 'Public Enums'));
-    s.load('protectedEnumDocs', this._buildMemberDocs(protectedEnumDocs, 'Protected Enums'));
-    s.load('privateEnumDocs', this._buildMemberDocs(privateEnumDocs, 'Private Enums'));
+    s.load('publicEnumDocs', this._buildDetailDocs(publicEnumDocs, 'Public Enums'));
+    s.load('protectedEnumDocs', this._buildDetailDocs(protectedEnumDocs, 'Protected Enums'));
+    s.load('privateEnumDocs', this._buildDetailDocs(privateEnumDocs, 'Private Enums'));
 
-    s.load('publicCallbackDocs', this._buildFunctionDocs(publicCallbackDocs, 'Public Callbacks'));
-    s.load('protectedCallbackDocs', this._buildFunctionDocs(protectedCallbackDocs, 'Protected Callbacks'));
-    s.load('privateCallbackDocs', this._buildFunctionDocs(privateCallbackDocs, 'Private Callbacks'));
+    s.load('publicCallbackDocs', this._buildDetailDocs(publicCallbackDocs, 'Public Callbacks'));
+    s.load('protectedCallbackDocs', this._buildDetailDocs(protectedCallbackDocs, 'Protected Callbacks'));
+    s.load('privateCallbackDocs', this._buildDetailDocs(privateCallbackDocs, 'Private Callbacks'));
 
     s.drop('sourceCodeWrap', !namespaceDoc._custom_source_code);
     s.text('sourceCode', namespaceDoc._custom_source_code);

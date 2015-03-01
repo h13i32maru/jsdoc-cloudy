@@ -1,9 +1,11 @@
 <h2 data-s="title"></h2>
-<div class="member" data-s="member">
+<div data-s="detail">
   <h3 data-s="anchor">
     <span class="access" data-s="access"></span>
+    <span class="virtual" data-s="virtual"></span>
+    <span class="override" data-s="override"></span>
     <span data-s="readonly"></span>
-    <span data-s="name"></span><span data-s="signature">(x, y)</span>
+    <span data-s="name"></span><span data-s="signature"></span>
     <span class="right-info">
       <span class="version" data-s="versionWrap">version <span data-s="version"></span></span>
       <span class="since" data-s="sinceLabel">since <span data-s="since"></span></span>
@@ -24,6 +26,35 @@
   </div>
 
   <div data-s="properties"></div>
+
+  <div class="return-params" data-s="returnParams">
+    <h4>Return: <span class="return-type" data-s="returnType"></span></h4>
+    <div class="return-desc" data-s="returnDescription"></div>
+    <div data-s="returnProperties"></div>
+  </div>
+
+  <div data-s="thisWrap">
+    <h4>This: <span data-s="this"></span></h4>
+  </div>
+
+  <div data-s="fires">
+    <div data-s="fireEvent">
+      <h4>Fire: <span data-s="event"></span></h4>
+    </div>
+  </div>
+
+  <div data-s="listens">
+    <div data-s="listenEvent">
+      <h4>Listen: <span data-s="event"></span></h4>
+    </div>
+  </div>
+
+  <div class="throws" data-s="throws">
+    <div data-s="throw">
+      <h4>Throw: <span data-s="throwName"></span></h4>
+      <div data-s="throwDesc"></div>
+    </div>
+  </div>
 
   <div data-s="example">
     <h4>Example:</h4>

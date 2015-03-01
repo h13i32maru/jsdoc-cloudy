@@ -353,7 +353,7 @@ export default class DocBuilder {
     s.text('title', title);
     s.loop('target', memberDocs, (i, memberDoc, s)=>{
       s.load('name', this._buildDocLinkHTML(memberDoc.longname));
-      s.load('signature', this._buildVariableSignatureHTML(memberDoc));
+      s.load('signature', this._buildSignatureHTML(memberDoc));
       s.load('description', this._shorten(memberDoc));
       s.text('readonly', memberDoc.readonly ? 'readonly' : '');
       s.text('access', memberDoc.access);
@@ -376,7 +376,7 @@ export default class DocBuilder {
     s.text('title', title);
     s.loop('target', functionDocs, (i, functionDoc, s)=>{
       s.load('name', this._buildDocLinkHTML(functionDoc.longname, null, true));
-      s.load('signature', this._buildFunctionSignatureHTML(functionDoc));
+      s.load('signature', this._buildSignatureHTML(functionDoc));
       s.load('description', this._shorten(functionDoc));
       s.text('virtual', functionDoc.virtual ? 'virtual' : '');
       s.text('override', functionDoc.override ? 'override' : '');
@@ -400,7 +400,7 @@ export default class DocBuilder {
     s.text('title', title);
     s.loop('target', classDocs, (i, classDoc, s)=>{
       s.load('name', this._buildDocLinkHTML(classDoc.longname));
-      s.load('signature', this._buildFunctionSignatureHTML(classDoc));
+      s.load('signature', this._buildSignatureHTML(classDoc));
       s.load('description', this._shorten(classDoc));
       s.text('access', classDoc.access);
       s.drop('sinceLabel', !classDoc.since);
@@ -535,6 +535,14 @@ export default class DocBuilder {
 
   }
 
+  _buildSignatureHTML(doc) {
+    if (doc.kind === 'function' || doc.kind === 'class') {
+      return this._buildFunctionSignatureHTML(doc);
+    } else {
+      return this._buildVariableSignatureHTML(doc);
+    }
+  }
+
   _buildFunctionSignatureHTML(functionDoc) {
     var params = functionDoc.params || [];
     var signatures = [];
@@ -575,54 +583,67 @@ export default class DocBuilder {
     return ': ' + types.join(' | ');
   }
 
-  _buildFunctionDocs(functionDocs, title) {
-    var s = new SpruceTemplate(this._readTemplate('methods.html'));
+  _buildDetailDocs(docs, title) {
+    var s = new SpruceTemplate(this._readTemplate('details.html'));
 
     s.text('title', title);
-    s.drop('title', !functionDocs.length);
+    s.drop('title', !docs.length);
 
-    s.loop('method', functionDocs, (i, functionDoc, s)=>{
-      s.attr('anchor', 'id', `${functionDoc.scope}-${functionDoc.name}`);
-      s.text('name', functionDoc.name);
-      s.load('signature', this._buildFunctionSignatureHTML(functionDoc));
-      s.load('description', functionDoc.description);
-      s.text('virtual', functionDoc.virtual ? 'virtual' : '');
-      s.text('override', functionDoc.override ? 'override' : '');
-      s.text('access', functionDoc.access);
-      s.drop('sinceLabel', !functionDoc.since);
-      s.text('since', functionDoc.since);
-      s.load('deprecated', this._buildDeprecatedHTML(functionDoc));
-      s.load('experimental', this._buildExperimentalHTML(functionDoc));
-      s.load('argumentParams', this._buildProperties(functionDoc.params, 'Params:'));
+    s.loop('detail', docs, (i, doc, s)=>{
+      s.attr('anchor', 'id', `${doc.scope}-${doc.name}`);
+      s.text('name', doc.name);
+      s.load('signature', this._buildSignatureHTML(doc));
+      s.load('description', doc.description);
+      s.text('virtual', doc.virtual ? 'virtual' : '');
+      s.text('override', doc.override ? 'override' : '');
+      s.text('access', doc.access);
+      s.drop('sinceLabel', !doc.since);
+      s.text('since', doc.since);
+      s.load('deprecated', this._buildDeprecatedHTML(doc));
+      s.load('experimental', this._buildExperimentalHTML(doc));
+      s.text('readonly', doc.readonly ? 'readonly' : '');
+
+      if (doc.kind === 'function') {
+        s.load('properties', this._buildProperties(doc.params, 'Params:'));
+      } else {
+        s.load('properties', this._buildProperties(doc.properties, 'Properties:'));
+      }
 
       // author
-      s.drop('authorWrap', !functionDoc.author);
-      s.load('author', this._buildAuthorHTML(functionDoc));
+      s.drop('authorWrap', !doc.author);
+      s.load('author', this._buildAuthorHTML(doc));
 
       // version
-      if (functionDoc.version) {
-        s.text('version', functionDoc.version);
+      if (doc.version) {
+        s.text('version', doc.version);
       } else {
         s.drop('versionWrap');
       }
 
+      // default
+      if ('defaultvalue' in doc) {
+        s.text('defaultvalue', doc.defaultvalue);
+      } else {
+        s.drop('defaultvalueWrap');
+      }
+
       // inherits
-      if (functionDoc.inherits) {
-        s.load('inherit', this._buildDocLinkHTML(functionDoc.inherits));
+      if (doc.inherits) {
+        s.load('inherit', this._buildDocLinkHTML(doc.inherits));
       } else {
         s.drop('inheritWrap');
       }
 
       // this
-      if (functionDoc.this) {
-        s.load('this', this._buildDocLinkHTML(functionDoc.this));
+      if (doc.this) {
+        s.load('this', this._buildDocLinkHTML(doc.this));
       } else {
         s.drop('thisWrap');
       }
 
       // fire
-      if (functionDoc.fires) {
-        s.loop('fireEvent', functionDoc.fires, (i, fire, s)=>{
+      if (doc.fires) {
+        s.loop('fireEvent', doc.fires, (i, fire, s)=>{
           var link = this._buildDocLinkHTML(fire);
           s.load('event', link);
         });
@@ -631,8 +652,8 @@ export default class DocBuilder {
       }
 
       // listen
-      if (functionDoc.listens) {
-        s.loop('listenEvent', functionDoc.listens, (i, listen, s)=>{
+      if (doc.listens) {
+        s.loop('listenEvent', doc.listens, (i, listen, s)=>{
           var link = this._buildDocLinkHTML(listen);
           s.load('event', link);
         });
@@ -641,27 +662,27 @@ export default class DocBuilder {
       }
 
       // return
-      if (functionDoc.returns) {
-        s.load('returnDescription', functionDoc.returns[0].description);
+      if (doc.returns) {
+        s.load('returnDescription', doc.returns[0].description);
         var typeNames = [];
-        for (var typeName of functionDoc.returns[0].type.names) {
+        for (var typeName of doc.returns[0].type.names) {
           typeNames.push(this._buildDocLinkHTML(typeName));
         }
-        if ('nullable' in functionDoc.returns[0]) {
-          var nullable = functionDoc.returns[0].nullable;
+        if ('nullable' in doc.returns[0]) {
+          var nullable = doc.returns[0].nullable;
           s.load('returnType', typeNames.join(' | ') + ` (nullable: ${nullable})`);
         } else {
           s.load('returnType', typeNames.join(' | '));
         }
 
-        s.load('returnProperties', this._buildProperties(functionDoc.properties, 'Return Properties:'));
+        s.load('returnProperties', this._buildProperties(doc.properties, 'Return Properties:'));
       } else {
         s.drop('returnParams');
       }
 
       // throws
-      if (functionDoc.exceptions) {
-        s.loop('throw', functionDoc.exceptions, (i, exceptionDoc, s)=>{
+      if (doc.exceptions) {
+        s.loop('throw', doc.exceptions, (i, exceptionDoc, s)=>{
           s.load('throwName', this._buildDocLinkHTML(exceptionDoc.type.names[0]));
           s.load('throwDesc', exceptionDoc.description);
         });
@@ -670,7 +691,7 @@ export default class DocBuilder {
       }
 
       // example
-      var exampleDocs = functionDoc.examples;
+      var exampleDocs = doc.examples;
       s.loop('exampleDoc', exampleDocs, (i, exampleDoc, s)=>{
         s.text('exampleCode', exampleDoc);
       });
@@ -679,7 +700,7 @@ export default class DocBuilder {
       }
 
       // see
-      var seeDocs = functionDoc.see;
+      var seeDocs = doc.see;
       if (seeDocs) {
         s.loop('see', seeDocs, (i, seeDoc, s)=>{
           s.load('seeLink', seeDoc);
@@ -688,80 +709,8 @@ export default class DocBuilder {
         s.drop('seeWrap');
       }
 
-      s.drop('todoWrap', !functionDoc.todo);
-      s.loop('todo', functionDoc.todo, (i, todo, s)=>{
-        s.load('todo', todo);
-      });
-    });
-
-    return s.html;
-  }
-
-  _buildMemberDocs(memberDocs, title) {
-    var s = new SpruceTemplate(this._readTemplate('members.html'));
-
-    s.text('title', title);
-    s.drop('title', !memberDocs.length);
-
-    s.loop('member', memberDocs, (i, memberDoc, s)=>{
-      s.attr('anchor', 'id', `${memberDoc.scope}-${memberDoc.name}`);
-      s.text('name', memberDoc.name);
-      s.load('signature', this._buildVariableSignatureHTML(memberDoc));
-      s.load('description', memberDoc.description);
-      s.text('access', memberDoc.access);
-      s.text('readonly', memberDoc.readonly ? 'readonly' : '');
-      s.drop('sinceLabel', !memberDoc.since);
-      s.text('since', memberDoc.since);
-      s.load('deprecated', this._buildDeprecatedHTML(memberDoc));
-      s.load('experimental', this._buildExperimentalHTML(memberDoc));
-      s.load('properties', this._buildProperties(memberDoc.properties, 'Properties:'));
-
-      // author
-      s.drop('authorWrap', !memberDoc.author);
-      s.load('author', this._buildAuthorHTML(memberDoc));
-
-      // version
-      if (memberDoc.version) {
-        s.text('version', memberDoc.version);
-      } else {
-        s.drop('versionWrap');
-      }
-
-      // inherits
-      if (memberDoc.inherits) {
-        s.load('inherit', this._buildDocLinkHTML(memberDoc.inherits));
-      } else {
-        s.drop('inheritWrap');
-      }
-
-      // default
-      if ('defaultvalue' in memberDoc) {
-        s.text('defaultvalue', memberDoc.defaultvalue);
-      } else {
-        s.drop('defaultvalueWrap');
-      }
-
-      // example
-      var exampleDocs = memberDoc.examples;
-      s.loop('exampleDoc', exampleDocs, (i, exampleDoc, s)=>{
-        s.text('exampleCode', exampleDoc);
-      });
-      if (!exampleDocs) {
-        s.drop('example');
-      }
-
-      // see
-      var seeDocs = memberDoc.see;
-      if (seeDocs) {
-        s.loop('see', seeDocs, (i, seeDoc, s)=>{
-          s.load('seeLink', seeDoc);
-        });
-      } else {
-        s.drop('seeWrap');
-      }
-
-      s.drop('todoWrap', !memberDoc.todo);
-      s.loop('todo', memberDoc.todo, (i, todo, s)=>{
+      s.drop('todoWrap', !doc.todo);
+      s.loop('todo', doc.todo, (i, todo, s)=>{
         s.load('todo', todo);
       });
     });
