@@ -165,9 +165,9 @@
 //    s.load('summaryPrivateInterfaceDocs', this._buildSummaryClassDocs(privateInterfaceDocs, false, 'Private Interfaces'));
 //
 //    s.drop('memberSummary', !(publicMemberDocs.length + protectedMemberDocs.length + privateMemberDocs.length));
-//    s.load('summaryPublicMemberDocs', this._buildSummaryMemberDocs(publicMemberDocs, 'Public Members'));
-//    s.load('summaryProtectedMemberDocs', this._buildSummaryMemberDocs(protectedMemberDocs, 'Protected Members'));
-//    s.load('summaryPrivateMemberDocs', this._buildSummaryMemberDocs(privateMemberDocs, 'Private Members'));
+//    s.load('summaryPublicMemberDocs', this._buildSummaryDocs(publicMemberDocs, 'Public Members'));
+//    s.load('summaryProtectedMemberDocs', this._buildSummaryDocs(protectedMemberDocs, 'Protected Members'));
+//    s.load('summaryPrivateMemberDocs', this._buildSummaryDocs(privateMemberDocs, 'Private Members'));
 //
 //    s.drop('methodSummary', !(publicMethodDocs.length + protectedMethodDocs.length + privateMethodDocs.length));
 //    s.load('summaryPublicMethodDocs', this._buildSummaryFunctionDocs(publicMethodDocs, 'Public Methods'));
@@ -175,14 +175,14 @@
 //    s.load('summaryPrivateMethodDocs', this._buildSummaryFunctionDocs(privateMethodDocs, 'Private Methods'));
 //
 //    s.drop('typedefSummary', !(publicTypedefDocs.length + protectedTypedefDocs.length + privateTypedefDocs.length));
-//    s.load('summaryPublicTypedefDocs', this._buildSummaryMemberDocs(publicTypedefDocs, 'Public Typedefs'));
-//    s.load('summaryProtectedTypedefDocs', this._buildSummaryMemberDocs(protectedTypedefDocs, 'Protected Typedefs'));
-//    s.load('summaryPrivateTypedefDocs', this._buildSummaryMemberDocs(privateTypedefDocs, 'Private Typedefs'));
+//    s.load('summaryPublicTypedefDocs', this._buildSummaryDocs(publicTypedefDocs, 'Public Typedefs'));
+//    s.load('summaryProtectedTypedefDocs', this._buildSummaryDocs(protectedTypedefDocs, 'Protected Typedefs'));
+//    s.load('summaryPrivateTypedefDocs', this._buildSummaryDocs(privateTypedefDocs, 'Private Typedefs'));
 //
 //    s.drop('eventSummary', !(publicEventDocs.length + protectedEventDocs.length + privateEventDocs.length));
-//    s.load('summaryPublicEventDocs', this._buildSummaryMemberDocs(publicEventDocs, 'Public Events'));
-//    s.load('summaryProtectedEventDocs', this._buildSummaryMemberDocs(protectedEventDocs, 'Protected Events'));
-//    s.load('summaryPrivateEventDocs', this._buildSummaryMemberDocs(privateEventDocs, 'Private Events'));
+//    s.load('summaryPublicEventDocs', this._buildSummaryDocs(publicEventDocs, 'Public Events'));
+//    s.load('summaryProtectedEventDocs', this._buildSummaryDocs(protectedEventDocs, 'Protected Events'));
+//    s.load('summaryPrivateEventDocs', this._buildSummaryDocs(privateEventDocs, 'Private Events'));
 //
 //    s.drop('mixinSummary', !(publicMixinDocs.length + protectedMixinDocs.length + privateMixinDocs.length));
 //    s.load('summaryPublicMixinDocs', this._buildSummaryNamespaceDocs(publicMixinDocs, 'Public Mixins'));
@@ -190,14 +190,14 @@
 //    s.load('summaryPrivateMixinDocs', this._buildSummaryNamespaceDocs(privateMixinDocs, 'Private Mixins'));
 //
 //    s.drop('constSummary', !(publicConstDocs.length + protectedConstDocs.length + privateConstDocs.length));
-//    s.load('summaryPublicConstDocs', this._buildSummaryMemberDocs(publicConstDocs, 'Public Constants'));
-//    s.load('summaryProtectedConstDocs', this._buildSummaryMemberDocs(protectedConstDocs, 'Protected Constants'));
-//    s.load('summaryPrivateConstDocs', this._buildSummaryMemberDocs(privateConstDocs, 'Private Constants'));
+//    s.load('summaryPublicConstDocs', this._buildSummaryDocs(publicConstDocs, 'Public Constants'));
+//    s.load('summaryProtectedConstDocs', this._buildSummaryDocs(protectedConstDocs, 'Protected Constants'));
+//    s.load('summaryPrivateConstDocs', this._buildSummaryDocs(privateConstDocs, 'Private Constants'));
 //
 //    s.drop('enumSummary', !(publicEnumDocs.length + protectedEnumDocs.length + privateEnumDocs.length));
-//    s.load('summaryPublicEnumDocs', this._buildSummaryMemberDocs(publicEnumDocs, 'Public Enums'));
-//    s.load('summaryProtectedEnumDocs', this._buildSummaryMemberDocs(protectedEnumDocs, 'Protected Enums'));
-//    s.load('summaryPrivateEnumDocs', this._buildSummaryMemberDocs(privateEnumDocs, 'Private Enums'));
+//    s.load('summaryPublicEnumDocs', this._buildSummaryDocs(publicEnumDocs, 'Public Enums'));
+//    s.load('summaryProtectedEnumDocs', this._buildSummaryDocs(protectedEnumDocs, 'Protected Enums'));
+//    s.load('summaryPrivateEnumDocs', this._buildSummaryDocs(privateEnumDocs, 'Private Enums'));
 //
 //    s.drop('callbackSummary', !(publicCallbackDocs.length + protectedCallbackDocs.length + privateCallbackDocs.length));
 //    s.load('summaryPublicCallbackDocs', this._buildSummaryFunctionDocs(publicCallbackDocs, 'Public Callbacks'));

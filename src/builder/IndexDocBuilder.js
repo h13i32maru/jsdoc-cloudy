@@ -26,8 +26,8 @@ export default class IndexDocBuilder extends DocBuilder {
     s.text('url', indexInfo.url);
     s.attr('url', 'href', indexInfo.url);
     s.text('description', indexInfo.desc);
-    s.load('summaryClassDocs', this._buildSummaryClassDocs(classDocs));
-    s.load('summaryNamespaceDocs', this._buildSummaryNamespaceDocs(namespaceDocs));
+    s.load('summaryClassDocs', this._buildSummaryDocs(classDocs));
+    s.load('summaryNamespaceDocs', this._buildSummaryDocs(namespaceDocs));
 
     return s;
   }

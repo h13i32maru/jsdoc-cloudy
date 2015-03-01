@@ -79,92 +79,26 @@ export default class DocBuilder {
     return s;
   }
 
-  _buildSummaryMemberDocs(memberDocs = [], title = 'Members') {
-    if (memberDocs.length === 0) return '';
+  _buildSummaryDocs(docs = [], title = 'Members') {
+    if (docs.length === 0) return '';
 
     var s = new SpruceTemplate(this._readTemplate('summary.html'));
 
     s.text('title', title);
-    s.loop('target', memberDocs, (i, memberDoc, s)=>{
-      s.load('name', this._buildDocLinkHTML(memberDoc.longname));
-      s.load('signature', this._buildSignatureHTML(memberDoc));
-      s.load('description', shorten(memberDoc));
-      s.text('readonly', memberDoc.readonly ? 'readonly' : '');
-      s.text('access', memberDoc.access);
-      s.drop('sinceLabel', !memberDoc.since);
-      s.text('since', memberDoc.since);
-      s.load('deprecated', this._buildDeprecatedHTML(memberDoc));
-      s.load('experimental', this._buildExperimentalHTML(memberDoc));
-      s.drop('versionLabel', !memberDoc.version);
-      s.text('version', memberDoc.version);
-    });
-
-    return s;
-  }
-
-  _buildSummaryFunctionDocs(functionDocs = [], title = 'Functions') {
-    if (functionDocs.length === 0) return '';
-
-    var s = new SpruceTemplate(this._readTemplate('summary.html'));
-
-    s.text('title', title);
-    s.loop('target', functionDocs, (i, functionDoc, s)=>{
-      s.load('name', this._buildDocLinkHTML(functionDoc.longname, null, true));
-      s.load('signature', this._buildSignatureHTML(functionDoc));
-      s.load('description', shorten(functionDoc));
-      s.text('virtual', functionDoc.virtual ? 'virtual' : '');
-      s.text('override', functionDoc.override ? 'override' : '');
-      s.text('access', functionDoc.access);
-      s.drop('sinceLabel', !functionDoc.since);
-      s.text('since', functionDoc.since);
-      s.load('deprecated', this._buildDeprecatedHTML(functionDoc));
-      s.load('experimental', this._buildExperimentalHTML(functionDoc));
-      s.drop('versionLabel', !functionDoc.version);
-      s.text('version', functionDoc.version);
-    });
-
-    return s;
-  }
-
-  _buildSummaryClassDocs(classDocs = [], innerLink = false, title = 'Classes') {
-    if (classDocs.length === 0) return '';
-
-    var s = new SpruceTemplate(this._readTemplate('summary.html'));
-
-    s.text('title', title);
-    s.loop('target', classDocs, (i, classDoc, s)=>{
-      s.load('name', this._buildDocLinkHTML(classDoc.longname));
-      s.load('signature', this._buildSignatureHTML(classDoc));
-      s.load('description', shorten(classDoc));
-      s.text('access', classDoc.access);
-      s.drop('sinceLabel', !classDoc.since);
-      s.text('since', classDoc.since);
-      s.load('deprecated', this._buildDeprecatedHTML(classDoc));
-      s.load('experimental', this._buildExperimentalHTML(classDoc));
-      s.drop('versionLabel', !classDoc.version);
-      s.text('version', classDoc.version);
-    });
-
-    return s;
-  }
-
-  _buildSummaryNamespaceDocs(namespaceDocs = [], title = 'Namespaces') {
-    if (namespaceDocs.length === 0) return '';
-
-    var s = new SpruceTemplate(this._readTemplate('summary.html'));
-
-    s.text('title', title);
-    s.loop('target', namespaceDocs, (i, namespaceDoc, s)=>{
-      s.load('name', this._buildDocLinkHTML(namespaceDoc.longname));
-      s.drop('signature');
-      s.load('description', shorten(namespaceDoc));
-      s.text('access', namespaceDoc.access);
-      s.drop('sinceLabel', !namespaceDoc.since);
-      s.text('since', namespaceDoc.since);
-      s.load('deprecated', this._buildDeprecatedHTML(namespaceDoc));
-      s.load('experimental', this._buildExperimentalHTML(namespaceDoc));
-      s.drop('versionLabel', !namespaceDoc.version);
-      s.text('version', namespaceDoc.version);
+    s.loop('target', docs, (i, doc, s)=>{
+      s.load('name', this._buildDocLinkHTML(doc.longname));
+      s.load('signature', this._buildSignatureHTML(doc));
+      s.load('description', shorten(doc));
+      s.text('virtual', doc.virtual ? 'virtual' : '');
+      s.text('override', doc.override ? 'override' : '');
+      s.text('readonly', doc.readonly ? 'readonly' : '');
+      s.text('access', doc.access);
+      s.drop('sinceLabel', !doc.since);
+      s.text('since', doc.since);
+      s.load('deprecated', this._buildDeprecatedHTML(doc));
+      s.load('experimental', this._buildExperimentalHTML(doc));
+      s.drop('versionLabel', !doc.version);
+      s.text('version', doc.version);
     });
 
     return s;

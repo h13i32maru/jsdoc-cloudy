@@ -88,23 +88,23 @@ export default class ClassDocBuilder extends DocBuilder {
       s.drop('seeWrap');
     }
 
-    s.load('summaryStaticPrivateMemberDocs', this._buildSummaryMemberDocs(staticPrivateMemberDocs, 'Static Private Members'));
-    s.load('summaryStaticProtectedMemberDocs', this._buildSummaryMemberDocs(staticProtectedMemberDocs, 'Static Protected Members'));
-    s.load('summaryStaticPublicMemberDocs', this._buildSummaryMemberDocs(staticPublicMemberDocs, 'Static Public Members'));
+    s.load('summaryStaticPrivateMemberDocs', this._buildSummaryDocs(staticPrivateMemberDocs, 'Static Private Members'));
+    s.load('summaryStaticProtectedMemberDocs', this._buildSummaryDocs(staticProtectedMemberDocs, 'Static Protected Members'));
+    s.load('summaryStaticPublicMemberDocs', this._buildSummaryDocs(staticPublicMemberDocs, 'Static Public Members'));
 
-    s.load('summaryStaticPrivateMethodDocs', this._buildSummaryFunctionDocs(staticPrivateMethodDocs, 'Static Private Methods'));
-    s.load('summaryStaticProtectedMethodDocs', this._buildSummaryFunctionDocs(staticProtectedMethodDocs, 'Static Protected Methods'));
-    s.load('summaryStaticPublicMethodDocs', this._buildSummaryFunctionDocs(staticPublicMethodDocs, 'Static Public Methods'));
+    s.load('summaryStaticPrivateMethodDocs', this._buildSummaryDocs(staticPrivateMethodDocs, 'Static Private Methods'));
+    s.load('summaryStaticProtectedMethodDocs', this._buildSummaryDocs(staticProtectedMethodDocs, 'Static Protected Methods'));
+    s.load('summaryStaticPublicMethodDocs', this._buildSummaryDocs(staticPublicMethodDocs, 'Static Public Methods'));
 
-    s.load('summaryConstructorDocs', this._buildSummaryFunctionDocs([classDoc], 'Constructor'));
+    s.load('summaryConstructorDocs', this._buildSummaryDocs([classDoc], 'Constructor'));
 
-    s.load('summaryPrivateMemberDocs', this._buildSummaryMemberDocs(privateMemberDocs, 'Private Members'));
-    s.load('summaryProtectedMemberDocs', this._buildSummaryMemberDocs(protectedMemberDocs, 'Protected Members'));
-    s.load('summaryPublicMemberDocs', this._buildSummaryMemberDocs(publicMemberDocs, 'Public Members'));
+    s.load('summaryPrivateMemberDocs', this._buildSummaryDocs(privateMemberDocs, 'Private Members'));
+    s.load('summaryProtectedMemberDocs', this._buildSummaryDocs(protectedMemberDocs, 'Protected Members'));
+    s.load('summaryPublicMemberDocs', this._buildSummaryDocs(publicMemberDocs, 'Public Members'));
 
-    s.load('summaryPrivateMethodDocs', this._buildSummaryFunctionDocs(privateMethodDocs, 'Private Methods'));
-    s.load('summaryProtectedMethodDocs', this._buildSummaryFunctionDocs(protectedMethodDocs, 'Protected Methods'));
-    s.load('summaryPublicMethodDocs', this._buildSummaryFunctionDocs(publicMethodDocs, 'Public Methods'));
+    s.load('summaryPrivateMethodDocs', this._buildSummaryDocs(privateMethodDocs, 'Private Methods'));
+    s.load('summaryProtectedMethodDocs', this._buildSummaryDocs(protectedMethodDocs, 'Protected Methods'));
+    s.load('summaryPublicMethodDocs', this._buildSummaryDocs(publicMethodDocs, 'Public Methods'));
 
     s.load('staticPrivateMembers', this._buildDetailDocs(staticPrivateMemberDocs, 'Static Private Members'));
     s.load('staticProtectedMembers', this._buildDetailDocs(staticProtectedMemberDocs, 'Static Protected Members'));
