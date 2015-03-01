@@ -158,7 +158,7 @@ export default class SpruceTemplate {
 
     var nodes = this._nodes(id);
     for (var node of nodes) {
-      node.parentElement.removeChild(node);
+      node.parentNode.removeChild(node);
     }
 
     return this;

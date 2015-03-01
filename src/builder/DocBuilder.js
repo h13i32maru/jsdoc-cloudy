@@ -69,7 +69,6 @@ export default class DocBuilder {
       s.load('mixinDoc', this._buildDocLinkHTML(mixinDoc.longname));
     });
 
-
     // files
     var fileDocs = this._find({kind: 'file'});
     s.loop('fileDoc', fileDocs, (i, fileDoc, s)=>{
@@ -79,8 +78,64 @@ export default class DocBuilder {
     return s;
   }
 
-  _buildSummaryDocs(docs = [], title = 'Members') {
-    if (docs.length === 0) return '';
+  _findAccessDocs(doc, kind, isInstanceScope) {
+    var cond;
+    switch (kind) {
+      case 'member':
+        cond = {kind: 'member', memberof: doc.longname, isEnum: {isUndefined: true}};
+        break;
+      case 'enum':
+        cond = {kind: 'member', memberof: doc.longname, isEnum: true};
+        break;
+      case 'callback':
+        cond = {kind: 'typedef', memberof: doc.longname, _custom_is_callback: true};
+        break;
+      case 'typedef':
+        cond = {kind: 'typedef', memberof: doc.longname, _custom_is_callback: false};
+        break;
+      case 'constructor':
+        cond = {kind: 'class', longname: doc.longname};
+        break;
+      default:
+        cond = {kind: kind, memberof: doc.longname};
+        break;
+    }
+
+    if (isInstanceScope) {
+      cond.scope = 'instance';
+    } else {
+      cond.scope = {'!is': 'instance'};
+    }
+
+    var publicDocs = this._find(cond, {access: 'public'});
+    var protectedDocs = this._find(cond, {access: 'protected'});
+    var privateDocs = this._find(cond, {access: 'private'});
+    var accessDocs = [['Public', publicDocs], ['Protected', protectedDocs], ['Private', privateDocs]];
+
+    return accessDocs;
+  }
+
+  _buildSummaryHTML(doc, kind, title, isInstanceScope = false) {
+    var accessDocs = this._findAccessDocs(doc, kind, isInstanceScope);
+    var html = '';
+    for (var accessDoc of accessDocs) {
+      var docs = accessDoc[1];
+      if (!docs.length) continue;
+
+      var prefix = docs[0].scope === 'static' ? 'Static ' : '';
+      var title = `${prefix}${accessDoc[0]} ${title}`;
+
+      var result = this._buildSummaryDoc(docs, title);
+      if (result) {
+        html += result.html;
+      }
+    }
+
+    return html;
+  }
+
+  _buildSummaryDoc(docs, title) {
+    if (docs.length === 0) return;
 
     var s = new SpruceTemplate(this._readTemplate('summary.html'));
 

@@ -208,7 +208,7 @@ var SpruceTemplate = (function () {
         }var nodes = this._nodes(id);
         for (var _iterator = nodes[Symbol.iterator](), _step; !(_step = _iterator.next()).done;) {
           var node = _step.value;
-          node.parentElement.removeChild(node);
+          node.parentNode.removeChild(node);
         }
 
         return this;

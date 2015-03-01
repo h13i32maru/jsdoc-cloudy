@@ -29,7 +29,7 @@
 /**
  * this is Module1 desc.
  * this is second line.
- * @module Module1/Foo/Bar
+ * @module Module1
  * @since 1.2.3
  * @version 0.0.1
  * @private

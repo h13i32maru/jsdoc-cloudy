@@ -13,6 +13,7 @@ export default class NamespaceDocBuilder extends DocBuilder {
     }
   }
 
+
   _buildNamespaceDoc(namespaceDoc) {
     var memberof = namespaceDoc.longname;
 
@@ -137,60 +138,17 @@ export default class NamespaceDocBuilder extends DocBuilder {
       s.load('todo', todo);
     });
 
-    s.drop('namespaceSummary', !(publicNamespaceDocs.length + protectedNamespaceDocs.length + privateNamespaceDocs.length));
-    s.load('summaryPublicNamespaceDocs', this._buildSummaryDocs(publicNamespaceDocs, 'Public Namespaces'));
-    s.load('summaryProtectedNamespaceDocs', this._buildSummaryDocs(protectedNamespaceDocs, 'Protected Namespaces'));
-    s.load('summaryPrivateNamespaceDocs', this._buildSummaryDocs(privateNamespaceDocs, 'Private Namespaces'));
-
-    s.drop('classSummary', !(publicClassDocs.length + protectedClassDocs.length + privateClassDocs.length));
-    s.load('summaryPublicClassDocs', this._buildSummaryDocs(publicClassDocs, false, 'Public Classes'));
-    s.load('summaryProtectedClassDocs', this._buildSummaryDocs(protectedClassDocs, false, 'Protected Classes'));
-    s.load('summaryPrivateClassDocs', this._buildSummaryDocs(privateClassDocs, false, 'Private Classes'));
-
-    s.drop('interfaceSummary', !(publicInterfaceDocs.length + protectedInterfaceDocs.length + privateInterfaceDocs.length));
-    s.load('summaryPublicInterfaceDocs', this._buildSummaryDocs(publicInterfaceDocs, false, 'Public Interfaces'));
-    s.load('summaryProtectedInterfaceDocs', this._buildSummaryDocs(protectedInterfaceDocs, false, 'Protected Interfaces'));
-    s.load('summaryPrivateInterfaceDocs', this._buildSummaryDocs(privateInterfaceDocs, false, 'Private Interfaces'));
-
-    s.drop('memberSummary', !(publicMemberDocs.length + protectedMemberDocs.length + privateMemberDocs.length));
-    s.load('summaryPublicMemberDocs', this._buildSummaryDocs(publicMemberDocs, 'Public Members'));
-    s.load('summaryProtectedMemberDocs', this._buildSummaryDocs(protectedMemberDocs, 'Protected Members'));
-    s.load('summaryPrivateMemberDocs', this._buildSummaryDocs(privateMemberDocs, 'Private Members'));
-
-    s.drop('methodSummary', !(publicMethodDocs.length + protectedMethodDocs.length + privateMethodDocs.length));
-    s.load('summaryPublicMethodDocs', this._buildSummaryDocs(publicMethodDocs, 'Public Methods'));
-    s.load('summaryProtectedMethodDocs', this._buildSummaryDocs(protectedMethodDocs, 'Protected Methods'));
-    s.load('summaryPrivateMethodDocs', this._buildSummaryDocs(privateMethodDocs, 'Private Methods'));
-
-    s.drop('typedefSummary', !(publicTypedefDocs.length + protectedTypedefDocs.length + privateTypedefDocs.length));
-    s.load('summaryPublicTypedefDocs', this._buildSummaryDocs(publicTypedefDocs, 'Public Typedefs'));
-    s.load('summaryProtectedTypedefDocs', this._buildSummaryDocs(protectedTypedefDocs, 'Protected Typedefs'));
-    s.load('summaryPrivateTypedefDocs', this._buildSummaryDocs(privateTypedefDocs, 'Private Typedefs'));
-
-    s.drop('eventSummary', !(publicEventDocs.length + protectedEventDocs.length + privateEventDocs.length));
-    s.load('summaryPublicEventDocs', this._buildSummaryDocs(publicEventDocs, 'Public Events'));
-    s.load('summaryProtectedEventDocs', this._buildSummaryDocs(protectedEventDocs, 'Protected Events'));
-    s.load('summaryPrivateEventDocs', this._buildSummaryDocs(privateEventDocs, 'Private Events'));
-
-    s.drop('mixinSummary', !(publicMixinDocs.length + protectedMixinDocs.length + privateMixinDocs.length));
-    s.load('summaryPublicMixinDocs', this._buildSummaryDocs(publicMixinDocs, 'Public Mixins'));
-    s.load('summaryProtectedMixinDocs', this._buildSummaryDocs(protectedMixinDocs, 'Protected Mixins'));
-    s.load('summaryPrivateMixinDocs', this._buildSummaryDocs(privateMixinDocs, 'Private Mixins'));
-
-    s.drop('constSummary', !(publicConstDocs.length + protectedConstDocs.length + privateConstDocs.length));
-    s.load('summaryPublicConstDocs', this._buildSummaryDocs(publicConstDocs, 'Public Constants'));
-    s.load('summaryProtectedConstDocs', this._buildSummaryDocs(protectedConstDocs, 'Protected Constants'));
-    s.load('summaryPrivateConstDocs', this._buildSummaryDocs(privateConstDocs, 'Private Constants'));
-
-    s.drop('enumSummary', !(publicEnumDocs.length + protectedEnumDocs.length + privateEnumDocs.length));
-    s.load('summaryPublicEnumDocs', this._buildSummaryDocs(publicEnumDocs, 'Public Enums'));
-    s.load('summaryProtectedEnumDocs', this._buildSummaryDocs(protectedEnumDocs, 'Protected Enums'));
-    s.load('summaryPrivateEnumDocs', this._buildSummaryDocs(privateEnumDocs, 'Private Enums'));
-
-    s.drop('callbackSummary', !(publicCallbackDocs.length + protectedCallbackDocs.length + privateCallbackDocs.length));
-    s.load('summaryPublicCallbackDocs', this._buildSummaryDocs(publicCallbackDocs, 'Public Callbacks'));
-    s.load('summaryProtectedCallbackDocs', this._buildSummaryDocs(protectedCallbackDocs, 'Protected Callbacks'));
-    s.load('summaryPrivateCallbackDocs', this._buildSummaryDocs(privateCallbackDocs, 'Private Callbacks'));
+    s.load('namespaceSummary', this._buildSummaryHTML(namespaceDoc, 'namespace', 'Namespaces'), 'append');
+    s.load('classSummary', this._buildSummaryHTML(namespaceDoc, 'class', 'Classes'), 'append');
+    s.load('interfaceSummary', this._buildSummaryHTML(namespaceDoc, 'interface', 'Interfaces'), 'append');
+    s.load('mixinSummary', this._buildSummaryHTML(namespaceDoc, 'mixin', 'Mixin'), 'append');
+    s.load('memberSummary', this._buildSummaryHTML(namespaceDoc, 'member', 'Members'), 'append');
+    s.load('methodSummary', this._buildSummaryHTML(namespaceDoc, 'function', 'Methods'), 'append');
+    s.load('typedefSummary', this._buildSummaryHTML(namespaceDoc, 'typedef', 'Typedefs'), 'append');
+    s.load('eventSummary', this._buildSummaryHTML(namespaceDoc, 'event', 'Events'), 'append');
+    s.load('constSummary', this._buildSummaryHTML(namespaceDoc, 'constant', 'Constants'), 'append');
+    s.load('enumSummary', this._buildSummaryHTML(namespaceDoc, 'enum', 'Enums'), 'append');
+    s.load('callbackSummary', this._buildSummaryHTML(namespaceDoc, 'callback', 'callback'), 'append');
 
     s.load('publicMemberDocs', this._buildDetailDocs(publicMemberDocs, 'Public Members'));
     s.load('protectedMemberDocs', this._buildDetailDocs(protectedMemberDocs, 'Protected Members'));
