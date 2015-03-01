@@ -130,30 +130,30 @@ export default class DocBuilder {
   _resolveLink() {
     if(this._data.__RESOLVED_LINK__) return;
 
-    function link(str) {
+    var link = (str)=>{
       if (!str) return str;
 
-      return str.replace(/\{@link ([\w\#_\-.:]+)}/g, (str, longname)=>{
-        return buildLinkHTML(longname);
-        //return `<a href="${url(longname)}">${longname}</a>`;
+      return str.replace(/\{@link ([\w\#_\-.:\~\/]+)}/g, (str, longname)=>{
+        //return buildLinkHTML(longname);
+        return this._buildDocLinkHTML(longname);
       });
-    }
-
-    var buildLinkHTML = (longname)=>{
-      var doc = this._find({longname})[0];
-      if (!doc) return;
-
-      if (doc.kind === 'function' || doc.kind === 'member') {
-        var parentLongname = doc.memberof || '@global';
-        var url = `${parentLongname}.html#${doc.scope}-${doc.name}`;
-        return `<a href="${url}">${longname}</a>`;
-      } else if (doc.kind === 'external') {
-        return doc.see[0];
-      } else {
-        var url = `${longname}.html`;
-        return `<a href="${url}">${longname}</a>`;
-      }
     };
+
+    //var buildLinkHTML = (longname)=>{
+    //  var doc = this._find({longname})[0];
+    //  if (!doc) return;
+    //
+    //  if (doc.kind === 'function' || doc.kind === 'member') {
+    //    var parentLongname = doc.memberof || '@global';
+    //    var url = `${parentLongname}.html#${doc.scope}-${doc.name}`;
+    //    return `<a href="${url}">${longname}</a>`;
+    //  } else if (doc.kind === 'external') {
+    //    return doc.see[0];
+    //  } else {
+    //    var url = `${longname}.html`;
+    //    return `<a href="${url}">${longname}</a>`;
+    //  }
+    //};
 
     this._data().each((v)=>{
       v.description = link(v.description);
@@ -248,52 +248,50 @@ export default class DocBuilder {
     // classes
     var classDocs = this._find({kind: 'class'});
     s.loop('classDoc', classDocs, (i, classDoc, s)=>{
-      s.text('className', classDoc.name);
-      s.attr('className', 'href', `${encodeURIComponent(classDoc.longname)}.html`)
+      s.load('classDoc', this._buildDocLinkHTML(classDoc.longname));
+      //s.text('className', classDoc.name);
+      //s.attr('className', 'href', `${encodeURIComponent(classDoc.longname)}.html`)
     });
 
     // interfaces
     var interfaceDocs = this._find({kind: 'interface'});
     s.loop('interfaceDoc', interfaceDocs, (i, interfaceDoc, s)=>{
-      s.text('interfaceName', interfaceDoc.name);
-      s.attr('interfaceName', 'href', `${encodeURIComponent(interfaceDoc.longname)}.html`)
+      s.load('interfaceDoc', this._buildDocLinkHTML(interfaceDoc.longname));
+      //s.text('interfaceName', interfaceDoc.name);
+      //s.attr('interfaceName', 'href', `${encodeURIComponent(interfaceDoc.longname)}.html`)
     });
 
     // namespaces
     var namespaceDocs = this._find({kind: 'namespace'});
     s.loop('namespaceDoc', namespaceDocs, (i, namespaceDoc, s)=>{
-      s.text('namespace', namespaceDoc.name);
-      s.attr('namespace', 'href', `${encodeURIComponent(namespaceDoc.longname)}.html`);
+      s.load('namespaceDoc', this._buildDocLinkHTML(namespaceDoc.longname));
+      //s.text('namespace', namespaceDoc.name);
+      //s.attr('namespace', 'href', `${encodeURIComponent(namespaceDoc.longname)}.html`);
     });
 
     // modules
     var moduleDocs = this._find({kind: 'module'});
     s.loop('moduleDoc', moduleDocs, (i, moduleDoc, s)=>{
-      s.text('module', moduleDoc.name);
-      s.attr('module', 'href', `${encodeURIComponent(moduleDoc.longname)}.html`);
+      s.load('moduleDoc', this._buildDocLinkHTML(moduleDoc.longname));
+      //s.text('module', moduleDoc.name);
+      //s.attr('module', 'href', `${encodeURIComponent(moduleDoc.longname)}.html`);
     });
-
-    // typedefs
-    //var typedefDocs = this._find({kind: 'typedef'});
-    //s.loop('typedefDoc', typedefDocs, (i, typedefDoc, s)=>{
-    //  var fileName = encodeURIComponent(`${typedefDoc.memberof}.html#${typedefDoc.scope}-${typedefDoc.name}`);
-    //  s.text('typedef', typedefDoc.name);
-    //  s.attr('typedef', 'href', fileName);
-    //});
 
     // mixin
     var mixinDocs = this._find({kind: 'mixin'});
     s.loop('mixinDoc', mixinDocs, (i, mixinDoc, s)=>{
-      s.text('mixin', mixinDoc.name);
-      s.attr('mixin', 'href', `${encodeURIComponent(mixinDoc.longname)}.html`);
+      s.load('mixinDoc', this._buildDocLinkHTML(mixinDoc.longname));
+      //s.text('mixin', mixinDoc.name);
+      //s.attr('mixin', 'href', `${encodeURIComponent(mixinDoc.longname)}.html`);
     });
 
 
     // files
     var fileDocs = this._find({kind: 'file'});
     s.loop('fileDoc', fileDocs, (i, fileDoc, s)=>{
-      s.text('file', fileDoc.name);
-      s.attr('file', 'href', `@file-${fileDoc.longname}.html`);
+      s.load('fileDoc', this._buildFileDocLinkHTML(fileDoc));
+      //s.text('file', fileDoc.name);
+      //s.attr('file', 'href', `@file-${fileDoc.longname}.html`);
     });
 
     return s;
@@ -390,41 +388,15 @@ export default class DocBuilder {
     return s;
   }
 
-  _getOutputFileName(doc) {
-    var prefix = doc.kind === 'file' ? '@file-' : '';
-    return `${prefix}${doc.longname}.html`;
-  }
-
-  _buildFileDocLinkHTML(doc) {
-    if (!doc) return;
-    if (!doc.meta) return;
-
-    var fileName = doc.meta.filename;
-    var fileDoc = this._find({kind: 'file', name: fileName})[0];
-    if (!fileDoc) return;
-
-    return `<span><a href="@file-${fileDoc.longname}.html">${fileDoc.name}</a></span>`;
-  }
-
-  _buildDocLinkHTML(longname, text = null, inner = false) {
-    if (typeof longname !== 'string') throw new Error(JSON.stringify(longname));
-
-    var doc = this._find({longname})[0];
-
-    if (!doc) {
-      return `<span>${escape(longname)}</span>`;
-    }
-
-    text = escape(text || doc.name);
-
+  _getURL(doc, inner = false) {
     // inner?
     if (['function', 'member', 'typedef', 'constant', 'event'].indexOf(doc.kind) !== -1) {
       inner = true;
-      var innerFile = doc.memberof;
+      var parentLongname = doc.memberof;
     } else {
       if (inner) {
         if (['class', 'interface'].indexOf(doc.kind) !== -1) {
-          var innerFile = doc.longname;
+          var parentLongname = doc.longname;
         } else {
           throw new Error('inner option is only used ith class or interface.');
         }
@@ -432,15 +404,86 @@ export default class DocBuilder {
     }
 
     if (inner) {
-      var url = `${encodeURIComponent(innerFile)}.html#${doc.scope}-${doc.name}`;
-      return `<span><a href="${url}">${text}</a></span>`;
-    } else if(doc.kind === 'external') {
+      var parentDoc = this._find({longname: parentLongname})[0];
+      if (!parentDoc) return;
+      var fileName = this._getOutputFileName(parentDoc);
+      return `${encodeURIComponent(fileName)}#${doc.scope}-${doc.name}`;
+    } else {
+      var fileName = this._getOutputFileName(doc);
+      return encodeURIComponent(fileName);
+    }
+  }
+
+  _getOutputFileName(doc) {
+    var prefix = doc.kind === 'file' ? '@file-' : '';
+    var name = doc.longname.replace(/\//g, '|');
+    return `${prefix}${name}.html`;
+  }
+
+  _buildFileDocLinkHTML(doc) {
+    if (!doc) return;
+    if (!doc.meta) return;
+
+    var fileDoc;
+    if (doc.kind === 'file') {
+      fileDoc = doc;
+    } else {
+      var fileName = doc.meta.filename;
+      fileDoc = this._find({kind: 'file', name: fileName})[0];
+    }
+
+    if (!fileDoc) return;
+
+    return `<span><a href="${this._getURL(fileDoc)}">${fileDoc.name}</a></span>`;
+  }
+
+  _buildDocLinkHTML(longname, text = null, inner = false) {
+    if (typeof longname !== 'string') throw new Error(JSON.stringify(longname));
+
+    var doc = this._find({longname})[0];
+    if (!doc)  return `<span>${escape(text || longname)}</span>`;
+
+    if (doc.kind === 'external') {
       var text = doc.longname.replace(/^external:\s*/, '');
       var aTag = doc.see[0].replace(/>.*?</, `>${text}<`);
       return `<span>${aTag}</span>`;
     } else {
-      return `<span><a href="${encodeURIComponent(longname)}.html">${text}</a></span>`;
+      text = escape(text || doc.name);
+      var url = this._getURL(doc, inner);
+      if (url) {
+        return `<span><a href="${url}">${text}</a></span>`;
+      } else {
+        return `<span>${text}</span>`;
+      }
     }
+
+    // inner?
+    //if (['function', 'member', 'typedef', 'constant', 'event'].indexOf(doc.kind) !== -1) {
+    //  inner = true;
+    //  var innerFile = doc.memberof;
+    //} else {
+    //  if (inner) {
+    //    if (['class', 'interface'].indexOf(doc.kind) !== -1) {
+    //      var innerFile = doc.longname;
+    //    } else {
+    //      throw new Error('inner option is only used ith class or interface.');
+    //    }
+    //  }
+    //}
+
+    //if (inner) {
+    //  //var url = `${encodeURIComponent(innerFile)}.html#${doc.scope}-${doc.name}`;
+    //  var url = this._getURL(doc, inner);
+    //  return `<span><a href="${url}">${text}</a></span>`;
+    //} else if(doc.kind === 'external') {
+    //  var text = doc.longname.replace(/^external:\s*/, '');
+    //  var aTag = doc.see[0].replace(/>.*?</, `>${text}<`);
+    //  return `<span>${aTag}</span>`;
+    //} else {
+    //  var url = this._getURL(doc, inner);
+    //  //return `<span><a href="${encodeURIComponent(longname)}.html">${text}</a></span>`;
+    //  return `<span><a href="${url}">${text}</a></span>`;
+    //}
 
   }
 

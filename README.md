@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.org/h13i32maru/jsdoc-cloudy.svg?branch=master)](https://travis-ci.org/h13i32maru/jsdoc-cloudy)
 
 # TODO
-- @linkでmoduleにリンク晴れていない
 - extendsのヒエラルキー
 - test整理(Module1, Module1.Class1)
 - ClassDocBuilderとNamespaceDocBuilderを統一する

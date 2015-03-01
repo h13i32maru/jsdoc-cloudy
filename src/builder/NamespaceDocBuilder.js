@@ -114,6 +114,13 @@ export default class NamespaceDocBuilder extends DocBuilder {
     // experimental
     s.load('experimental', this._buildExperimentalHTML(namespaceDoc));
 
+    // see
+    var seeDocs = namespaceDoc.see;
+    s.drop('seeWrap', !seeDocs);
+    s.loop('see', seeDocs, (i, seeDoc, s)=>{
+      s.load('seeLink', seeDoc);
+    });
+
     s.drop('fileexampleDocs', !namespaceDoc.fileexamples);
     s.loop('fileexampleDoc', namespaceDoc.fileexamples, (i, fileexample, s)=>{
       s.text('fileexampleCode', fileexample);

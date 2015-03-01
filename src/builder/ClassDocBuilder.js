@@ -7,7 +7,8 @@ export default class ClassDocBuilder extends DocBuilder {
     var classDocs = this._find({kind: ['class', 'interface']});
     for (var classDoc of classDocs) {
       s.load('content', this._buildClassDoc(classDoc));
-      callback(s.html, `${classDoc.longname}.html`);
+      var fileName = this._getOutputFileName(classDoc);
+      callback(s.html, fileName);
     }
   }
 
