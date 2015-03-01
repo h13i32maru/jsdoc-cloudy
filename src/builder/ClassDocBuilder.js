@@ -29,23 +29,15 @@ export default class ClassDocBuilder extends DocBuilder {
     var protectedMethodDocs = this._find({kind: 'function', memberof: classDoc.longname, scope: 'instance', access: 'protected'});
     var publicMethodDocs = this._find({kind: 'function', memberof: classDoc.longname, scope: 'instance', access: 'public'});
 
-    var extendsClassDoc = {};
+    var extendsClassDoc;
     if (classDoc.augments) {
       extendsClassDoc = this._find({longname: classDoc.augments[0]})[0];
     }
 
-    //if (classDoc.implements) {
-    //  var implementsDocs = this._find({longname: classDoc.implements});
-    //}
-
     var s = new SpruceTemplate(this._readTemplate('class.html'));
 
     s.load('namespace', this._buildDocLinkHTML(classDoc.memberof));
-
     s.text('access', classDoc.access);
-    s.drop('extends', !extendsClassDoc.name);
-    s.text('extendsClassName', extendsClassDoc.name);
-    s.attr('extendsClassName', 'href', `${extendsClassDoc.longname}.html`);
 
     s.text('classKind', classDoc.kind);
 
@@ -55,10 +47,25 @@ export default class ClassDocBuilder extends DocBuilder {
     s.text('className', classDoc.name);
     s.load('classDesc', classDoc.classdesc);
     s.drop('fileexampleDocs', !classDoc.fileexamples);
-    s.loop('fileexampleDoc', classDoc.fileexamples, (i, fileexample, s)=>{
+    s.loop('fileexampleDoc', classDoc.fileexamples, (i, fileexample, s)=> {
       s.text('fileexampleCode', fileexample);
     });
     s.load('deprecated', this._buildDeprecatedHTML(classDoc));
+
+    // extends
+    s.drop('extendsLabel', !extendsClassDoc);
+    if (extendsClassDoc) {
+      s.load('extends', this._buildDocLinkHTML(extendsClassDoc.longname));
+    }
+
+    // extends chain
+    var extendsChain = this._buildExtendsChainHTML(classDoc);
+    var directSubclass = this._buildDirectSubclassHTML(classDoc);
+    var indirectSubclass = this._buildIndirectSubclassHTML(classDoc);
+    s.drop('extendsChainWrap', !(extendsChain + directSubclass + indirectSubclass));
+    s.load('extendsChain', extendsChain, 'append');
+    s.load('directSubclass', directSubclass, 'append');
+    s.load('indirectSubclass', indirectSubclass, 'append');
 
     // implement
     if (classDoc.implements) {
@@ -74,7 +81,7 @@ export default class ClassDocBuilder extends DocBuilder {
     // see
     var seeDocs = classDoc.see;
     if (seeDocs) {
-      s.loop('see', seeDocs, (i, seeDoc, s)=>{
+      s.loop('see', seeDocs, (i, seeDoc, s)=> {
         s.load('seeLink', seeDoc);
       });
     } else {
@@ -118,5 +125,54 @@ export default class ClassDocBuilder extends DocBuilder {
     s.load('publicMethods', this._buildFunctionDocs(publicMethodDocs, 'Public Methods'));
 
     return s;
+  }
+
+  _buildExtendsChainHTML(doc) {
+    if (!doc._custom_extends_chains) return;
+
+    var links = [];
+    for (var longname of doc._custom_extends_chains) {
+      links.push(this._buildDocLinkHTML(longname));
+    }
+    return links.join(' → ');
+
+    //while (1) {
+    //  if (!doc.augments) break;
+    //
+    //  var superClassDoc = this._find({longname: doc.augments[0]})[0];
+    //  if (superClassDoc) {
+    //    links.push(this._buildDocLinkHTML(superClassDoc.longname));
+    //    doc = superClassDoc;
+    //  } else {
+    //    links.push(this._buildDocLinkHTML(doc.augments[0]));
+    //    break;
+    //  }
+    //}
+    //
+    //if (links.length) {
+    //  links.unshift(`<span>${selfDoc.name}</span>`);
+    //}
+    //
+    //return links.reverse().join(' → ');
+  }
+
+  _buildIndirectSubclassHTML(doc) {
+    if (!doc._custom_indirect_subclasses) return;
+
+    var links = [];
+    for (var longname of doc._custom_indirect_subclasses) {
+      links.push(this._buildDocLinkHTML(longname));
+    }
+    return links.join(', ');
+  }
+
+  _buildDirectSubclassHTML(doc) {
+    if (!doc._custom_direct_subclasses) return;
+
+    var links = [];
+    for (var longname of doc._custom_direct_subclasses) {
+      links.push(this._buildDocLinkHTML(longname));
+    }
+    return links.join(', ');
   }
 }

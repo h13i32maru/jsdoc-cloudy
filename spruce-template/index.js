@@ -38,7 +38,7 @@ export default class SpruceTemplate {
     return this._options.autoClose;
   }
 
-  text(id, value) {
+  text(id, value, mode = 'write') {
     var nodes = this._nodes(id);
 
     if (this._options.autoDrop && !value) {
@@ -47,14 +47,24 @@ export default class SpruceTemplate {
       }
     } else {
       for (var node of nodes) {
-        node.textContent = value;
+        switch (mode) {
+          case 'write':
+            node.textContent = value;
+            break;
+          case 'append':
+            node.textContent += value;
+            break;
+          case 'delete':
+            node.textContent = node.textContent.replace(new RegExp(value, 'g'), '');
+            break;
+        }
       }
     }
 
     return this;
   }
 
-  load(id, spruceTemplate) {
+  load(id, spruceTemplate, mode = 'write') {
     var html = '';
     if (spruceTemplate instanceof SpruceTemplate) {
       //html = spruceTemplate._doc.body.innerHTML;
@@ -72,15 +82,27 @@ export default class SpruceTemplate {
     } else {
       for (var node of nodes) {
         node.setAttribute('data-s-loaded', 1);
-        node.textContent = '';
-        node.innerHTML = html;
+
+        switch (mode) {
+          case 'write':
+            node.textContent = '';
+            node.innerHTML = html;
+            break;
+          case 'append':
+            node.innerHTML += html;
+            break;
+          case 'delete':
+            node.innerHTML = node.innerHTML.replace(new RegExp(value, 'g'), '');
+            break;
+        }
       }
     }
 
     return this;
   }
 
-  attr(id, key, value) {
+  // todo: implement ``mode``
+  attr(id, key, value, mode = 'write') {
     var nodes = this._nodes(id);
     for (var node of nodes) {
       node.setAttribute(key, value);

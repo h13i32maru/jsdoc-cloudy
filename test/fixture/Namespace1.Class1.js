@@ -1,6 +1,26 @@
 /**
  * @class
+ * @name ClassA
+ * @extends external:XMLHttpRequest
+ */
+
+/**
+ * @classdesc this is ClassB classdesc.
+ * @class
+ * @name ClassB
+ * @extends ClassA
+ */
+
+/**
+ * @class
+ * @name ClassC
+ * @extends ClassB
+ */
+
+/**
+ * @class
  * @memberof Namespace1
+ * @extends ClassC
  */
 function Class0(){
   /**

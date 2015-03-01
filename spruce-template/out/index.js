@@ -56,6 +56,7 @@ var SpruceTemplate = (function () {
     },
     text: {
       value: function text(id, value) {
+        var mode = arguments[2] === undefined ? "write" : arguments[2];
         var nodes = this._nodes(id);
 
         if (this._options.autoDrop && !value) {
@@ -66,7 +67,17 @@ var SpruceTemplate = (function () {
         } else {
           for (var _iterator2 = nodes[Symbol.iterator](), _step2; !(_step2 = _iterator2.next()).done;) {
             var node = _step2.value;
-            node.textContent = value;
+            switch (mode) {
+              case "write":
+                node.textContent = value;
+                break;
+              case "append":
+                node.textContent += value;
+                break;
+              case "delete":
+                node.textContent = node.textContent.replace(new RegExp(value, "g"), "");
+                break;
+            }
           }
         }
 
@@ -77,6 +88,7 @@ var SpruceTemplate = (function () {
     },
     load: {
       value: function load(id, spruceTemplate) {
+        var mode = arguments[2] === undefined ? "write" : arguments[2];
         var html = "";
         if (spruceTemplate instanceof SpruceTemplate) {
           //html = spruceTemplate._doc.body.innerHTML;
@@ -96,8 +108,19 @@ var SpruceTemplate = (function () {
           for (var _iterator2 = nodes[Symbol.iterator](), _step2; !(_step2 = _iterator2.next()).done;) {
             var node = _step2.value;
             node.setAttribute("data-s-loaded", 1);
-            node.textContent = "";
-            node.innerHTML = html;
+
+            switch (mode) {
+              case "write":
+                node.textContent = "";
+                node.innerHTML = html;
+                break;
+              case "append":
+                node.innerHTML += html;
+                break;
+              case "delete":
+                node.innerHTML = node.innerHTML.replace(new RegExp(value, "g"), "");
+                break;
+            }
           }
         }
 
@@ -107,7 +130,10 @@ var SpruceTemplate = (function () {
       configurable: true
     },
     attr: {
+
+      // todo: implement ``mode``
       value: function attr(id, key, value) {
+        var mode = arguments[3] === undefined ? "write" : arguments[3];
         var nodes = this._nodes(id);
         for (var _iterator = nodes[Symbol.iterator](), _step; !(_step = _iterator.next()).done;) {
           var node = _step.value;
@@ -177,9 +203,9 @@ var SpruceTemplate = (function () {
     drop: {
       value: function drop(id) {
         var isDrop = arguments[1] === undefined ? true : arguments[1];
-        if (!isDrop) return;
-
-        var nodes = this._nodes(id);
+        if (!isDrop) {
+          return;
+        }var nodes = this._nodes(id);
         for (var _iterator = nodes[Symbol.iterator](), _step; !(_step = _iterator.next()).done;) {
           var node = _step.value;
           node.parentElement.removeChild(node);
@@ -192,9 +218,9 @@ var SpruceTemplate = (function () {
     },
     close: {
       value: function close() {
-        if (!this._doc) return this;
-
-        this._html = this._takeHTML();
+        if (!this._doc) {
+          return this;
+        }this._html = this._takeHTML();
         if (this._doc.parentWindow) this._doc.parentWindow.close();
         this._doc = null;
         return this;

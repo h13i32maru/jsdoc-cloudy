@@ -14,6 +14,7 @@ export default class DocBuilder {
     this._resolveLink();
     this._resolveCallback();
     this._resolveSourceCode();
+    this._resolveExtendsChain();
   }
 
   /**
@@ -223,6 +224,53 @@ export default class DocBuilder {
     }
 
     this._data.__RESOLVED_SOURCE_CODE__ = true;
+  }
+
+  _resolveExtendsChain() {
+    if (this._data.__RESOLVED_EXTENDS_CHAIN__) return;
+
+    var extendsChain = (doc) => {
+      var selfDoc = doc;
+
+      // traverse super class.
+      var chains = [];
+      while (1) {
+        if (!doc.augments) break;
+
+        var superClassDoc = this._find({longname: doc.augments[0]})[0];
+        if (superClassDoc) {
+          chains.push(superClassDoc.longname);
+          doc = superClassDoc;
+        } else {
+          chains.push(doc.augments[0]);
+          break;
+        }
+      }
+
+      if (chains.length) {
+        // direct subclass
+        var superClassDoc = this._find({longname: chains[0]})[0];
+        if (!superClassDoc._custom_direct_subclasses) superClassDoc._custom_direct_subclasses = [];
+        superClassDoc._custom_direct_subclasses.push(selfDoc.longname);
+
+        // indirect subclass
+        for (var superClassLongname of chains.slice(1)) {
+          var superClassDoc = this._find({longname: superClassLongname})[0];
+          if (!superClassDoc._custom_indirect_subclasses) superClassDoc._custom_indirect_subclasses = [];
+          superClassDoc._custom_indirect_subclasses.push(selfDoc.longname);
+        }
+
+        // extends chains
+        selfDoc._custom_extends_chains = chains.reverse();
+      }
+    };
+
+    var docs = this._find({kind: ['class', 'interface'], augments: {isUndefined: false}});
+    for (var doc of docs) {
+      extendsChain(doc);
+    }
+
+    this._data.__RESOLVED_EXTENDS_CHAIN__ = true;
   }
 
   _find(...cond) {
