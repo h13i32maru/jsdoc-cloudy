@@ -94,7 +94,7 @@ export default class DocBuilder {
         cond = {kind: 'typedef', memberof: doc.longname, _custom_is_callback: false};
         break;
       case 'constructor':
-        cond = {kind: 'class', longname: doc.longname};
+        cond = {kind: ['class', 'interface'], longname: doc.longname};
         break;
       default:
         cond = {kind: kind, memberof: doc.longname};
@@ -117,6 +117,7 @@ export default class DocBuilder {
 
   _buildSummaryHTML(doc, kind, title, isInstanceScope = false) {
     var accessDocs = this._findAccessDocs(doc, kind, isInstanceScope);
+    var innerLink = kind === 'constructor';
     var html = '';
     for (var accessDoc of accessDocs) {
       var docs = accessDoc[1];
@@ -125,7 +126,7 @@ export default class DocBuilder {
       var prefix = docs[0].scope === 'static' ? 'Static ' : '';
       var title = `${prefix}${accessDoc[0]} ${title}`;
 
-      var result = this._buildSummaryDoc(docs, title);
+      var result = this._buildSummaryDoc(docs, title, innerLink);
       if (result) {
         html += result.html;
       }
@@ -134,14 +135,14 @@ export default class DocBuilder {
     return html;
   }
 
-  _buildSummaryDoc(docs, title) {
+  _buildSummaryDoc(docs, title, innerLink) {
     if (docs.length === 0) return;
 
     var s = new SpruceTemplate(this._readTemplate('summary.html'));
 
     s.text('title', title);
     s.loop('target', docs, (i, doc, s)=>{
-      s.load('name', this._buildDocLinkHTML(doc.longname));
+      s.load('name', this._buildDocLinkHTML(doc.longname, null, innerLink));
       s.load('signature', this._buildSignatureHTML(doc));
       s.load('description', shorten(doc));
       s.text('virtual', doc.virtual ? 'virtual' : '');
@@ -159,113 +160,19 @@ export default class DocBuilder {
     return s;
   }
 
-  _getURL(doc, inner = false) {
-    // inner?
-    if (['function', 'member', 'typedef', 'constant', 'event'].indexOf(doc.kind) !== -1) {
-      inner = true;
-      var parentLongname = doc.memberof;
-    } else {
-      if (inner) {
-        if (['class', 'interface'].indexOf(doc.kind) !== -1) {
-          var parentLongname = doc.longname;
-        } else {
-          throw new Error('inner option is only used ith class or interface.');
-        }
-      }
-    }
-
-    if (inner) {
-      var parentDoc = this._find({longname: parentLongname})[0];
-      if (!parentDoc) return;
-      var fileName = this._getOutputFileName(parentDoc);
-      return `${encodeURIComponent(fileName)}#${doc.scope}-${doc.name}`;
-    } else {
-      var fileName = this._getOutputFileName(doc);
-      return encodeURIComponent(fileName);
-    }
-  }
-
-  _getOutputFileName(doc) {
-    var prefix = doc.kind === 'file' ? '@file-' : '';
-    var name = doc.longname.replace(/\//g, '|');
-    return `${prefix}${name}.html`;
-  }
-
-  _buildFileDocLinkHTML(doc) {
-    if (!doc) return;
-    if (!doc.meta) return;
-
-    var fileDoc;
-    if (doc.kind === 'file') {
-      fileDoc = doc;
-    } else {
-      var fileName = doc.meta.filename;
-      fileDoc = this._find({kind: 'file', name: fileName})[0];
-    }
-
-    if (!fileDoc) return;
-
-    return `<span><a href="${this._getURL(fileDoc)}">${fileDoc.name}</a></span>`;
-  }
-
-  _buildDocLinkHTML(longname, text = null, inner = false) {
-    if (typeof longname !== 'string') throw new Error(JSON.stringify(longname));
-
-    var doc = this._find({longname})[0];
-    if (!doc)  return `<span>${escape(text || longname)}</span>`;
-
-    if (doc.kind === 'external') {
-      var text = doc.longname.replace(/^external:\s*/, '');
-      var aTag = doc.see[0].replace(/>.*?</, `>${text}<`);
-      return `<span>${aTag}</span>`;
-    } else {
-      text = escape(text || doc.name);
-      var url = this._getURL(doc, inner);
-      if (url) {
-        return `<span><a href="${url}">${text}</a></span>`;
-      } else {
-        return `<span>${text}</span>`;
-      }
-    }
-  }
-
-  _buildSignatureHTML(doc) {
-    // call signature
-    var callSignatures = [];
-    if (doc.params) {
-      for (var param of doc.params) {
-        var paramName = param.name;
-        if (paramName.indexOf('.') !== -1) continue;
-
-        var types = [];
-        for (var typeName of param.type.names) {
-          types.push(this._buildDocLinkHTML(typeName));
-        }
-
-        callSignatures.push(`${paramName}: ${types.join(' | ')}`);
-      }
-    }
-
-    // return signature
-    var returnSignatures = [];
-    if (doc.returns) {
-      for (var typeName of doc.returns[0].type.names) {
-        returnSignatures.push(this._buildDocLinkHTML(typeName));
-      }
-    }
-
-    // type signature
-    var typeSignatures = [];
-    if (doc.type) {
-      for (var typeName of doc.type.names) {
-        typeSignatures.push(this._buildDocLinkHTML(typeName));
-      }
-    }
-
+  _buildDetailHTML(doc, kind, title, isInstanceScope = false) {
+    var accessDocs = this._findAccessDocs(doc, kind, isInstanceScope);
     var html = '';
-    if (callSignatures.length) html = `(${callSignatures.join(', ')})`;
-    if (returnSignatures.length) html = `${html}: ${returnSignatures.join(' | ')}`;
-    if (typeSignatures.length) html = `${html}: ${typeSignatures.join(' | ')}`;
+    for (var accessDoc of accessDocs) {
+      var docs = accessDoc[1];
+      if (!docs.length) continue;
+
+      var prefix = docs[0].scope === 'static' ? 'Static ' : '';
+      var title = `${prefix}${accessDoc[0]} ${title}`;
+
+      var result = this._buildDetailDocs(docs, title);
+      if (result) html += result.html;
+    }
 
     return html;
   }
@@ -402,7 +309,123 @@ export default class DocBuilder {
       });
     });
 
-    return s.html;
+    return s;
+  }
+
+  _getURL(doc, inner = false) {
+    // inner?
+    if (['function', 'member', 'typedef', 'constant', 'event'].indexOf(doc.kind) !== -1) {
+      inner = true;
+      var parentLongname = doc.memberof;
+    } else {
+      if (inner) {
+        if (['class', 'interface'].indexOf(doc.kind) !== -1) {
+          var parentLongname = doc.longname;
+        } else {
+          throw new Error('inner option is only used ith class or interface.');
+        }
+      }
+    }
+
+    if (inner) {
+      var parentDoc = this._find({longname: parentLongname})[0];
+      if (!parentDoc) return;
+      var fileName = this._getOutputFileName(parentDoc);
+      return `${encodeURIComponent(fileName)}#${doc.scope}-${doc.name}`;
+    } else {
+      var fileName = this._getOutputFileName(doc);
+      return encodeURIComponent(fileName);
+    }
+  }
+
+  _getOutputFileName(doc) {
+    var prefix = doc.kind === 'file' ? '@file-' : '';
+    var name = doc.longname.replace(/\//g, '|');
+    return `${prefix}${name}.html`;
+  }
+
+  _buildFileDocLinkHTML(doc) {
+    if (!doc) return;
+    if (!doc.meta) return;
+
+    var fileDoc;
+    if (doc.kind === 'file') {
+      fileDoc = doc;
+    } else {
+      var fileName = doc.meta.filename;
+      fileDoc = this._find({kind: 'file', name: fileName})[0];
+    }
+
+    if (!fileDoc) return;
+
+    return `<span><a href="${this._getURL(fileDoc)}">${fileDoc.name}</a></span>`;
+  }
+
+  _buildDocLinkHTML(longname, text = null, inner = false) {
+    if (typeof longname !== 'string') throw new Error(JSON.stringify(longname));
+
+    var doc = this._find({longname})[0];
+    if (!doc)  return `<span>${escape(text || longname)}</span>`;
+
+    if (doc.kind === 'external') {
+      var text = doc.longname.replace(/^external:\s*/, '');
+      var aTag = doc.see[0].replace(/>.*?</, `>${text}<`);
+      return `<span>${aTag}</span>`;
+    } else {
+      text = escape(text || doc.name);
+      var url = this._getURL(doc, inner);
+      if (url) {
+        return `<span><a href="${url}">${text}</a></span>`;
+      } else {
+        return `<span>${text}</span>`;
+      }
+    }
+  }
+
+  _buildSignatureHTML(doc) {
+    // call signature
+    var callSignatures = [];
+    if (doc.params) {
+      for (var param of doc.params) {
+        var paramName = param.name;
+        if (paramName.indexOf('.') !== -1) continue;
+
+        var types = [];
+        for (var typeName of param.type.names) {
+          types.push(this._buildDocLinkHTML(typeName));
+        }
+
+        callSignatures.push(`${paramName}: ${types.join(' | ')}`);
+      }
+    }
+
+    // return signature
+    var returnSignatures = [];
+    if (doc.returns) {
+      for (var typeName of doc.returns[0].type.names) {
+        returnSignatures.push(this._buildDocLinkHTML(typeName));
+      }
+    }
+
+    // type signature
+    var typeSignatures = [];
+    if (doc.type) {
+      for (var typeName of doc.type.names) {
+        typeSignatures.push(this._buildDocLinkHTML(typeName));
+      }
+    }
+
+    // callback is not need type. because type is always function.
+    if (doc._custom_is_callback) {
+      typeSignatures = [];
+    }
+
+    var html = '';
+    if (callSignatures.length) html = `(${callSignatures.join(', ')})`;
+    if (returnSignatures.length) html = `${html}: ${returnSignatures.join(' | ')}`;
+    if (typeSignatures.length) html = `${html}: ${typeSignatures.join(' | ')}`;
+
+    return html;
   }
 
   _buildProperties(properties, title = 'Properties:') {

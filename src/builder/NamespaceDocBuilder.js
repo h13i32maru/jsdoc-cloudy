@@ -13,54 +13,7 @@ export default class NamespaceDocBuilder extends DocBuilder {
     }
   }
 
-
   _buildNamespaceDoc(namespaceDoc) {
-    var memberof = namespaceDoc.longname;
-
-    var publicNamespaceDocs = this._find({kind: 'namespace', memberof, access: 'public'});
-    var protectedNamespaceDocs = this._find({kind: 'namespace', memberof, access: 'protected'});
-    var privateNamespaceDocs = this._find({kind: 'namespace', memberof, access: 'private'});
-
-    var publicMethodDocs = this._find({kind: 'function', memberof, access: 'public'});
-    var protectedMethodDocs = this._find({kind: 'function', memberof, access: 'protected'});
-    var privateMethodDocs = this._find({kind: 'function', memberof, access: 'private'});
-
-    var publicMemberDocs = this._find({kind: 'member', memberof, access: 'public', isEnum: {isUndefined: true}});
-    var protectedMemberDocs = this._find({kind: 'member', memberof, access: 'protected', isEnum: {isUndefined: true}});
-    var privateMemberDocs = this._find({kind: 'member', memberof, access: 'private', isEnum: {isUndefined: true}});
-
-    var publicClassDocs = this._find({kind: 'class', memberof, access: 'public'});
-    var protectedClassDocs = this._find({kind: 'class', memberof, access: 'protected'});
-    var privateClassDocs = this._find({kind: 'class', memberof, access: 'private'});
-
-    var publicInterfaceDocs = this._find({kind: 'interface', memberof, access: 'public'});
-    var protectedInterfaceDocs = this._find({kind: 'interface', memberof, access: 'protected'});
-    var privateInterfaceDocs = this._find({kind: 'interface', memberof, access: 'private'});
-
-    var publicTypedefDocs = this._find({kind: 'typedef', memberof, access: 'public', _custom_is_callback: false});
-    var protectedTypedefDocs = this._find({kind: 'typedef', memberof, access: 'protected', _custom_is_callback: false});
-    var privateTypedefDocs = this._find({kind: 'typedef', memberof, access: 'private', _custom_is_callback: false});
-
-    var publicEventDocs = this._find({kind: 'event', memberof, access: 'public'});
-    var protectedEventDocs = this._find({kind: 'event', memberof, access: 'protected'});
-    var privateEventDocs = this._find({kind: 'event', memberof, access: 'private'});
-
-    var publicMixinDocs = this._find({kind: 'mixin', memberof, access: 'public'});
-    var protectedMixinDocs = this._find({kind: 'mixin', memberof, access: 'protected'});
-    var privateMixinDocs = this._find({kind: 'mixin', memberof, access: 'private'});
-
-    var publicConstDocs = this._find({kind: 'constant', memberof, access: 'public'});
-    var protectedConstDocs = this._find({kind: 'constant', memberof, access: 'protected'});
-    var privateConstDocs = this._find({kind: 'constant', memberof, access: 'private'});
-
-    var publicEnumDocs = this._find({kind: 'member', memberof, access: 'public', isEnum: true});
-    var protectedEnumDocs = this._find({kind: 'member', memberof, access: 'protected', isEnum: true});
-    var privateEnumDocs = this._find({kind: 'member', memberof, access: 'private', isEnum: true});
-
-    var publicCallbackDocs = this._find({kind: 'typedef', memberof, access: 'public', _custom_is_callback: true});
-    var protectedCallbackDocs = this._find({kind: 'typedef', memberof, access: 'protected', _custom_is_callback: true});
-    var privateCallbackDocs = this._find({kind: 'typedef', memberof, access: 'private', _custom_is_callback: true});
-
     var s = new SpruceTemplate(this._readTemplate('namespace.html'));
 
     s.load('parentNamespace', this._buildDocLinkHTML(namespaceDoc.memberof));
@@ -150,33 +103,13 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.load('enumSummary', this._buildSummaryHTML(namespaceDoc, 'enum', 'Enums'), 'append');
     s.load('callbackSummary', this._buildSummaryHTML(namespaceDoc, 'callback', 'callback'), 'append');
 
-    s.load('publicMemberDocs', this._buildDetailDocs(publicMemberDocs, 'Public Members'));
-    s.load('protectedMemberDocs', this._buildDetailDocs(protectedMemberDocs, 'Protected Members'));
-    s.load('privateMemberDocs', this._buildDetailDocs(privateMemberDocs, 'Private Members'));
-
-    s.load('publicMethodDocs', this._buildDetailDocs(publicMethodDocs, 'Public Methods'));
-    s.load('protectedMethodDocs', this._buildDetailDocs(protectedMethodDocs, 'Protected Methods'));
-    s.load('privateMethodDocs', this._buildDetailDocs(privateMethodDocs, 'Private Methods'));
-
-    s.load('publicTypedefDocs', this._buildDetailDocs(publicTypedefDocs, 'Public Typedefs'));
-    s.load('protectedTypedefDocs', this._buildDetailDocs(protectedTypedefDocs, 'Protected Typedefs'));
-    s.load('privateTypedefDocs', this._buildDetailDocs(privateTypedefDocs, 'Private Typedefs'));
-
-    s.load('publicEventDocs', this._buildDetailDocs(publicEventDocs, 'Public Events'));
-    s.load('protectedEventDocs', this._buildDetailDocs(protectedEventDocs, 'Protected Events'));
-    s.load('privateEventDocs', this._buildDetailDocs(privateEventDocs, 'Private Events'));
-
-    s.load('publicConstDocs', this._buildDetailDocs(publicConstDocs, 'Public Constants'));
-    s.load('protectedConstDocs', this._buildDetailDocs(protectedConstDocs, 'Protected Constants'));
-    s.load('privateConstDocs', this._buildDetailDocs(privateConstDocs, 'Private Constants'));
-
-    s.load('publicEnumDocs', this._buildDetailDocs(publicEnumDocs, 'Public Enums'));
-    s.load('protectedEnumDocs', this._buildDetailDocs(protectedEnumDocs, 'Protected Enums'));
-    s.load('privateEnumDocs', this._buildDetailDocs(privateEnumDocs, 'Private Enums'));
-
-    s.load('publicCallbackDocs', this._buildDetailDocs(publicCallbackDocs, 'Public Callbacks'));
-    s.load('protectedCallbackDocs', this._buildDetailDocs(protectedCallbackDocs, 'Protected Callbacks'));
-    s.load('privateCallbackDocs', this._buildDetailDocs(privateCallbackDocs, 'Private Callbacks'));
+    s.load('memberDetails', this._buildDetailHTML(namespaceDoc, 'member', 'Members'));
+    s.load('methodDetails', this._buildDetailHTML(namespaceDoc, 'function', 'Methods'));
+    s.load('typedefDetails', this._buildDetailHTML(namespaceDoc, 'typedef', 'Typedefs'));
+    s.load('eventDetails', this._buildDetailHTML(namespaceDoc, 'event', 'Events'));
+    s.load('constDetails', this._buildDetailHTML(namespaceDoc, 'constant', 'Constants'));
+    s.load('enumDetails', this._buildDetailHTML(namespaceDoc, 'enum', 'Enums'));
+    s.load('callbackDetails', this._buildDetailHTML(namespaceDoc, 'callback', 'Callbacks'));
 
     s.drop('sourceCodeWrap', !namespaceDoc._custom_source_code);
     s.text('sourceCode', namespaceDoc._custom_source_code);

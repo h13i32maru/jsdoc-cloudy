@@ -13,22 +13,6 @@ export default class ClassDocBuilder extends DocBuilder {
   }
 
   _buildClassDoc(classDoc) {
-    var staticPrivateMemberDocs = this._find({kind: 'member', memberof: classDoc.longname, scope: 'static', access: 'private'});
-    var staticProtectedMemberDocs = this._find({kind: 'member', memberof: classDoc.longname, scope: 'static', access: 'protected'});
-    var staticPublicMemberDocs = this._find({kind: 'member', memberof: classDoc.longname, scope: 'static', access: 'public'});
-
-    var staticPrivateMethodDocs = this._find({kind: 'function', memberof: classDoc.longname, scope: 'static', access: 'private'});
-    var staticProtectedMethodDocs = this._find({kind: 'function', memberof: classDoc.longname, scope: 'static', access: 'protected'});
-    var staticPublicMethodDocs = this._find({kind: 'function', memberof: classDoc.longname, scope: 'static', access: 'public'});
-
-    var privateMemberDocs = this._find({kind: 'member', memberof: classDoc.longname, scope: 'instance', access: 'private'});
-    var protectedMemberDocs = this._find({kind: 'member', memberof: classDoc.longname, scope: 'instance', access: 'protected'});
-    var publicMemberDocs = this._find({kind: 'member', memberof: classDoc.longname, scope: 'instance', access: 'public'});
-
-    var privateMethodDocs = this._find({kind: 'function', memberof: classDoc.longname, scope: 'instance', access: 'private'});
-    var protectedMethodDocs = this._find({kind: 'function', memberof: classDoc.longname, scope: 'instance', access: 'protected'});
-    var publicMethodDocs = this._find({kind: 'function', memberof: classDoc.longname, scope: 'instance', access: 'public'});
-
     var extendsClassDoc;
     if (classDoc.augments) {
       extendsClassDoc = this._find({longname: classDoc.augments[0]})[0];
@@ -94,23 +78,11 @@ export default class ClassDocBuilder extends DocBuilder {
     s.load('memberSummary', this._buildSummaryHTML(classDoc, 'member', 'Members', true), 'append');
     s.load('methodSummary', this._buildSummaryHTML(classDoc, 'function', 'Methods', true), 'append');
 
-    s.load('staticPrivateMembers', this._buildDetailDocs(staticPrivateMemberDocs, 'Static Private Members'));
-    s.load('staticProtectedMembers', this._buildDetailDocs(staticProtectedMemberDocs, 'Static Protected Members'));
-    s.load('staticPublicMembers', this._buildDetailDocs(staticPublicMemberDocs, 'Static Public Members'));
-
-    s.load('staticPrivateMethods', this._buildDetailDocs(staticPrivateMethodDocs, 'Static Private Methods'));
-    s.load('staticProtectedMethods', this._buildDetailDocs(staticProtectedMethodDocs, 'Static Protected Methods'));
-    s.load('staticPublicMethods', this._buildDetailDocs(staticPublicMethodDocs, 'Static Public Methods'));
-
-    s.load('constructor', this._buildDetailDocs([classDoc], 'Constructor'));
-
-    s.load('privateMembers', this._buildDetailDocs(privateMemberDocs, 'Private Members'));
-    s.load('protectedMembers', this._buildDetailDocs(protectedMemberDocs, 'Protected Members'));
-    s.load('publicMembers', this._buildDetailDocs(publicMemberDocs, 'Public Members'));
-
-    s.load('privateMethods', this._buildDetailDocs(privateMethodDocs, 'Private Methods'));
-    s.load('protectedMethods', this._buildDetailDocs(protectedMethodDocs, 'Protected Methods'));
-    s.load('publicMethods', this._buildDetailDocs(publicMethodDocs, 'Public Methods'));
+    s.load('staticMemberDetails', this._buildDetailHTML(classDoc, 'member', 'Members'));
+    s.load('staticMethodDetails', this._buildDetailHTML(classDoc, 'function', 'Methods'));
+    s.load('constructorDetails', this._buildDetailHTML(classDoc, 'constructor', 'Constructors'));
+    s.load('memberDetails', this._buildDetailHTML(classDoc, 'member', 'Members', true));
+    s.load('methodDetails', this._buildDetailHTML(classDoc, 'function', 'Methods', true));
 
     return s;
   }
