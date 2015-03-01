@@ -2,13 +2,11 @@
 
 # TODO
 - test整理(Module1, Module1.Class1)
-- ClassDocBuilderとNamespaceDocBuilderを統一する
-- classsummaryとnamespacesummmaryも統一できそう
 - home実装
 - readme実装
 - private, protectedの表示制御
 - {function(a: number)}に対応できる？
-- search identifier
+- search word in document
 - show raw jsdoc comment
 
 # Not Support

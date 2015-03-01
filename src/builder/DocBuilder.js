@@ -78,7 +78,7 @@ export default class DocBuilder {
     return s;
   }
 
-  _findAccessDocs(doc, kind, isInstanceScope) {
+  _findAccessDocs(doc, kind, isStaticScope) {
     var cond;
     switch (kind) {
       case 'member':
@@ -101,10 +101,10 @@ export default class DocBuilder {
         break;
     }
 
-    if (isInstanceScope) {
-      cond.scope = 'instance';
+    if (isStaticScope) {
+      cond.scope = 'static';
     } else {
-      cond.scope = {'!is': 'instance'};
+      cond.scope = {'!is': 'static'};
     }
 
     var publicDocs = this._find(cond, {access: 'public'});
@@ -115,18 +115,23 @@ export default class DocBuilder {
     return accessDocs;
   }
 
-  _buildSummaryHTML(doc, kind, title, isInstanceScope = false) {
-    var accessDocs = this._findAccessDocs(doc, kind, isInstanceScope);
+  _buildSummaryHTML(doc, kind, title, isStaticScope = false) {
+    var accessDocs = this._findAccessDocs(doc, kind, isStaticScope);
     var innerLink = kind === 'constructor';
     var html = '';
     for (var accessDoc of accessDocs) {
       var docs = accessDoc[1];
       if (!docs.length) continue;
 
-      var prefix = docs[0].scope === 'static' ? 'Static ' : '';
-      var title = `${prefix}${accessDoc[0]} ${title}`;
+      var prefix = '';
+      if (kind === 'constructor') {
+        prefix = '';
+      } else if (docs[0].scope === 'static') {
+        prefix = 'Static ';
+      }
+      var _title = `${prefix}${accessDoc[0]} ${title}`;
 
-      var result = this._buildSummaryDoc(docs, title, innerLink);
+      var result = this._buildSummaryDoc(docs, _title, innerLink);
       if (result) {
         html += result.html;
       }
@@ -160,17 +165,22 @@ export default class DocBuilder {
     return s;
   }
 
-  _buildDetailHTML(doc, kind, title, isInstanceScope = false) {
-    var accessDocs = this._findAccessDocs(doc, kind, isInstanceScope);
+  _buildDetailHTML(doc, kind, title, isStaticScope = false) {
+    var accessDocs = this._findAccessDocs(doc, kind, isStaticScope);
     var html = '';
     for (var accessDoc of accessDocs) {
       var docs = accessDoc[1];
       if (!docs.length) continue;
 
-      var prefix = docs[0].scope === 'static' ? 'Static ' : '';
-      var title = `${prefix}${accessDoc[0]} ${title}`;
+      var prefix = '';
+      if (kind === 'constructor') {
+        prefix = '';
+      } else if (docs[0].scope === 'static') {
+        prefix = 'Static ';
+      }
+      var _title = `${prefix}${accessDoc[0]} ${title}`;
 
-      var result = this._buildDetailDocs(docs, title);
+      var result = this._buildDetailDocs(docs, _title);
       if (result) html += result.html;
     }
 

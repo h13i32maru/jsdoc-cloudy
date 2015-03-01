@@ -4,10 +4,7 @@ import path from 'path';
 import StaticFileBuilder from './builder/StaticFileBuilder.js';
 import IndexDocBuilder from './builder/IndexDocBuilder.js';
 import ReadmeDocBuilder from './builder/ReadmeDocBuilder.js';
-import ClassDocBuilder from './builder/ClassDocBuilder.js';
-import NamespaceDocBuilder from './builder/NamespaceDocBuilder.js';
-import TypedefDocBuilder from './builder/TypedefDocBuilder.js';
-import ModuleDocBuilder from './builder/ModuleDocBuilder.js';
+import ObjectDocBuilder from './builder/ObjectDocBuilder.js';
 
 /**
  * @param {TaffyDB} data see http://www.taffydb.com/
@@ -27,9 +24,6 @@ exports.publish = function(data, config, tutorials) {
 
   new IndexDocBuilder(data, config).exec(writeHTML);
   new ReadmeDocBuilder(data, config).exec(writeHTML);
-  new ClassDocBuilder(data).exec(writeHTML);
-  new NamespaceDocBuilder(data).exec(writeHTML);
-  //new TypedefDocBuilder(data).exec(writeHTML);
-  //new ModuleDocBuilder(data).exec(writeHTML);
+  new ObjectDocBuilder(data).exec(writeHTML);
   new StaticFileBuilder().exec(copy);
 };
