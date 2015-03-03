@@ -189,14 +189,18 @@ export default class DocResolver {
       if (chains.length) {
         // direct subclass
         var superClassDoc = this._builder._find({longname: chains[0]})[0];
-        if (!superClassDoc._custom_direct_subclasses) superClassDoc._custom_direct_subclasses = [];
-        superClassDoc._custom_direct_subclasses.push(selfDoc.longname);
+        if (superClassDoc) {
+          if (!superClassDoc._custom_direct_subclasses) superClassDoc._custom_direct_subclasses = [];
+          superClassDoc._custom_direct_subclasses.push(selfDoc.longname);
+        }
 
         // indirect subclass
         for (var superClassLongname of chains.slice(1)) {
           var superClassDoc = this._builder._find({longname: superClassLongname})[0];
-          if (!superClassDoc._custom_indirect_subclasses) superClassDoc._custom_indirect_subclasses = [];
-          superClassDoc._custom_indirect_subclasses.push(selfDoc.longname);
+          if (superClassDoc) {
+            if (!superClassDoc._custom_indirect_subclasses) superClassDoc._custom_indirect_subclasses = [];
+            superClassDoc._custom_indirect_subclasses.push(selfDoc.longname);
+          }
         }
 
         // extends chains
