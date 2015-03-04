@@ -42,7 +42,7 @@ export default class NamespaceDocBuilder extends DocBuilder {
 
     // self
     s.text('name', doc.name);
-    s.load('description', doc.description);
+    s.load('description', doc.classdesc || doc.description);
     s.load('deprecated', this._buildDeprecatedHTML(doc));
     s.load('experimental', this._buildExperimentalHTML(doc));
 
@@ -73,7 +73,7 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.load('mixinSummary', this._buildSummaryHTML(doc, 'mixin', 'Mixin'), 'append');
     s.load('staticMemberSummary', this._buildSummaryHTML(doc, 'member', 'Members', true), 'append');
     s.load('staticMethodSummary', this._buildSummaryHTML(doc, 'function', 'Methods', true), 'append');
-    s.load('constructorSummary', this._buildSummaryHTML(doc, 'constructor', 'Constructor', true), 'append');
+    s.load('constructorSummary', this._buildSummaryHTML(doc, 'constructor', 'Constructor'), 'append');
     s.load('memberSummary', this._buildSummaryHTML(doc, 'member', 'Members'), 'append');
     s.load('methodSummary', this._buildSummaryHTML(doc, 'function', 'Methods'), 'append');
     s.load('typedefSummary', this._buildSummaryHTML(doc, 'typedef', 'Typedefs'), 'append');
@@ -85,7 +85,7 @@ export default class NamespaceDocBuilder extends DocBuilder {
     // detail
     s.load('staticMemberDetails', this._buildDetailHTML(doc, 'member', 'Members', true));
     s.load('staticMethodDetails', this._buildDetailHTML(doc, 'function', 'Methods', true));
-    s.load('constructorDetails', this._buildDetailHTML(doc, 'constructor', 'Constructors', true));
+    s.load('constructorDetails', this._buildDetailHTML(doc, 'constructor', 'Constructors'));
     s.load('memberDetails', this._buildDetailHTML(doc, 'member', 'Members'));
     s.load('methodDetails', this._buildDetailHTML(doc, 'function', 'Methods'));
     s.load('typedefDetails', this._buildDetailHTML(doc, 'typedef', 'Typedefs'));

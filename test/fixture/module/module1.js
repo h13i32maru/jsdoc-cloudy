@@ -32,6 +32,11 @@
  * @see {@link module:module/module1~event:Event1}
  * @see {@link external:XMLHttpRequest}
  * @see {@link module/module1.js}
+ * @see {@link module:module/module1~Class1#member1}
+ * @see {@link module:module/module1~Class1#method1}
+ * @see {@link module:module/module1~Class1.staticMember1}
+ * @see {@link module:module/module1~Class1.staticMethod1}
+ * @requires module:module/module1
  * @requires module:module/module1~Namespace1
  * @requires module:module/module1~Class1
  * @requires module:module/module1~Interface1
@@ -43,13 +48,17 @@
  * @requires module:module/module1~CONSTANT1
  * @requires module:module/module1~Event1
  * @requires external:XMLHttpRequest
+ * @requires module:module/module1~Class1#member1
+ * @requires module:module/module1~Class1#method1
+ * @requires module:module/module1~Class1.staticMember1
+ * @requires module:module/module1~Class1.staticMethod1
  * @author foo <foo@example.com>
  * @author bar <http://twitter.com/bar>
  * @copyright this is module/module1 copyright
  * this is second line.
  * @license MIT
- * @todo this is 1st todo.
- * @todo this is 2nd todo.
+ * @todo this is module/module1 1st todo.
+ * @todo this is module/module1 2nd todo.
  */
 
 /**
@@ -74,12 +83,12 @@ var Namespace3;
  * this is Class1 desc.
  * @class
  * @mixes module:module/module1~Mixin1
- * @mixes module:module/module1~Mixin2
+ * @mixes external:XMLHttpRequest
  * @classdesc this is Class1 classdesc.
  * this is second line.
  * @extends module:module/module1~Class2
  * @extends external:XMLHttpRequest
- * @implements module:module1/foo.Interface1
+ * @implements module:module/module1~Interface1
  * @implements external:XMLHttpRequest
  * @param {?(string|number)} [p1=10] this is p1 desc.
  * @param {!(string|number)} [p2=10] this is p2 desc.
@@ -109,6 +118,11 @@ function Class1(p1, p2, p3){}
  * @see {@link module:module/module1~Event1}
  * @see {@link external:XMLHttpRequest}
  * @see {@link module/module1.js}
+ * @see {@link module:module/module1~Class1#member1}
+ * @see {@link module:module/module1~Class1#method1}
+ * @see {@link module:module/module1~Class1.staticMember1}
+ * @see {@link module:module/module1~Class1.staticMethod1}
+ * @requires module:module/module1
  * @requires module:module/module1~Namespace1
  * @requires module:module/module1~Class1
  * @requires module:module/module1~Interface1
@@ -120,30 +134,49 @@ function Class1(p1, p2, p3){}
  * @requires module:module/module1~CONSTANT1
  * @requires module:module/module1~Event1
  * @requires external:XMLHttpRequest
+ * @requires module:module/module1~Class1#member1
+ * @requires module:module/module1~Class1#method1
+ * @requires module:module/module1~Class1.staticMember1
+ * @requires module:module/module1~Class1.staticMethod1
  * @author foo <foo@example.com>
  * @author bar <http://twitter.com/bar>
  * @copyright this is method1 copyright
  * this is second line.
  * @license MIT
- * @todo this is 1st todo.
- * @todo this is 2nd todo.
+ * @todo this is method1 1st todo.
+ * @todo this is method1 2nd todo.
  *
  * @param {?(string|number)} [p1=10] this is p1 desc.
  * @param {!(string|number)} [p2=10] this is p2 desc.
  * @param {Object} p3 this is p3 desc.
  * @param {string[]} p3.p4 this is p4 desc.
+ * @param {module:module/module1~Class1} p3.p5 this is desc.
+ * @param {module:module/module1~member1} p3.p6 this is desc.
+ * @param {module:module/module1~Class1#member1} p3.p6 this is desc.
+ * @param {module:module/module1~Class1.staticMember1} p3.p7 this is desc.
+ *
  * @return {Object} this is return desc.
- * @property {number} [return.p1=10] this is p1 desc.
- * @property {Object} return.p2 this is p2 desc.
- * @property {string} return.p2.p3 this is p3 desc.
+ * @property {?(string|number)} [p1=10] this is p1 desc.
+ * @property {!(string|number)} [p2=10] this is p2 desc.
+ * @property {Object} p3 this is p3 desc.
+ * @property {string[]} p3.p4 this is p4 desc.
+ * @property {module:module/module1~Class1} p3.p5 this is desc.
+ * @property {module:module/module1~member1} p3.p6 this is desc.
+ * @property {module:module/module1~Class1#member1} p3.p6 this is desc.
+ * @property {module:module/module1~Class1.staticMember1} p3.p7 this is desc.
+ *
  * @throws {Error} this is throws Error desc.
  * @throws {module:module/module1~Class1} this is throws Class1 desc.
  * @throws {external:ReferenceError} this is throws ReferenceError desc.
+ *
  * @virtual
+ *
  * @fires module:module/module1~event:Event1
  * @fires module:module/module1.Event2
+ *
  * @listens module:module/module1.Event1
  * @listens module:module/module1.Event2
+ *
  * @this module:module/module1~Class1
  */
 Class1.prototype.method1 = function(p1, p2, p3){};
@@ -164,10 +197,14 @@ Class1.prototype.method3 = function(){};
 /**
  * this is member1 desc.
  * @type {Object}
- * @property {?(string|number)} [member1.p1=10] this is p1 desc.
- * @property {!(string|number)} [member1.p2=10] this is p2 desc.
- * @property {Object} member1.p3 this is p3 desc.
- * @property {string[]} member1.p3.p4 this is p4 desc.
+ * @property {?(string|number)} [p1=10] this is p1 desc.
+ * @property {!(string|number)} [p2=10] this is p2 desc.
+ * @property {Object} p3 this is p3 desc.
+ * @property {string[]} p3.p4 this is p4 desc.
+ * @property {module:module/module1~Class1} p3.p5 this is desc.
+ * @property {module:module/module1~member1} p3.p6 this is desc.
+ * @property {module:module/module1~Class1#member1} p3.p6 this is desc.
+ * @property {module:module/module1~Class1.staticMember1} p3.p7 this is desc.
  * @readonly
  * @default {p1: 10, p2: 10, p3: {p4: ["A", "B"]}
  */
@@ -304,12 +341,7 @@ var member3;
 
 /**
  * this is CONSTANT1 desc.
- * @constant {Object}
- * @property {?(string|number)} [CONSTANT1.p1=10] this is p1 desc.
- * @property {!(string|number)} [CONSTANT1.p2=10] this is p2 desc.
- * @property {Object} CONSTANT1.p3 this is p3 desc.
- * @property {string[]} CONSTANT1.p3.p4 this is p4 desc.
- * @default {p1: 10, p2: 10, p3: {p4: ["A", "B"]}
+ * @constant {number}
  */
 var CONSTANT1;
 
@@ -328,8 +360,6 @@ var CONSTANT3;
 /**
  * this is Enum1 desc.
  * @enum {Object}
- * @property {number} p1 this is p1 desc.
- * @property {number} p2 this is p2 desc.
  */
 var Enum1;
 
@@ -348,10 +378,6 @@ var Enum3;
 /**
  * this is Typedef1 desc.
  * @typedef {Object} Typedef1
- * @property {?(string|number)} [member1.p1=10] this is p1 desc.
- * @property {!(string|number)} [member1.p2=10] this is p2 desc.
- * @property {Object} member1.p3 this is p3 desc.
- * @property {string[]} member1.p3.p4 this is p4 desc.
  */
 
 /**
@@ -365,20 +391,8 @@ var Enum3;
  */
 
 /**
- * this is callback1 desc.
+ * this is Callback1 desc.
  * @callback Callback1
- * @param {?(string|number)} [p1=10] this is p1 desc.
- * @param {!(string|number)} [p2=10] this is p2 desc.
- * @param {Object} p3 this is p3 desc.
- * @param {string[]} p3.p4 this is p4 desc.
- * @return {Object} this is return desc.
- * @property {number} [return.p1=10] this is p1 desc.
- * @property {Object} return.p2 this is p2 desc.
- * @property {string} return.p2.p3 this is p3 desc.
- * @throws {Error} this is throws Error desc.
- * @throws {module:module/module1~Class1} this is throws Class1 desc.
- * @throws {external:ReferenceError} this is throws ReferenceError desc.
- * @this module:module/module1~Class1
  */
 
 /**
@@ -395,10 +409,6 @@ var Enum3;
  * this is Event1 desc.
  * @event Event1
  * @type {Object}
- * @property {?(string|number)} [Event1.p1=10] this is p1 desc.
- * @property {!(string|number)} [Event1.p2=10] this is p2 desc.
- * @property {Object} Event1.p3 this is p3 desc.
- * @property {string[]} Event1.p3.p4 this is p4 desc.
  */
 
 /**

@@ -15,14 +15,20 @@ export function readDoc(fileName) {
 }
 
 export function find(doc, selector, callback) {
-  let node = doc.querySelector(selector);
-  callback(node);
+  let nodes = doc.querySelectorAll(selector);
+  if (!nodes.length) assert(false, `node is not found. selector = "${selector}"`);
+  if (nodes.length !== 1) assert(false, `many nodes are found. selector = "${selector}"`);
+
+  callback(nodes[0]);
 }
 
 function getActual(doc, selector, attr) {
   let node;
   if (selector) {
-    node = doc.querySelector(selector);
+    let nodes = doc.querySelectorAll(selector);
+    if (!nodes.length) assert(false, `node is not found. selector = "${selector}"`);
+    if (nodes.length !== 1) assert(false, `many nodes are found. selector = "${selector}"`);
+    node = nodes[0];
   } else {
     node = doc
   }
