@@ -23,9 +23,13 @@
     "espower-loader": "",
     "jsdoc": "",
     "http-server": "",
-    "escape-html": "",
-    "fs-extra": "",
-    "jsdom": ""
+    "cheerio": ""
   },
+
+  "dependencies": {
+    "escape-html": "",
+    "fs-extra": ""
+  },
+
   "main": "out/src/publish.js"
 }

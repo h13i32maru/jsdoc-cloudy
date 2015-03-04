@@ -1,47 +1,42 @@
 import _assert from 'power-assert';
 import fs from 'fs';
 import path from 'path';
-import jsdom from 'jsdom';
+import cheerio from 'cheerio';
 
 export function readDoc(fileName) {
   let html = fs.readFileSync(path.resolve(__dirname, `../fixture/${fileName}`), {encoding: 'utf-8'});
-  let doc = jsdom.jsdom(html, {
-    features: {
-      FetchExternalResources: [],
-      ProcessExternalResources: false
-    }
-  });
-  return doc;
+  let $ = cheerio.load(html);
+  return $('html').first();
 }
 
-export function find(doc, selector, callback) {
-  let nodes = doc.querySelectorAll(selector);
-  if (!nodes.length) assert(false, `node is not found. selector = "${selector}"`);
-  if (nodes.length !== 1) assert(false, `many nodes are found. selector = "${selector}"`);
+export function find($el, selector, callback) {
+  let $els = $el.find(selector);
+  if (!$els.length) assert(false, `node is not found. selector = "${selector}"`);
+  if ($els.length !== 1) assert(false, `many nodes are found. selector = "${selector}"`);
 
-  callback(nodes[0]);
+  callback($els.first());
 }
 
-function getActual(doc, selector, attr) {
-  let node;
+function getActual($el, selector, attr) {
+  let $target;
   if (selector) {
-    let nodes = doc.querySelectorAll(selector);
-    if (!nodes.length) assert(false, `node is not found. selector = "${selector}"`);
-    if (nodes.length !== 1) assert(false, `many nodes are found. selector = "${selector}"`);
-    node = nodes[0];
+    let $els = $el.find(selector);
+    if (!$els.length) assert(false, `node is not found. selector = "${selector}"`);
+    if ($els.length !== 1) assert(false, `many nodes are found. selector = "${selector}"`);
+    $target = $els.first();
   } else {
-    node = doc
+    $target = $el
   }
 
-  if (!node) {
+  if (!$target.length) {
     assert(false, `node is not found. selector = "${selector}"`);
   }
 
   let actual;
   if (attr) {
-    actual = node.getAttribute(attr);
+    actual = $target.attr(attr);
   } else {
-    actual = node.textContent.replace(/\s+/g, ' ');
+    actual = $target.text().replace(/\s+/g, ' ');
   }
 
   if (actual === null) {
@@ -51,13 +46,13 @@ function getActual(doc, selector, attr) {
   return actual;
 }
 
-_assert.includes = function(doc, selector, expect, attr) {
-  let actual = getActual(doc, selector, attr);
+_assert.includes = function($el, selector, expect, attr) {
+  let actual = getActual($el, selector, attr);
   assert(actual.includes(expect) === true, `selector: "${selector}"`);
 };
 
-_assert.notIncludes = function(doc, selector, expect, attr) {
-  let actual = getActual(doc, selector, attr);
+_assert.notIncludes = function($el, selector, expect, attr) {
+  let actual = getActual($el, selector, attr);
   assert(actual.includes(expect) === false, `selector: "${selector}"`);
 };
 

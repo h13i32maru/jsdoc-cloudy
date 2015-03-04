@@ -3,6 +3,7 @@
 # TODO
 - home実装
 - readme実装
+- fixme潰す
 - js, cssを外部から読み込めるようにする
 - private, protectedの表示制御
 - {function(a: number)}に対応できる？
