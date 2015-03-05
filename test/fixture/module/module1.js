@@ -46,7 +46,7 @@
  * @requires module:module/module1~Typedef1
  * @requires module:module/module1~Callback1
  * @requires module:module/module1~CONSTANT1
- * @requires module:module/module1~Event1
+ * @requires module:module/module1~event:Event1
  * @requires external:XMLHttpRequest
  * @requires module:module/module1~Class1#member1
  * @requires module:module/module1~Class1#method1
@@ -115,7 +115,7 @@ function Class1(p1, p2, p3){}
  * @see {@link module:module/module1~Typedef1}
  * @see {@link module:module/module1~Callback1}
  * @see {@link module:module/module1~CONSTANT1}
- * @see {@link module:module/module1~Event1}
+ * @see {@link module:module/module1~event:Event1}
  * @see {@link external:XMLHttpRequest}
  * @see {@link module/module1.js}
  * @see {@link module:module/module1~Class1#member1}
@@ -132,7 +132,7 @@ function Class1(p1, p2, p3){}
  * @requires module:module/module1~Typedef1
  * @requires module:module/module1~Callback1
  * @requires module:module/module1~CONSTANT1
- * @requires module:module/module1~Event1
+ * @requires module:module/module1~event:Event1
  * @requires external:XMLHttpRequest
  * @requires module:module/module1~Class1#member1
  * @requires module:module/module1~Class1#method1
@@ -172,10 +172,10 @@ function Class1(p1, p2, p3){}
  * @virtual
  *
  * @fires module:module/module1~event:Event1
- * @fires module:module/module1.Event2
+ * @fires module:module/module1~event:Event2
  *
- * @listens module:module/module1.Event1
- * @listens module:module/module1.Event2
+ * @listens module:module/module1~event:Event1
+ * @listens module:module/module1~event:Event2
  *
  * @this module:module/module1~Class1
  */
