@@ -101,18 +101,6 @@ export default class NamespaceDocBuilder extends DocBuilder {
     return s;
   }
 
-  _buildDocsLinkHTML(longnames, text = null, inner = false) {
-    if (!longnames) return;
-    if (!longnames.length) return;
-
-    var links = [];
-    for (var longname of longnames) {
-      links.push(this._buildDocLinkHTML(longname, text, inner));
-    }
-
-    return links.join(', ');
-  }
-
   _buildVariationHTML(doc) {
     var variationDocs = this._find({memberof: doc.memberof, name: doc.name});
     var html = [];

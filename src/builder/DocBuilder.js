@@ -206,6 +206,7 @@ export default class DocBuilder {
       s.load('deprecated', this._buildDeprecatedHTML(doc));
       s.load('experimental', this._buildExperimentalHTML(doc));
       s.text('readonly', doc.readonly ? 'readonly' : '');
+      s.load('require', this._buildDocsLinkHTML(doc.requires), 'append');
 
       if (doc.kind === 'function') {
         s.load('properties', this._buildProperties(doc.params, 'Params:'));
@@ -390,6 +391,18 @@ export default class DocBuilder {
         return `<span>${text}</span>`;
       }
     }
+  }
+
+  _buildDocsLinkHTML(longnames, text = null, inner = false) {
+    if (!longnames) return;
+    if (!longnames.length) return;
+
+    var links = [];
+    for (var longname of longnames) {
+      links.push(this._buildDocLinkHTML(longname, text, inner));
+    }
+
+    return links.join(', ');
   }
 
   _buildSignatureHTML(doc) {

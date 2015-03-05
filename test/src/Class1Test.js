@@ -322,7 +322,7 @@ describe('module/module1~Class1: ', ()=> {
           assert.includes(doc, 'h4[data-s="see"]:nth-of-type(18) a', encode('module:module|module1~Class1.html') + '#static-staticMethod1', 'href');
         });
 
-        // fixme: test for requires
+        assert.includes(doc, '[data-s="require"]', 'module/module1, Namespace1, Class1, Interface1, Mixin1, method1, member1, Typedef1, Callback1, CONSTANT1, Event1, XMLHttpRequest, member1, method1, staticMember1, staticMethod1');
 
         assert.includes(doc, '[data-s="author"]', 'foo, bar');
         assert.includes(doc, '[data-s="author"] span:nth-of-type(1) a', 'mailto:foo@example.com', 'href');
