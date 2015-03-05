@@ -11,6 +11,8 @@ export default class DocResolver {
     this._resolveGlobalNamespace();
     this._resolveIgnore();
     this._resolveCustomTag();
+    this._resolveEventDoc();
+    this._resolveRequires();
     this._resolveAccess();
     this._resolveLink();
     this._resolveCallback();
@@ -214,5 +216,77 @@ export default class DocResolver {
     }
 
     this._data.__RESOLVED_EXTENDS_CHAIN__ = true;
+  }
+
+  _resolveEventDoc() {
+    if (this._builder._data.__RESOLVED_EVENT_DOC__) return;
+
+    // JSDoc 3.3.0-beta1 (Wed, 21 Jan 2015 17:41:43 GMT)
+    // jsdoc has bug for `event`. for example, write jsdoc under comment.
+    //
+    // /**
+    //  * @module module1
+    //  */
+    // /**
+    //  * @event Event1
+    //  */
+    //
+    // correctly is {longname: 'module:module1~event:Event1}
+    // but {longname: 'event:Event1'}
+    // so, I patch to avoid this bug.
+
+    var docs = this._builder._find({kind: 'event'});
+    for (var doc of docs) {
+      var longname = doc.longname;
+      var memberof = doc.memberof;
+
+      if (longname.indexOf(memberof) === 0) continue;
+
+      var parentDoc = this._builder._find({longname: memberof})[0];
+      switch (parentDoc.kind) {
+        case 'module':
+          if (doc.scope === 'inner') {
+            doc.longname = `${memberof}~${longname}`;
+          } else {
+            doc.longname = `${memberof}.${longname}`;
+          }
+          break;
+        default:
+          doc.longname = `${memberof}.${longname}`;
+          break;
+      }
+    }
+
+    this._builder._data.__RESOLVED_EVENT_DOC__ = true;
+  }
+
+  _resolveRequires() {
+    if (this._builder._data.__RESOLVED_REQUIRES__) return;
+
+    // JSDoc 3.3.0-beta1 (Wed, 21 Jan 2015 17:41:43 GMT)
+    // jsdoc has bug for `@requires`. for example, write jsdoc under comment.
+    //
+    // /**
+    //  * @module module1
+    //  * @requires external:XMLHttpRequest
+    //  */
+    //
+    // correctly is {requires: ['external:XMLHttpRequest']}
+    // but {requires: ['module:external:XMLHttpRequest']}
+    // so, I patch to avoid this bug.
+
+    var docs = this._builder._find({requires: {isUndefined: false}});
+    for (var doc of docs) {
+      var requires = [];
+      for (var require of doc.requires) {
+        if (require.indexOf('module:external:') === 0) {
+          require = require.replace('module:', '');
+        }
+        requires.push(require);
+      }
+      doc.requires = requires;
+    }
+
+    this._builder._data.__RESOLVED_REQUIRES__ = true;
   }
 }
