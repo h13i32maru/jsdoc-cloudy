@@ -10,7 +10,7 @@ export default class ReadmeDocBuilder extends DocBuilder {
   exec(callback) {
     var s = this._buildLayoutDoc();
     s.load('content', this._buildReadmeDoc());
-    callback(s.html, 'readme.html');
+    callback(s.html, '@readme.html');
   }
 
   _buildReadmeDoc() {

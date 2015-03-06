@@ -10,7 +10,7 @@ describe('nav: ', ()=> {
       assert.includes(doc, 'h1 a:nth-of-type(1)', './', 'href');
 
       assert.includes(doc, 'h1 a:nth-of-type(2)', 'README');
-      assert.includes(doc, 'h1 a:nth-of-type(2)', 'readme.html', 'href');
+      assert.includes(doc, 'h1 a:nth-of-type(2)', '@readme.html', 'href');
     });
   });
 
