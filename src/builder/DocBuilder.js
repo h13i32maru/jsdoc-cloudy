@@ -79,26 +79,35 @@ export default class DocBuilder {
   }
 
   _findAccessDocs(doc, kind, isStaticScope) {
+    if (kind === 'constructor' && !doc) {
+      throw new Error('doc must be specified if kind === constructor');
+    }
+
+    var memberof = doc ? doc.longname : null;
     var cond;
     switch (kind) {
       case 'member':
-        cond = {kind: 'member', memberof: doc.longname, isEnum: {isUndefined: true}};
+        cond = {kind: 'member', memberof, isEnum: {isUndefined: true}};
         break;
       case 'enum':
-        cond = {kind: 'member', memberof: doc.longname, isEnum: true};
+        cond = {kind: 'member', memberof, isEnum: true};
         break;
       case 'callback':
-        cond = {kind: 'typedef', memberof: doc.longname, _custom_is_callback: true};
+        cond = {kind: 'typedef', memberof, _custom_is_callback: true};
         break;
       case 'typedef':
-        cond = {kind: 'typedef', memberof: doc.longname, _custom_is_callback: false};
+        cond = {kind: 'typedef', memberof, _custom_is_callback: false};
         break;
       case 'constructor':
-        cond = {kind: ['class', 'interface'], longname: doc.longname};
+        cond = {kind: ['class', 'interface'], longname: memberof};
         break;
       default:
-        cond = {kind: kind, memberof: doc.longname};
+        cond = {kind: kind, memberof};
         break;
+    }
+
+    if (!cond.memberof) {
+      delete cond.memberof;
     }
 
     if (isStaticScope) {
@@ -131,7 +140,7 @@ export default class DocBuilder {
       }
       var _title = `${prefix}${accessDoc[0]} ${title}`;
 
-      var result = this._buildSummaryDoc(docs, _title, innerLink);
+      var result = this._buildSummaryDoc(docs, _title, innerLink, kind);
       if (result) {
         html += result.html;
       }
@@ -140,7 +149,7 @@ export default class DocBuilder {
     return html;
   }
 
-  _buildSummaryDoc(docs, title, innerLink) {
+  _buildSummaryDoc(docs, title, innerLink, kind) {
     if (docs.length === 0) return;
 
     var s = new SpruceTemplate(this._readTemplate('summary.html'));
@@ -149,7 +158,7 @@ export default class DocBuilder {
     s.loop('target', docs, (i, doc, s)=>{
       s.load('name', this._buildDocLinkHTML(doc.longname, null, innerLink));
       s.load('signature', this._buildSignatureHTML(doc));
-      s.load('description', shorten(doc));
+      s.load('description', shorten(doc, kind === 'constructor'));
       s.text('virtual', doc.virtual ? 'virtual' : '');
       s.text('override', doc.override ? 'override' : '');
       s.text('readonly', doc.readonly ? 'readonly' : '');

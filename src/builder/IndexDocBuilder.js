@@ -16,18 +16,21 @@ export default class IndexDocBuilder extends DocBuilder {
 
   _buildIndexDoc() {
     var indexInfo = this._getIndexInfo();
-    var classDocs = this._find({kind: 'class'});
-    var namespaceDocs = this._find({kind: 'namespace'});
 
     var s = new SpruceTemplate(this._readTemplate('index.html'));
 
     s.text('title', indexInfo.title);
-    s.text('version', indexInfo.version);
+    s.text('version', indexInfo.version, 'append');
     s.text('url', indexInfo.url);
     s.attr('url', 'href', indexInfo.url);
     s.text('description', indexInfo.desc);
-    //s.load('summaryClassDocs', this._buildSummaryDocs(classDocs));
-    //s.load('summaryNamespaceDocs', this._buildSummaryDocs(namespaceDocs));
+
+    s.load('moduleSummary', this._buildSummaryHTML(null, 'module', 'Module Summary'), 'append');
+    s.load('namespaceSummary', this._buildSummaryHTML(null, 'namespace', 'Namespace Summary'), 'append');
+    s.load('classSummary', this._buildSummaryHTML(null, 'class', 'Class Summary'), 'append');
+    s.load('interfaceSummary', this._buildSummaryHTML(null, 'interface', 'Interface Summary'), 'append');
+    s.load('mixinSummary', this._buildSummaryHTML(null, 'mixin', 'Mixin Summary'), 'append');
+    s.load('fileSummary', this._buildSummaryHTML(null, 'file', 'File Summary'), 'append');
 
     return s;
   }

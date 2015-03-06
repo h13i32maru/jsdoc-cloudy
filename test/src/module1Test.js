@@ -94,7 +94,7 @@ describe('module/module1: ', ()=> {
     find(doc, '[data-s="classSummary"]', (doc)=>{
       // public
       find(doc, 'table[data-s="summary"]:nth-of-type(1)', (doc)=>{
-        assert.includes(doc, '[data-s="target"]:nth-of-type(1)', 'public Class1(p1: string | number, p2: string | number, p3: Object) this is Class1 desc.');
+        assert.includes(doc, '[data-s="target"]:nth-of-type(1)', 'public Class1(p1: string | number, p2: string | number, p3: Object) this is Class1 classdesc.');
         assert.includes(doc, '[data-s="target"]:nth-of-type(1) a', encode('module:module|module1~Class1.html'), 'href');
       });
       // protected

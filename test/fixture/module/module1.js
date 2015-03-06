@@ -1,5 +1,5 @@
 /**
- * @file this is module/module1.js desc
+ * @file this is module/module1.js desc.
  * this is second line.
  */
 
