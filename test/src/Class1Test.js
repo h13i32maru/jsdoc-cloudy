@@ -164,7 +164,14 @@ describe('module/module1~Class1: ', ()=> {
       // public
       find(doc, '[data-s="detail"]:nth-of-type(1)', (doc)=>{
         assert.includes(doc, '#inner-Class1', 'public Class1(p1: string | number, p2: string | number, p3: Object)');
-        assert.includes(doc, '[data-s="description"]', 'this is Class1 desc.');
+        assert.includes(doc, '#inner-Class1 + [data-s="description"]', 'this is Class1 desc.');
+
+        find(doc, '#inner-Class1 ~ [data-s="properties"]', (doc)=>{
+          assert.includes(doc, '[data-s="property"]:nth-of-type(1)', 'p1 string | number optional default: 10 nullable: true this is p1 desc.');
+          assert.includes(doc, '[data-s="property"]:nth-of-type(2)', 'p2 string | number optional default: 10 nullable: false this is p2 desc.');
+          assert.includes(doc, '[data-s="property"]:nth-of-type(3)', 'p3 Object this is p3 desc.');
+          assert.includes(doc, '[data-s="property"]:nth-of-type(4)', 'p3.p4 Array.<string> this is p4 desc.');
+        });
       });
     })
   });

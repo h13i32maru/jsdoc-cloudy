@@ -254,7 +254,7 @@ export default class DocBuilder {
       s.load('see', this._buildDocsLinkHTML(doc.see), 'append');
       s.load('todo', this._buildDocsLinkHTML(doc.todo), 'append');
 
-      if (doc.kind === 'function') {
+      if (['function', 'class', 'interface'].indexOf(doc.kind) !== -1) {
         s.load('properties', this._buildProperties(doc.params, 'Params:'));
       } else {
         s.load('properties', this._buildProperties(doc.properties, 'Properties:'));

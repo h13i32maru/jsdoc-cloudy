@@ -30,7 +30,6 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.load('variation', this._buildVariationHTML(doc), 'append');
 
     // extends chain
-    //s.drop('extendsChainWrap', !(extendsChain + directSubclass + indirectSubclass));
     s.load('extends', this._buildDocsLinkHTML(doc.augments, null, false, ', '), 'append');
     s.load('extendsChain', extendsChain, 'append');
     s.load('directSubclass', directSubclass, 'append');
