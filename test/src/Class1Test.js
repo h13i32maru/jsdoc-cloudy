@@ -120,7 +120,7 @@ describe('module/module1~Class1: ', ()=> {
       });
       // protected
       find(doc, 'table[data-s="summary"]:nth-of-type(2)', (doc)=>{
-        assert.includes(doc, '[data-s="target"]:nth-of-type(1)', 'protected override method2 this is Class2#method2 desc.');
+        assert.includes(doc, '[data-s="target"]:nth-of-type(1)', 'protected method2 this is method2 desc.');
         assert.notIncludes(doc, '[data-s="target"]:nth-of-type(1)', 'this is second line.');
       });
       // private
@@ -128,6 +128,56 @@ describe('module/module1~Class1: ', ()=> {
         assert.includes(doc, '[data-s="target"]:nth-of-type(1)', 'private method3 this is method3 desc.');
         assert.notIncludes(doc, '[data-s="target"]:nth-of-type(1)', 'this is second line.');
       });
+    });
+  });
+
+  it('has inherited summary.', ()=>{
+    find(doc, '[data-s="inheritedSummary"] [data-s="summary"]:nth-of-type(1)', (doc)=>{
+      assert.includes(doc, '[data-s="target"]:nth-of-type(1)', 'public staticMemberY1');
+      assert.includes(doc, '[data-s="target"]:nth-of-type(1) a', encode('module:module|module1~Class3.html') + '#static-staticMemberY1', 'href');
+
+      assert.includes(doc, '[data-s="target"]:nth-of-type(2)', 'protected staticMemberY2');
+      assert.includes(doc, '[data-s="target"]:nth-of-type(2) a', encode('module:module|module1~Class3.html') + '#static-staticMemberY2', 'href');
+    });
+
+    find(doc, '[data-s="inheritedSummary"] [data-s="summary"]:nth-of-type(2)', (doc)=>{
+      assert.includes(doc, '[data-s="target"]:nth-of-type(3)', 'public staticMethodX1');
+      assert.includes(doc, '[data-s="target"]:nth-of-type(3) a', encode('module:module|module1~Class2.html') + '#static-staticMethodX1', 'href');
+
+      assert.includes(doc, '[data-s="target"]:nth-of-type(4)', 'protected staticMethodX2');
+      assert.includes(doc, '[data-s="target"]:nth-of-type(4) a', encode('module:module|module1~Class2.html') + '#static-staticMethodX2', 'href');
+    });
+
+    find(doc, '[data-s="inheritedSummary"] [data-s="summary"]:nth-of-type(3)', (doc)=>{
+      assert.includes(doc, '[data-s="target"]:nth-of-type(1)', 'public memberXX1');
+      assert.includes(doc, '[data-s="target"]:nth-of-type(1) a', encode('module:module|module1~Interface1.html') + '#instance-memberXX1', 'href');
+
+      assert.includes(doc, '[data-s="target"]:nth-of-type(2)', 'protected memberXX2');
+      assert.includes(doc, '[data-s="target"]:nth-of-type(2) a', encode('module:module|module1~Interface1.html') + '#instance-memberXX2', 'href');
+    });
+
+    find(doc, '[data-s="inheritedSummary"] [data-s="summary"]:nth-of-type(4)', (doc)=>{
+      assert.includes(doc, '[data-s="target"]:nth-of-type(3)', 'public methodYY1');
+      assert.includes(doc, '[data-s="target"]:nth-of-type(3) a', encode('module:module|module1~Interface2.html') + '#instance-methodYY1', 'href');
+
+      assert.includes(doc, '[data-s="target"]:nth-of-type(4)', 'protected methodYY2');
+      assert.includes(doc, '[data-s="target"]:nth-of-type(4) a', encode('module:module|module1~Interface2.html') + '#instance-methodYY2', 'href');
+    });
+
+    find(doc, '[data-s="inheritedSummary"] [data-s="summary"]:nth-of-type(6)', (doc)=>{
+      assert.includes(doc, '[data-s="target"]:nth-of-type(1)', 'public memberXXX1');
+      assert.includes(doc, '[data-s="target"]:nth-of-type(1) a', encode('module:module|module1~Mixin1.html') + '#static-memberXXX1', 'href');
+
+      assert.includes(doc, '[data-s="target"]:nth-of-type(2)', 'protected memberXXX2');
+      assert.includes(doc, '[data-s="target"]:nth-of-type(2) a', encode('module:module|module1~Mixin1.html') + '#static-memberXXX2', 'href');
+    });
+
+    find(doc, '[data-s="inheritedSummary"] [data-s="summary"]:nth-of-type(7)', (doc)=>{
+      assert.includes(doc, '[data-s="target"]:nth-of-type(3)', 'public methodYYY1');
+      assert.includes(doc, '[data-s="target"]:nth-of-type(3) a', encode('module:module|module1~Mixin2.html') + '#static-methodYYY1', 'href');
+
+      assert.includes(doc, '[data-s="target"]:nth-of-type(4)', 'protected methodYYY2');
+      assert.includes(doc, '[data-s="target"]:nth-of-type(4) a', encode('module:module|module1~Mixin2.html') + '#static-methodYYY2', 'href');
     });
   });
 
@@ -375,9 +425,7 @@ describe('module/module1~Class1: ', ()=> {
       });
       // protected
       find(doc, '[data-s="detail"]:nth-of-type(2)', (doc)=>{
-        assert.includes(doc, '#instance-method2', 'protected override method2');
-        assert.includes(doc, '[data-s="inherit"]', 'method2');
-        assert.includes(doc, '[data-s="inherit"] a', encode('module:module|module1~Class2.html') + '#instance-method2', 'href');
+        assert.includes(doc, '#instance-method2', 'protected method2');
       });
       // private
       find(doc, '[data-s="detail"]:nth-of-type(3)', (doc)=>{

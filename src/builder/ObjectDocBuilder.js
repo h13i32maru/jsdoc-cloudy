@@ -71,6 +71,8 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.load('enumSummary', this._buildSummaryHTML(doc, 'enum', 'Enums'), 'append');
     s.load('callbackSummary', this._buildSummaryHTML(doc, 'callback', 'callback'), 'append');
 
+    s.load('inheritedSummary', this._buildInheritedSummaryHTML(doc), 'append');
+
     // detail
     s.load('staticMemberDetails', this._buildDetailHTML(doc, 'member', 'Members', true));
     s.load('staticMethodDetails', this._buildDetailHTML(doc, 'function', 'Methods', true));
@@ -133,5 +135,32 @@ export default class NamespaceDocBuilder extends DocBuilder {
       links.push(this._buildDocLinkHTML(longname));
     }
     return links.join(', ');
+  }
+
+  _buildInheritedSummaryHTML(doc) {
+    if (['class', 'interface'].indexOf(doc.kind) === -1) return;
+
+    let longnames = [
+      ...doc._custom_extends_chains || [],
+      ...doc.implements || [],
+      ...doc._custom_indirect_implements || [],
+      ...doc.mixes || [],
+      ...doc._custom_indirect_mixes || []
+    ];
+
+    let html = [];
+    for (let longname of longnames) {
+      let superDoc = this._find({longname })[0];
+
+      let targetDocs = this._orderedFind('scope desc, kind desc, access desc', {memberof: longname, inherits: {isUndefined: true}, mixed: {isUndefined: true}});
+      let title = `From ${superDoc.kind} ${this._buildDocLinkHTML(longname, longname)}`;
+      let result = this._buildSummaryDoc(targetDocs, '----------', false, superDoc.kind);
+      if (result) {
+        result.load('title', title);
+        html.push(result.html);
+      }
+    }
+
+    return html.join('\n');
   }
 }

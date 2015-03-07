@@ -184,7 +184,6 @@ Class1.prototype.method1 = function(p1, p2, p3){};
 /**
  * this is method2 desc. this is second line.
  * @protected
- * @override
  */
 Class1.prototype.method2 = function(){};
 
@@ -265,12 +264,19 @@ Class1.staticMember3 = null;
  * @mixes module:module/module1~Mixin2
  */
 function Class2(){}
+Class2.prototype.methodX1 = function(){};
+/** @protected */
+Class2.prototype.methodX2 = function(){};
+Class2.prototype.memberX1 = 0;
+/** @protected */
+Class2.prototype.memberX2 = 0;
+Class2.staticMethodX1 = function(){};
+/** @protected */
+Class2.staticMethodX2 = function(){};
+Class2.staticMemberX1 = 0;
+/** @protected */
+Class2.staticMemberX2 = 0;
 
-/**
- * this is Class2#method2 desc. this is second line.
- * @protected
- */
-Class2.prototype.method2 = function(){};
 
 /**
  * @class
@@ -280,42 +286,90 @@ Class2.prototype.method2 = function(){};
  * @mixes module:module/module1~Mixin3
  */
 function Class3(){}
+Class3.prototype.methodY1 = function(){};
+/** @protected */
+Class3.prototype.methodY2 = function(){};
+Class3.prototype.memberY1 = 1;
+/** @protected */
+Class3.prototype.memberY2 = 1;
+Class3.staticMethodY1 = function(){};
+/** @protected */
+Class3.staticMethodY2 = function(){};
+Class3.staticMemberY1 = 0;
+/** @protected */
+Class3.staticMemberY2 = 0;
 
 /**
  * this is Interface1 desc.
  * @interface
  */
 function Interface1(){}
+Interface1.prototype.methodXX1 = function(){};
+/** @protected */
+Interface1.prototype.methodXX2 = function(){};
+Interface1.prototype.memberXX1 = 1;
+/** @protected */
+Interface1.prototype.memberXX2 = 1;
 
 /**
  * @interface
  * @protected
  */
 function Interface2(){}
+Interface2.prototype.methodYY1 = function(){};
+/** @protected */
+Interface2.prototype.methodYY2 = function(){};
+Interface2.prototype.memberYY1 = 1;
+/** @protected */
+Interface2.prototype.memberYY2 = 1;
 
 /**
  * @interface
  * @private
  */
 function Interface3(){}
+Interface3.prototype.methodZZ1 = function(){};
+/** @protected */
+Interface3.prototype.methodZZ2 = function(){};
+Interface3.prototype.memberZZ1 = 1;
+/** @protected */
+Interface3.prototype.memberZZ2 = 1;
 
 /**
  * this is Mixin1 desc.
  * @mixin
  */
 var Mixin1;
+Mixin1.methodXXX1 = function(){};
+/** @protected */
+Mixin1.methodXXX2 = function(){};
+Mixin1.memberXXX1 = 1;
+/** @protected */
+Mixin1.memberXXX2 = 1;
 
 /**
  * @mixin
  * @protected
  */
 var Mixin2;
+Mixin2.methodYYY1 = function(){};
+/** @protected */
+Mixin2.methodYYY2 = function(){};
+Mixin2.memberYYY1 = 1;
+/** @protected */
+Mixin2.memberYYY2 = 1;
 
 /**
  * @mixin
  * @private
  */
 var Mixin3;
+Mixin3.methodZZZ1 = function(){};
+/** @protected */
+Mixin3.methodZZZ2 = function(){};
+Mixin3.memberZZZ1 = 1;
+/** @protected */
+Mixin3.memberZZZ2 = 1;
 
 /**
  * this is method1 desc.

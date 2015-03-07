@@ -194,6 +194,10 @@ table.summary td p {
   margin-bottom: 0;
 }
 
+.inherited-summary thead a {
+  color: white;
+}
+
 .member, .method {
   margin-bottom: 24px;
 }

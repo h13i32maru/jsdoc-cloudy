@@ -29,13 +29,21 @@ export default class DocBuilder {
   }
 
   _find(...cond) {
+    return this._orderedFind(null, ...cond);
+  }
+
+  _orderedFind(order, ...cond) {
     let data = this._data(...cond);
 
     if (!this._option.private) {
       data = data.filter({access: {'!is': 'private'}});
     }
 
-    return data.order('name asec').map(v => v);
+    if (order) {
+      return data.order(order + ', name asec').map(v => v);
+    } else {
+      return data.order('name asec').map(v => v);
+    }
   }
 
   _readTemplate(fileName) {
@@ -145,9 +153,11 @@ export default class DocBuilder {
       cond.scope = {'!is': 'static'};
     }
 
-    var publicDocs = this._find(cond, {access: 'public'});
-    var protectedDocs = this._find(cond, {access: 'protected'});
-    var privateDocs = this._find(cond, {access: 'private'});
+    let excludeInherited = {inherits: {isUndefined: true}, mixed: {isUndefined: true}};
+
+    var publicDocs = this._find(cond, {access: 'public'}, excludeInherited);
+    var protectedDocs = this._find(cond, {access: 'protected'}, excludeInherited);
+    var privateDocs = this._find(cond, {access: 'private'}, excludeInherited);
     var accessDocs = [['Public', publicDocs], ['Protected', protectedDocs], ['Private', privateDocs]];
 
     return accessDocs;

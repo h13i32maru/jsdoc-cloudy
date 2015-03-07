@@ -37,10 +37,7 @@ export default class DocResolver {
   _resolveAccess() {
     if (this._data.__RESOLVED_ACCESS__) return;
 
-    var docs = this._builder._find({access: {isUndefined: true}});
-    for (var doc of docs) {
-      doc.access = 'public';
-    }
+    this._builder._data({access: {isUndefined: true}}).update({access: 'public'});
 
     this._data.__RESOLVED_ACCESS__ = true;
   }
