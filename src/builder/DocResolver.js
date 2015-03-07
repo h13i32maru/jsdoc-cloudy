@@ -169,6 +169,8 @@ export default class DocResolver {
     if (this._data.__RESOLVED_EXTENDS_CHAIN__) return;
 
     var extendsChain = (doc) => {
+      if (!doc.augments) return;
+
       var selfDoc = doc;
 
       // traverse super class.
@@ -226,9 +228,51 @@ export default class DocResolver {
       }
     };
 
-    var docs = this._builder._find({kind: ['class', 'interface'], augments: {isUndefined: false}});
+    var implemented = (doc) =>{
+      var selfDoc = doc;
+
+      // direct implemented (like direct subclass)
+      for (var superClassLongname of selfDoc.implements || []) {
+        var superClassDoc = this._builder._find({longname: superClassLongname})[0];
+        if (!superClassDoc) continue;
+        if(!superClassDoc._custom_direct_implemented) superClassDoc._custom_direct_implemented = [];
+        superClassDoc._custom_direct_implemented.push(selfDoc.longname);
+      }
+
+      // indirect implemented (like indirect subclass)
+      for (var superClassLongname of selfDoc._custom_indirect_implements || []) {
+        var superClassDoc = this._builder._find({longname: superClassLongname})[0];
+        if (!superClassDoc) continue;
+        if(!superClassDoc._custom_indirect_implemented) superClassDoc._custom_indirect_implemented = [];
+        superClassDoc._custom_indirect_implemented.push(selfDoc.longname);
+      }
+    };
+
+    var mixed = (doc) =>{
+      var selfDoc = doc;
+
+      // direct mixed (like direct subclass)
+      for (var superClassLongname of selfDoc.mixes || []) {
+        var superClassDoc = this._builder._find({longname: superClassLongname})[0];
+        if (!superClassDoc) continue;
+        if(!superClassDoc._custom_direct_mixed) superClassDoc._custom_direct_mixed = [];
+        superClassDoc._custom_direct_mixed.push(selfDoc.longname);
+      }
+
+      // indirect mixed (like indirect subclass)
+      for (var superClassLongname of selfDoc._custom_indirect_mixes || []) {
+        var superClassDoc = this._builder._find({longname: superClassLongname})[0];
+        if (!superClassDoc) continue;
+        if(!superClassDoc._custom_indirect_mixed) superClassDoc._custom_indirect_mixed = [];
+        superClassDoc._custom_indirect_mixed.push(selfDoc.longname);
+      }
+    };
+
+    var docs = this._builder._find({kind: ['class', 'interface', 'mixin']});
     for (var doc of docs) {
       extendsChain(doc);
+      implemented(doc);
+      mixed(doc);
     }
 
     this._data.__RESOLVED_EXTENDS_CHAIN__ = true;

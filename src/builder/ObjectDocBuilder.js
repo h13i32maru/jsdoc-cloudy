@@ -38,6 +38,10 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.load('indirectImplements', this._buildDocsLinkHTML(doc._custom_indirect_implements, null, false, ', '), 'append');
     s.load('mixes', this._buildDocsLinkHTML(doc.mixes, null, false, ', '), 'append');
     s.load('indirectMixes', this._buildDocsLinkHTML(doc._custom_indirect_mixes, null, false, ', '), 'append');
+    s.load('directImplemented', this._buildDocsLinkHTML(doc._custom_direct_implemented, null, false, ', '), 'append');
+    s.load('indirectImplemented', this._buildDocsLinkHTML(doc._custom_indirect_implemented, null, false, ', '), 'append');
+    s.load('directMixed', this._buildDocsLinkHTML(doc._custom_direct_mixed, null, false, ', '), 'append');
+    s.load('indirectMixed', this._buildDocsLinkHTML(doc._custom_indirect_mixed, null, false, ', '), 'append');
 
     // self
     s.text('name', doc.name);
