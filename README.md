@@ -6,8 +6,9 @@
 
 # Not Support
 - @tutorial
-- @property nest
+- @property nest property in enum
 - @borrows
+- @extends multiple extends
 
 # Custom Support
 - @fileexample
