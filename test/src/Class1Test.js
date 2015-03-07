@@ -120,7 +120,7 @@ describe('module/module1~Class1: ', ()=> {
       });
       // protected
       find(doc, 'table[data-s="summary"]:nth-of-type(2)', (doc)=>{
-        assert.includes(doc, '[data-s="target"]:nth-of-type(1)', 'protected method2 this is Class2#method2 desc.');
+        assert.includes(doc, '[data-s="target"]:nth-of-type(1)', 'protected override method2 this is Class2#method2 desc.');
         assert.notIncludes(doc, '[data-s="target"]:nth-of-type(1)', 'this is second line.');
       });
       // private
@@ -375,7 +375,7 @@ describe('module/module1~Class1: ', ()=> {
       });
       // protected
       find(doc, '[data-s="detail"]:nth-of-type(2)', (doc)=>{
-        assert.includes(doc, '#instance-method2', 'protected method2');
+        assert.includes(doc, '#instance-method2', 'protected override method2');
         assert.includes(doc, '[data-s="inherit"]', 'method2');
         assert.includes(doc, '[data-s="inherit"] a', encode('module:module|module1~Class2.html') + '#instance-method2', 'href');
       });

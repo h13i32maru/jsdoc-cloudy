@@ -189,7 +189,7 @@ export default class DocBuilder {
       s.load('signature', this._buildSignatureHTML(doc));
       s.load('description', shorten(doc, kind === 'constructor'));
       s.text('virtual', doc.virtual ? 'virtual' : '');
-      s.text('override', doc.override ? 'override' : '');
+      s.text('override', doc.inherits ? 'override' : '');
       s.text('readonly', doc.readonly ? 'readonly' : '');
       s.text('access', doc.access);
       s.drop('sinceLabel', !doc.since);
@@ -237,7 +237,7 @@ export default class DocBuilder {
       s.load('signature', this._buildSignatureHTML(doc));
       s.load('description', doc.description);
       s.text('virtual', doc.virtual ? 'virtual' : '');
-      s.text('override', doc.override ? 'override' : '');
+      s.text('override', doc.inherits ? 'override' : '');
       s.text('access', doc.access);
       s.text('since', doc.since, 'append');
       s.load('deprecated', this._buildDeprecatedHTML(doc));
