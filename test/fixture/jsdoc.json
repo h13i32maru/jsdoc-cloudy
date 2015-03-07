@@ -13,7 +13,8 @@
     "destination": "./out/test/jsdoc",
     "recurse": true,
     "readme": "./out/test/fixture/README.md",
-    "package": "./out/test/fixture/package.json"
+    "package": "./out/test/fixture/package.json",
+    "private": true
   },
   "cloudy": {
     "title": "sample for test",

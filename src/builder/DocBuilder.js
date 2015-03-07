@@ -29,7 +29,13 @@ export default class DocBuilder {
   }
 
   _find(...cond) {
-    return this._data(...cond).order('name asec').map(v => v);
+    let data = this._data(...cond);
+
+    if (!this._option.private) {
+      data = data.filter({access: {'!is': 'private'}});
+    }
+
+    return data.order('name asec').map(v => v);
   }
 
   _readTemplate(fileName) {
