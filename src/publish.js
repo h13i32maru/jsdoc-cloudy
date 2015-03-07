@@ -15,7 +15,7 @@ exports.publish = function(data, option, tutorials) {
   function writeHTML(html, fileName) {
     console.log(fileName);
     var filePath = path.resolve(option.destination, fileName);
-    fs.writeFileSync(filePath, html, {encoding: 'utf-8'});
+    fs.outputFileSync(filePath, html, {encoding: 'utf-8'});
   }
 
   function copy(srcPath, destPath) {

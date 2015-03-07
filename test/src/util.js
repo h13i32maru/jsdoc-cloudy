@@ -4,7 +4,7 @@ import path from 'path';
 import cheerio from 'cheerio';
 
 export function readDoc(fileName) {
-  let html = fs.readFileSync(path.resolve(__dirname, `../fixture/${fileName}`), {encoding: 'utf-8'});
+  let html = fs.readFileSync(path.resolve(__dirname, `../jsdoc/${fileName}`), {encoding: 'utf-8'});
   let $ = cheerio.load(html);
   return $('html').first();
 }

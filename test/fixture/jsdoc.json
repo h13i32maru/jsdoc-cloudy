@@ -10,7 +10,7 @@
   },
   "opts": {
     "template": "./out/src/",
-    "destination": "./out/test/fixture",
+    "destination": "./out/test/jsdoc",
     "recurse": true,
     "readme": "./out/test/fixture/README.md",
     "package": "./out/test/fixture/package.json"
