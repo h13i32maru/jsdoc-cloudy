@@ -78,36 +78,42 @@ export default class DocBuilder {
 
     // classes
     var classDocs = this._find({kind: 'class'});
+    s.drop('classWrap', !classDocs.length);
     s.loop('classDoc', classDocs, (i, classDoc, s)=>{
       s.load('classDoc', this._buildDocLinkHTML(classDoc.longname));
     });
 
     // interfaces
     var interfaceDocs = this._find({kind: 'interface'});
+    s.drop('interfaceWrap', !interfaceDocs.length);
     s.loop('interfaceDoc', interfaceDocs, (i, interfaceDoc, s)=>{
       s.load('interfaceDoc', this._buildDocLinkHTML(interfaceDoc.longname));
     });
 
     // namespaces
     var namespaceDocs = this._find({kind: 'namespace'});
+    s.drop('namespaceWrap', !namespaceDocs.length);
     s.loop('namespaceDoc', namespaceDocs, (i, namespaceDoc, s)=>{
       s.load('namespaceDoc', this._buildDocLinkHTML(namespaceDoc.longname));
     });
 
     // modules
     var moduleDocs = this._find({kind: 'module'});
+    s.drop('moduleWrap', !moduleDocs.length);
     s.loop('moduleDoc', moduleDocs, (i, moduleDoc, s)=>{
       s.load('moduleDoc', this._buildDocLinkHTML(moduleDoc.longname));
     });
 
     // mixin
     var mixinDocs = this._find({kind: 'mixin'});
+    s.drop('mixinWrap', !mixinDocs.length);
     s.loop('mixinDoc', mixinDocs, (i, mixinDoc, s)=>{
       s.load('mixinDoc', this._buildDocLinkHTML(mixinDoc.longname));
     });
 
     // files
     var fileDocs = this._find({kind: 'file'});
+    s.drop('fileWrap', !fileDocs.length);
     s.loop('fileDoc', fileDocs, (i, fileDoc, s)=>{
       s.load('fileDoc', this._buildFileDocLinkHTML(fileDoc));
     });
