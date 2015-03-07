@@ -3,11 +3,6 @@ import SpruceTemplate from 'spruce-template';
 import DocBuilder from './DocBuilder.js';
 
 export default class IndexDocBuilder extends DocBuilder {
-  constructor(data, config) {
-    super(data);
-    this._config = config;
-  }
-
   exec(callback) {
     var s = this._buildLayoutDoc();
     s.load('content', this._buildIndexDoc());
@@ -36,24 +31,27 @@ export default class IndexDocBuilder extends DocBuilder {
   }
 
   _getIndexInfo() {
-    if (this._config.configure) {
-      var configPath = this._config.configure;
-      var configJSON = fs.readFileSync(configPath, {encoding: 'utf-8'});
-      var config = JSON.parse(configJSON);
-    }
+    //if (this._config.configure) {
+    //  var configPath = this._config.configure;
+    //  var configJSON = fs.readFileSync(configPath, {encoding: 'utf-8'});
+    //  var config = JSON.parse(configJSON);
+    //}
 
-    if (this._config.package) {
-      var packagePath = this._config.package;
+    if (this._option.package) {
+      var packagePath = this._option.package;
       var json = fs.readFileSync(packagePath, {encoding: 'utf-8'});
       var packageObj = JSON.parse(json);
     }
 
-    var indexInfo = {
-      title: config.template.title || packageObj.name,
-      desc: config.template.description || packageObj.description,
-      version: config.template.version || packageObj.version,
-      url: config.template.url || packageObj.repository ? packageObj.repository.url : ''
-    };
+    if (this._config) {
+      var config = this._config;
+      var indexInfo = {
+        title: config.cloudy.title || packageObj.name,
+        desc: config.cloudy.description || packageObj.description,
+        version: config.cloudy.version || packageObj.version,
+        url: config.cloudy.url || packageObj.repository ? packageObj.repository.url : ''
+      };
+    }
 
     return indexInfo;
   }

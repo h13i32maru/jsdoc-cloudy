@@ -15,10 +15,10 @@
     "readme": "./out/test/fixture/README.md",
     "package": "./out/test/fixture/package.json"
   },
-  "template": {
+  "cloudy": {
     "title": "sample for test",
     "description": "this is sample for test description.",
-    "stylesheet": ["hoge.css"],
-    "javascript": ["hoge.js"]
+    "styles": ["./out/test/fixture/static/style1.css", "./out/test/fixture/static/style2.css"],
+    "scripts": ["./out/test/fixture/static/script1.js", "./out/test/fixture/static/script2.js"]
   }
 }

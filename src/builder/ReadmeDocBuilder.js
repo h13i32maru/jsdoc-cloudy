@@ -2,11 +2,6 @@ import SpruceTemplate from 'spruce-template';
 import DocBuilder from './DocBuilder.js';
 
 export default class ReadmeDocBuilder extends DocBuilder {
-  constructor(data, config) {
-    super(data);
-    this._config = config;
-  }
-
   exec(callback) {
     var s = this._buildLayoutDoc();
     s.load('content', this._buildReadmeDoc());
@@ -16,7 +11,7 @@ export default class ReadmeDocBuilder extends DocBuilder {
   _buildReadmeDoc() {
     var html = this._readTemplate('readme.html');
     var s = new SpruceTemplate(html);
-    s.load('readme', this._config.readme);
+    s.load('readme', this._option.readme);
 
     return s;
   }

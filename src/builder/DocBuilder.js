@@ -6,8 +6,17 @@ import {shorten} from './util.js';
 import DocResolver from './DocResolver.js';
 
 export default class DocBuilder {
-  constructor(data) {
+  constructor(data, option) {
     this._data = data;
+    this._option = option;
+    this._config = null;
+
+    if (option.configure) {
+      var configPath = option.configure;
+      var configJSON = fs.readFileSync(configPath, {encoding: 'utf-8'});
+      this._config = JSON.parse(configJSON);
+      this._config.cloudy = this._config.cloudy || {};
+    }
 
     new DocResolver(this).resolve();
   }
@@ -30,6 +39,20 @@ export default class DocBuilder {
 
   _buildLayoutDoc() {
     var s = new SpruceTemplate(this._readTemplate('layout.html'), {autoClose: false});
+
+    // see StaticFileBuilder#exec
+    if (this._config) {
+      s.loop('userScript', this._config.cloudy.scripts, (i, userScript, s)=>{
+        var name = `user/script/${i}-${path.basename(userScript)}`;
+        s.attr('userScript', 'src', name);
+      });
+
+      s.loop('userStyle', this._config.cloudy.styles, (i, userStyle, s)=>{
+        var name = `user/css/${i}-${path.basename(userStyle)}`;
+        s.attr('userStyle', 'href', name);
+      });
+    }
+
     s.text('date', new Date().toString());
     s.load('nav', this._buildNavDoc());
     return s;

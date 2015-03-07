@@ -8,22 +8,23 @@ import ObjectDocBuilder from './builder/ObjectDocBuilder.js';
 
 /**
  * @param {TaffyDB} data see http://www.taffydb.com/
- * @param config
+ * @param option
  * @param tutorials
  */
-exports.publish = function(data, config, tutorials) {
+exports.publish = function(data, option, tutorials) {
   function writeHTML(html, fileName) {
     console.log(fileName);
-    var filePath = path.resolve(config.destination, fileName);
+    var filePath = path.resolve(option.destination, fileName);
     fs.writeFileSync(filePath, html, {encoding: 'utf-8'});
   }
 
   function copy(srcPath, destPath) {
-    fs.copySync(srcPath, path.resolve(config.destination, destPath));
+    console.log(destPath);
+    fs.copySync(srcPath, path.resolve(option.destination, destPath));
   }
 
-  new IndexDocBuilder(data, config).exec(writeHTML);
-  new ReadmeDocBuilder(data, config).exec(writeHTML);
-  new ObjectDocBuilder(data).exec(writeHTML);
-  new StaticFileBuilder().exec(copy);
+  new IndexDocBuilder(data, option).exec(writeHTML);
+  new ReadmeDocBuilder(data, option).exec(writeHTML);
+  new ObjectDocBuilder(data, option).exec(writeHTML);
+  new StaticFileBuilder(data, option).exec(copy);
 };
