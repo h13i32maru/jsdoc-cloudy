@@ -228,6 +228,20 @@ table.params td p {
   margin: 0;
 }
 
+.content .detail .throw td:first-child {
+  padding-right: 10px;
+}
+
+.content .detail h4 + * {
+  padding-left: 0;
+  margin-left: 10px;
+}
+
+.content .detail h4 + ul li {
+  margin: 2px 0;
+  list-style: none;
+}
+
 .return-param * {
   display: inline;
 }
@@ -263,10 +277,6 @@ h3 .right-info {
 
 .version + .since:before {
   content: '| ';
-}
-
-.throws h4 + div{
-  margin-left: 10px;
 }
 
 .see {
