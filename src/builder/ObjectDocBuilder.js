@@ -35,7 +35,9 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.load('directSubclass', directSubclass, 'append');
     s.load('indirectSubclass', indirectSubclass, 'append');
     s.load('implements', this._buildDocsLinkHTML(doc.implements, null, false, ', '), 'append');
+    s.load('indirectImplements', this._buildDocsLinkHTML(doc._custom_indirect_implements, null, false, ', '), 'append');
     s.load('mixes', this._buildDocsLinkHTML(doc.mixes, null, false, ', '), 'append');
+    s.load('indirectMixes', this._buildDocsLinkHTML(doc._custom_indirect_mixes, null, false, ', '), 'append');
 
     // self
     s.text('name', doc.name);
@@ -107,6 +109,9 @@ export default class NamespaceDocBuilder extends DocBuilder {
     for (var longname of doc._custom_extends_chains) {
       links.push(this._buildDocLinkHTML(longname));
     }
+
+    links.push(doc.name);
+
     return links.join(' → ');
   }
 

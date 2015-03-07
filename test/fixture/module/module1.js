@@ -261,6 +261,8 @@ Class1.staticMember3 = null;
  * @class
  * @protected
  * @extends module:module/module1~Class3
+ * @implements module:module/module1~Interface2
+ * @mixes module:module/module1~Mixin2
  */
 function Class2(){}
 
@@ -274,6 +276,8 @@ Class2.prototype.method2 = function(){};
  * @class
  * @private
  * @extends external:XMLHttpRequest
+ * @implements module:module/module1~Interface3
+ * @mixes module:module/module1~Mixin3
  */
 function Class3(){}
 

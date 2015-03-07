@@ -18,7 +18,7 @@ describe('module/module1~Class1: ', ()=> {
     find(doc, '[data-s="content"] .self-detail', (doc)=>{
       assert.includes(doc, '[data-s="name"]', 'Class1');
 
-      assert.includes(doc, '[data-s="extendsChain"]', 'XMLHttpRequest → Class3 → Class2');
+      assert.includes(doc, '[data-s="extendsChain"]', 'XMLHttpRequest → Class3 → Class2 → Class1');
       assert.includes(doc, '[data-s="extendsChain"] span:nth-of-type(1) a', 'https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest', 'href');
       assert.includes(doc, '[data-s="extendsChain"] span:nth-of-type(2) a', encode('module:module|module1~Class3.html'), 'href');
       assert.includes(doc, '[data-s="extendsChain"] span:nth-of-type(3) a', encode('module:module|module1~Class2.html'), 'href');
@@ -27,9 +27,17 @@ describe('module/module1~Class1: ', ()=> {
       assert.includes(doc, '[data-s="implements"] li:nth-of-type(1) a', encode('module:module|module1~Interface1.html'), 'href');
       assert.includes(doc, '[data-s="implements"] li:nth-of-type(2) a', 'https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest', 'href');
 
+      assert.includes(doc, '[data-s="indirectImplements"]', 'Interface2, Interface3');
+      assert.includes(doc, '[data-s="indirectImplements"] li:nth-of-type(1) a', encode('module:module|module1~Interface2.html'), 'href');
+      assert.includes(doc, '[data-s="indirectImplements"] li:nth-of-type(2) a', encode('module:module|module1~Interface3.html'), 'href');
+
       assert.includes(doc, '[data-s="mixes"]', 'Mixin1, XMLHttpRequest');
       assert.includes(doc, '[data-s="mixes"] li:nth-of-type(1) a', encode('module:module|module1~Mixin1.html'), 'href');
       assert.includes(doc, '[data-s="mixes"] li:nth-of-type(2) a', 'https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest', 'href');
+
+      assert.includes(doc, '[data-s="indirectMixes"]', 'Mixin2, Mixin3');
+      assert.includes(doc, '[data-s="indirectMixes"] li:nth-of-type(1) a', encode('module:module|module1~Mixin2.html'), 'href');
+      assert.includes(doc, '[data-s="indirectMixes"] li:nth-of-type(2) a', encode('module:module|module1~Mixin3.html'), 'href');
 
       assert.includes(doc, '[data-s="description"]', 'this is Class1 classdesc.');
     });

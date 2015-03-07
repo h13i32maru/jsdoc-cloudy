@@ -206,6 +206,24 @@ export default class DocResolver {
           }
         }
 
+        // indirect implements and mixes
+        for (var superClassLongname of chains) {
+          var superClassDoc = this._builder._find({longname: superClassLongname})[0];
+          if (!superClassDoc) continue;
+
+          // indirect implements
+          if (superClassDoc.implements) {
+            if (!selfDoc._custom_indirect_implements) selfDoc._custom_indirect_implements = [];
+            selfDoc._custom_indirect_implements.push(...superClassDoc.implements);
+          }
+
+          // indirect mixes
+          if (superClassDoc.mixes) {
+            if (!selfDoc._custom_indirect_mixes) selfDoc._custom_indirect_mixes = [];
+            selfDoc._custom_indirect_mixes.push(...superClassDoc.mixes);
+          }
+        }
+
         // extends chains
         selfDoc._custom_extends_chains = chains.reverse();
       }
