@@ -25,45 +25,33 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.text('access', doc.access);
     s.text('kind', doc.kind);
     s.load('file', this._buildFileDocLinkHTML(doc), 'append');
-    s.load('author', this._buildAuthorHTML(doc), 'append');
     s.text('since', doc.since, 'append');
     s.text('version', doc.version, 'append');
-    s.load('require', this._buildDocsLinkHTML(doc.requires), 'append');
-    s.load('mixes', this._buildDocsLinkHTML(doc.mixes), 'append');
     s.load('variation', this._buildVariationHTML(doc), 'append');
-    s.load('extends', this._buildDocsLinkHTML(doc.augments), 'append');
-    s.load('implements', this._buildDocsLinkHTML(doc.implements), 'append');
 
     // extends chain
-    s.drop('extendsChainWrap', !(extendsChain + directSubclass + indirectSubclass));
+    //s.drop('extendsChainWrap', !(extendsChain + directSubclass + indirectSubclass));
+    s.load('extends', this._buildDocsLinkHTML(doc.augments, null, false, ', '), 'append');
     s.load('extendsChain', extendsChain, 'append');
     s.load('directSubclass', directSubclass, 'append');
     s.load('indirectSubclass', indirectSubclass, 'append');
+    s.load('implements', this._buildDocsLinkHTML(doc.implements, null, false, ', '), 'append');
+    s.load('mixes', this._buildDocsLinkHTML(doc.mixes, null, false, ', '), 'append');
 
     // self
     s.text('name', doc.name);
     s.load('description', doc.classdesc || doc.description);
     s.load('deprecated', this._buildDeprecatedHTML(doc));
     s.load('experimental', this._buildExperimentalHTML(doc));
-
-    // see
-    // todo: s.into('seeWrap', doc.see, (seeDocs, s)=>s.loop('see', seeDocs, 'load'));
-    s.drop('seeWrap', !doc.see);
-    s.loop('see', doc.see, (i, seeDoc, s)=>{
-      s.load('see', seeDoc, 'append');
-    });
+    s.load('require', this._buildDocsLinkHTML(doc.requires), 'append');
+    s.load('author', this._buildAuthorHTML(doc), 'append');
+    s.load('see', this._buildDocsLinkHTML(doc.see), 'append');
+    s.load('todo', this._buildDocsLinkHTML(doc.todo), 'append');
 
     // file example
     s.drop('fileexampleDocs', !doc.fileexamples);
     s.loop('fileexampleDoc', doc.fileexamples, (i, fileexample, s)=>{
       s.text('fileexampleCode', fileexample);
-    });
-
-    // to-do
-    // todo: s.into('todoWrap', doc.todo, (todo, s)=> s.loop('todo', todo, 'load'));
-    s.drop('todoWrap', !doc.todo);
-    s.loop('todo', doc.todo, (i, todo, s)=>{
-      s.load('todo', todo);
     });
 
     // summary

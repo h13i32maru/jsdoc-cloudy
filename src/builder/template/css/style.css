@@ -20,7 +20,8 @@ table {
 }
 
 a {
-  color: #0095dd;
+  /*color: #0095dd;*/
+  color:rgb(37, 138, 175);
 }
 
 ul {
@@ -88,10 +89,6 @@ p > code {
   float: left;
 }
 
-.navigation > nav {
-  position: fixed;
-}
-
 .navigation h1 {
   border: none;
   font-size: 18px;
@@ -141,6 +138,15 @@ h1 .url a {
 
 .extends-chain > div {
   margin: 5px 0;
+}
+
+.flat-list ul {
+  padding-left: 0;
+}
+
+.flat-list li {
+  display: inline;
+  list-style: none;
 }
 
 table.summary {
@@ -211,6 +217,14 @@ table.params td {
 }
 
 table.params td p {
+  margin: 0;
+}
+
+.content .detail > * {
+  margin: 10px 0;
+}
+
+.content .detail .throw p {
   margin: 0;
 }
 

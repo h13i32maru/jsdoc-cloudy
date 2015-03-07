@@ -210,69 +210,25 @@ export default class DocBuilder {
       s.text('virtual', doc.virtual ? 'virtual' : '');
       s.text('override', doc.override ? 'override' : '');
       s.text('access', doc.access);
-      s.drop('sinceLabel', !doc.since);
-      s.text('since', doc.since);
+      s.text('since', doc.since, 'append');
       s.load('deprecated', this._buildDeprecatedHTML(doc));
       s.load('experimental', this._buildExperimentalHTML(doc));
       s.text('readonly', doc.readonly ? 'readonly' : '');
       s.load('require', this._buildDocsLinkHTML(doc.requires), 'append');
+      s.load('author', this._buildAuthorHTML(doc), 'append');
+      s.text('version', doc.version, 'append');
+      s.load('defaultvalue', this._buildDocsLinkHTML([doc.defaultvalue]), 'append');
+      s.load('inherit', this._buildDocsLinkHTML([doc.inherits]), 'append');
+      s.load('this', this._buildDocsLinkHTML([doc.this]), 'append');
+      s.load('fire', this._buildDocsLinkHTML(doc.fires), 'append');
+      s.load('listen', this._buildDocsLinkHTML(doc.listens), 'append');
+      s.load('see', this._buildDocsLinkHTML(doc.see), 'append');
+      s.load('todo', this._buildDocsLinkHTML(doc.todo), 'append');
 
       if (doc.kind === 'function') {
         s.load('properties', this._buildProperties(doc.params, 'Params:'));
       } else {
         s.load('properties', this._buildProperties(doc.properties, 'Properties:'));
-      }
-
-      // author
-      s.drop('authorWrap', !doc.author);
-      s.load('author', this._buildAuthorHTML(doc));
-
-      // version
-      if (doc.version) {
-        s.text('version', doc.version);
-      } else {
-        s.drop('versionWrap');
-      }
-
-      // default
-      if ('defaultvalue' in doc) {
-        s.text('defaultvalue', doc.defaultvalue);
-      } else {
-        s.drop('defaultvalueWrap');
-      }
-
-      // inherits
-      if (doc.inherits) {
-        s.load('inherit', this._buildDocLinkHTML(doc.inherits));
-      } else {
-        s.drop('inheritWrap');
-      }
-
-      // this
-      if (doc.this) {
-        s.load('this', this._buildDocLinkHTML(doc.this));
-      } else {
-        s.drop('thisWrap');
-      }
-
-      // fire
-      if (doc.fires) {
-        s.loop('fireEvent', doc.fires, (i, fire, s)=>{
-          var link = this._buildDocLinkHTML(fire);
-          s.load('event', link);
-        });
-      } else {
-        s.drop('fires');
-      }
-
-      // listen
-      if (doc.listens) {
-        s.loop('listenEvent', doc.listens, (i, listen, s)=>{
-          var link = this._buildDocLinkHTML(listen);
-          s.load('event', link);
-        });
-      } else {
-        s.drop('listens');
       }
 
       // return
@@ -301,7 +257,7 @@ export default class DocBuilder {
           s.load('throwDesc', exceptionDoc.description);
         });
       } else {
-        s.drop('throws');
+        s.drop('throwWrap');
       }
 
       // example
@@ -312,21 +268,6 @@ export default class DocBuilder {
       if (!exampleDocs) {
         s.drop('example');
       }
-
-      // see
-      var seeDocs = doc.see;
-      if (seeDocs) {
-        s.loop('see', seeDocs, (i, seeDoc, s)=>{
-          s.load('seeLink', seeDoc);
-        });
-      } else {
-        s.drop('seeWrap');
-      }
-
-      s.drop('todoWrap', !doc.todo);
-      s.loop('todo', doc.todo, (i, todo, s)=>{
-        s.load('todo', todo);
-      });
     });
 
     return s;
@@ -372,8 +313,14 @@ export default class DocBuilder {
     if (doc.kind === 'file') {
       fileDoc = doc;
     } else {
-      var fileName = doc.meta.filename;
-      fileDoc = this._find({kind: 'file', name: fileName})[0];
+      var filePath = doc.meta.path + '/' + doc.meta.filename;
+      var fileDocs = this._find({kind: 'file'});
+      for (var _fileDoc of fileDocs) {
+        if (filePath.match(new RegExp(`${_fileDoc.name}$`))) {
+          fileDoc = _fileDoc;
+          break;
+        }
+      }
     }
 
     if (!fileDoc) return;
@@ -382,10 +329,20 @@ export default class DocBuilder {
   }
 
   _buildDocLinkHTML(longname, text = null, inner = false) {
+    if (!longname) return '';
+
     if (typeof longname !== 'string') throw new Error(JSON.stringify(longname));
 
     var doc = this._find({longname})[0];
-    if (!doc)  return `<span>${escape(text || longname)}</span>`;
+
+    if (!doc) {
+      // if longname is HTML tag, not escape.
+      if (longname.indexOf('<') === 0) {
+        return `<span>${longname}</span>`;
+      } else {
+        return `<span>${escape(text || longname)}</span>`;
+      }
+    }
 
     if (doc.kind === 'external') {
       var text = doc.longname.replace(/^external:\s*/, '');
@@ -402,16 +359,20 @@ export default class DocBuilder {
     }
   }
 
-  _buildDocsLinkHTML(longnames, text = null, inner = false) {
+  _buildDocsLinkHTML(longnames, text = null, inner = false, separator = '\n') {
     if (!longnames) return;
     if (!longnames.length) return;
 
     var links = [];
     for (var longname of longnames) {
-      links.push(this._buildDocLinkHTML(longname, text, inner));
+      if (!longname) continue;
+      var link = this._buildDocLinkHTML(longname, text, inner);
+      links.push(`<li>${link}</li>`);
     }
 
-    return links.join(', ');
+    if (!links.length) return;
+
+    return `<ul>${links.join(separator)}</ul>`;
   }
 
   _buildSignatureHTML(doc) {
@@ -533,7 +494,7 @@ export default class DocBuilder {
     }
   }
 
-  _buildAuthorHTML(doc) {
+  _buildAuthorHTML(doc, separator = '\n') {
     if (!doc.author) return '';
 
     var html = [];
@@ -543,16 +504,16 @@ export default class DocBuilder {
         var name = matched[1];
         var link = matched[2];
         if (link.indexOf('http') === 0) {
-          html.push(`<span><a href="${link}">${name}</a></span>`)
+          html.push(`<li><a href="${link}">${name}</a></li>`)
         } else {
-          html.push(`<span><a href="mailto:${link}">${name}</a></span>`)
+          html.push(`<li><a href="mailto:${link}">${name}</a></li>`)
         }
       } else {
-        html.push(`<span>${author}</span>`)
+        html.push(`<li>${author}</li>`)
       }
     }
 
-    return html.join(', ');
+    return `<ul>${html.join(separator)}</ul>`;
   }
 
   _buildFileFooterHTML(doc) {

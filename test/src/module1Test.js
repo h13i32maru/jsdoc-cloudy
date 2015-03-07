@@ -11,12 +11,11 @@ describe('module/module1: ', ()=> {
 
       assert.includes(doc, '[data-s="access"]', 'public');
       assert.includes(doc, '[data-s="kind"]', 'module');
-      assert.includes(doc, '[data-s="require"]', 'module/module1, Namespace1, Class1, Interface1, Mixin1, method1, member1, Typedef1, Callback1, CONSTANT1, Event1, XMLHttpRequest, member1, method1, staticMember1, staticMethod1');
       assert.includes(doc, '[data-s="version"]', '0.0.1');
       assert.includes(doc, '[data-s="since"]', '1.2.3');
-      assert.includes(doc, '[data-s="author"]', 'foo, bar');
-      assert.includes(doc, '[data-s="author"] span:nth-of-type(1) a', 'mailto:foo@example.com', 'href');
-      assert.includes(doc, '[data-s="author"] span:nth-of-type(2) a', 'http://twitter.com/bar', 'href');
+
+      assert.includes(doc, '[data-s="file"]', 'module/module1.js');
+      assert.includes(doc, '[data-s="file"] a', encode('@file-module|module1.js.html'), 'href');
     });
   });
 
@@ -26,49 +25,97 @@ describe('module/module1: ', ()=> {
       assert.includes(doc, '[data-s="deprecated"]', 'this module was deprecated. this is module/module1 deprecated.');
       assert.includes(doc, '[data-s="experimental"]', 'this module is experimental. this is module/module1 experimental.');
 
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(1)', 'See: http://example.com');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(2)', 'See: module/module1');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(3)', 'See: Namespace1');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(4)', 'See: Class1');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(5)', 'See: Interface1');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(6)', 'See: Mixin1');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(7)', 'See: method1');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(8)', 'See: member1');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(9)', 'See: Typedef1');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(10)', 'See: Callback1');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(11)', 'See: CONSTANT1');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(12)', 'See: Event1');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(13)', 'See: XMLHttpRequest');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(14)', 'See: module/module1.js');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(15)', 'See: member1');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(16)', 'See: method1');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(17)', 'See: staticMember1');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(18)', 'See: staticMethod1');
+      find(doc, '[data-s="see"] ul', (doc)=>{
+        assert.includes(doc, 'li:nth-of-type(1)', 'http://example.com');
+        assert.includes(doc, 'li:nth-of-type(2)', 'module/module1');
+        assert.includes(doc, 'li:nth-of-type(3)', 'Namespace1');
+        assert.includes(doc, 'li:nth-of-type(4)', 'Class1');
+        assert.includes(doc, 'li:nth-of-type(5)', 'Interface1');
+        assert.includes(doc, 'li:nth-of-type(6)', 'Mixin1');
+        assert.includes(doc, 'li:nth-of-type(7)', 'method1');
+        assert.includes(doc, 'li:nth-of-type(8)', 'member1');
+        assert.includes(doc, 'li:nth-of-type(9)', 'Typedef1');
+        assert.includes(doc, 'li:nth-of-type(10)', 'Callback1');
+        assert.includes(doc, 'li:nth-of-type(11)', 'CONSTANT1');
+        assert.includes(doc, 'li:nth-of-type(12)', 'Event1');
+        assert.includes(doc, 'li:nth-of-type(13)', 'XMLHttpRequest');
+        assert.includes(doc, 'li:nth-of-type(14)', 'module/module1.js');
+        assert.includes(doc, 'li:nth-of-type(15)', 'member1');
+        assert.includes(doc, 'li:nth-of-type(16)', 'method1');
+        assert.includes(doc, 'li:nth-of-type(17)', 'staticMember1');
+        assert.includes(doc, 'li:nth-of-type(18)', 'staticMethod1');
 
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(1) a', 'http://example.com', 'href');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(2) a', encode('module:module|module1.html'), 'href');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(3) a', encode('module:module|module1~Namespace1.html'), 'href');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(4) a', encode('module:module|module1~Class1.html'), 'href');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(5) a', encode('module:module|module1~Interface1.html'), 'href');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(6) a', encode('module:module|module1~Mixin1.html'), 'href');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(7) a', encode('module:module|module1.html') + '#inner-method1', 'href');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(8) a', encode('module:module|module1.html') + '#inner-member1', 'href');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(9) a', encode('module:module|module1.html') + '#inner-Typedef1', 'href');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(10) a', encode('module:module|module1.html') + '#inner-Callback1', 'href');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(11) a', encode('module:module|module1.html') + '#inner-CONSTANT1', 'href');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(12) a', encode('module:module|module1.html') + '#inner-Event1', 'href');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(13) a', 'https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest', 'href');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(14) a', encode('@file-module|module1.js.html'), 'href');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(15) a', encode('module:module|module1~Class1.html') + '#instance-member1', 'href');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(16) a', encode('module:module|module1~Class1.html') + '#instance-method1', 'href');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(17) a', encode('module:module|module1~Class1.html') + '#static-staticMember1', 'href');
-      assert.includes(doc, 'h4[data-s="see"]:nth-of-type(18) a', encode('module:module|module1~Class1.html') + '#static-staticMethod1', 'href');
+        assert.includes(doc, 'li:nth-of-type(1) a', 'http://example.com', 'href');
+        assert.includes(doc, 'li:nth-of-type(2) a', encode('module:module|module1.html'), 'href');
+        assert.includes(doc, 'li:nth-of-type(3) a', encode('module:module|module1~Namespace1.html'), 'href');
+        assert.includes(doc, 'li:nth-of-type(4) a', encode('module:module|module1~Class1.html'), 'href');
+        assert.includes(doc, 'li:nth-of-type(5) a', encode('module:module|module1~Interface1.html'), 'href');
+        assert.includes(doc, 'li:nth-of-type(6) a', encode('module:module|module1~Mixin1.html'), 'href');
+        assert.includes(doc, 'li:nth-of-type(7) a', encode('module:module|module1.html') + '#inner-method1', 'href');
+        assert.includes(doc, 'li:nth-of-type(8) a', encode('module:module|module1.html') + '#inner-member1', 'href');
+        assert.includes(doc, 'li:nth-of-type(9) a', encode('module:module|module1.html') + '#inner-Typedef1', 'href');
+        assert.includes(doc, 'li:nth-of-type(10) a', encode('module:module|module1.html') + '#inner-Callback1', 'href');
+        assert.includes(doc, 'li:nth-of-type(11) a', encode('module:module|module1.html') + '#inner-CONSTANT1', 'href');
+        assert.includes(doc, 'li:nth-of-type(12) a', encode('module:module|module1.html') + '#inner-Event1', 'href');
+        assert.includes(doc, 'li:nth-of-type(13) a', 'https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest', 'href');
+        assert.includes(doc, 'li:nth-of-type(14) a', encode('@file-module|module1.js.html'), 'href');
+        assert.includes(doc, 'li:nth-of-type(15) a', encode('module:module|module1~Class1.html') + '#instance-member1', 'href');
+        assert.includes(doc, 'li:nth-of-type(16) a', encode('module:module|module1~Class1.html') + '#instance-method1', 'href');
+        assert.includes(doc, 'li:nth-of-type(17) a', encode('module:module|module1~Class1.html') + '#static-staticMember1', 'href');
+        assert.includes(doc, 'li:nth-of-type(18) a', encode('module:module|module1~Class1.html') + '#static-staticMethod1', 'href');
+      });
+
+      find(doc, '[data-s="require"] ul', (doc)=>{
+        assert.includes(doc, 'li:nth-of-type(1)', 'module/module1');
+        assert.includes(doc, 'li:nth-of-type(2)', 'Namespace1');
+        assert.includes(doc, 'li:nth-of-type(3)', 'Class1');
+        assert.includes(doc, 'li:nth-of-type(4)', 'Interface1');
+        assert.includes(doc, 'li:nth-of-type(5)', 'Mixin1');
+        assert.includes(doc, 'li:nth-of-type(6)', 'method1');
+        assert.includes(doc, 'li:nth-of-type(7)', 'member1');
+        assert.includes(doc, 'li:nth-of-type(8)', 'Typedef1');
+        assert.includes(doc, 'li:nth-of-type(9)', 'Callback1');
+        assert.includes(doc, 'li:nth-of-type(10)', 'CONSTANT1');
+        assert.includes(doc, 'li:nth-of-type(11)', 'Event1');
+        assert.includes(doc, 'li:nth-of-type(12)', 'XMLHttpRequest');
+        assert.includes(doc, 'li:nth-of-type(13)', 'member1');
+        assert.includes(doc, 'li:nth-of-type(14)', 'method1');
+        assert.includes(doc, 'li:nth-of-type(15)', 'staticMember1');
+        assert.includes(doc, 'li:nth-of-type(16)', 'staticMethod1');
+
+        assert.includes(doc, 'li:nth-of-type(1) a', encode('module:module|module1.html'), 'href');
+        assert.includes(doc, 'li:nth-of-type(2) a', encode('module:module|module1~Namespace1.html'), 'href');
+        assert.includes(doc, 'li:nth-of-type(3) a', encode('module:module|module1~Class1.html'), 'href');
+        assert.includes(doc, 'li:nth-of-type(4) a', encode('module:module|module1~Interface1.html'), 'href');
+        assert.includes(doc, 'li:nth-of-type(5) a', encode('module:module|module1~Mixin1.html'), 'href');
+        assert.includes(doc, 'li:nth-of-type(6) a', encode('module:module|module1.html') + '#inner-method1', 'href');
+        assert.includes(doc, 'li:nth-of-type(7) a', encode('module:module|module1.html') + '#inner-member1', 'href');
+        assert.includes(doc, 'li:nth-of-type(8) a', encode('module:module|module1.html') + '#inner-Typedef1', 'href');
+        assert.includes(doc, 'li:nth-of-type(9) a', encode('module:module|module1.html') + '#inner-Callback1', 'href');
+        assert.includes(doc, 'li:nth-of-type(10) a', encode('module:module|module1.html') + '#inner-CONSTANT1', 'href');
+        assert.includes(doc, 'li:nth-of-type(11) a', encode('module:module|module1.html') + '#inner-Event1', 'href');
+        assert.includes(doc, 'li:nth-of-type(12) a', 'https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest', 'href');
+        assert.includes(doc, 'li:nth-of-type(13) a', encode('module:module|module1~Class1.html') + '#instance-member1', 'href');
+        assert.includes(doc, 'li:nth-of-type(14) a', encode('module:module|module1~Class1.html') + '#instance-method1', 'href');
+        assert.includes(doc, 'li:nth-of-type(15) a', encode('module:module|module1~Class1.html') + '#static-staticMember1', 'href');
+        assert.includes(doc, 'li:nth-of-type(16) a', encode('module:module|module1~Class1.html') + '#static-staticMethod1', 'href');
+      });
 
       assert.includes(doc, '[data-s="fileexampleDoc"]:nth-of-type(1)', 'var foo = module1; console.log(foo);');
       assert.includes(doc, '[data-s="fileexampleDoc"]:nth-of-type(2)', 'var bar = module1; console.log(bar);');
 
-      assert.includes(doc, '[data-s="todo"]:nth-of-type(1)', 'this is module/module1 1st todo.');
-      assert.includes(doc, '[data-s="todo"]:nth-of-type(2)', 'this is module/module1 2nd todo.');
+      find(doc, '[data-s="author"] ul', (doc)=>{
+        assert.includes(doc, 'li:nth-of-type(1)', 'foo');
+        assert.includes(doc, 'li:nth-of-type(2)', 'bar');
+
+        assert.includes(doc, 'li:nth-of-type(1) a', 'mailto:foo@example.com', 'href');
+        assert.includes(doc, 'li:nth-of-type(2) a', 'http://twitter.com/bar', 'href');
+      });
+
+      find(doc, '[data-s="todo"] ul', (doc)=>{
+        assert.includes(doc, 'li:nth-of-type(1)', 'this is module/module1 1st todo.');
+        assert.includes(doc, 'li:nth-of-type(2)', 'this is module/module1 2nd todo.');
+      });
     });
   });
 

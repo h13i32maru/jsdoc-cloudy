@@ -11,17 +11,6 @@ describe('module/module1~Class1: ', ()=> {
       assert.includes(doc, '[data-s="access"]', 'public');
       assert.includes(doc, '[data-s="kind"]', 'class');
 
-      assert.includes(doc, '[data-s="extends"]', 'Class2, XMLHttpRequest');
-      assert.includes(doc, '[data-s="extends"] span:nth-of-type(1) a', encode('module:module|module1~Class2.html'), 'href');
-      assert.includes(doc, '[data-s="extends"] span:nth-of-type(2) a', 'https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest', 'href');
-
-      assert.includes(doc, '[data-s="implements"]', 'Interface1, XMLHttpRequest');
-      assert.includes(doc, '[data-s="implements"] span:nth-of-type(1) a', encode('module:module|module1~Interface1.html'), 'href');
-      assert.includes(doc, '[data-s="implements"] span:nth-of-type(2) a', 'https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest', 'href');
-
-      assert.includes(doc, '[data-s="mixes"]', 'Mixin1, XMLHttpRequest');
-      assert.includes(doc, '[data-s="mixes"] span:nth-of-type(1) a', encode('module:module|module1~Mixin1.html'), 'href');
-      assert.includes(doc, '[data-s="mixes"] span:nth-of-type(2) a', 'https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest', 'href');
     });
   });
 
@@ -33,6 +22,14 @@ describe('module/module1~Class1: ', ()=> {
       assert.includes(doc, '[data-s="extendsChain"] span:nth-of-type(1) a', 'https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest', 'href');
       assert.includes(doc, '[data-s="extendsChain"] span:nth-of-type(2) a', encode('module:module|module1~Class3.html'), 'href');
       assert.includes(doc, '[data-s="extendsChain"] span:nth-of-type(3) a', encode('module:module|module1~Class2.html'), 'href');
+
+      assert.includes(doc, '[data-s="implements"]', 'Interface1, XMLHttpRequest');
+      assert.includes(doc, '[data-s="implements"] li:nth-of-type(1) a', encode('module:module|module1~Interface1.html'), 'href');
+      assert.includes(doc, '[data-s="implements"] li:nth-of-type(2) a', 'https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest', 'href');
+
+      assert.includes(doc, '[data-s="mixes"]', 'Mixin1, XMLHttpRequest');
+      assert.includes(doc, '[data-s="mixes"] li:nth-of-type(1) a', encode('module:module|module1~Mixin1.html'), 'href');
+      assert.includes(doc, '[data-s="mixes"] li:nth-of-type(2) a', 'https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest', 'href');
 
       assert.includes(doc, '[data-s="description"]', 'this is Class1 classdesc.');
     });
@@ -115,7 +112,7 @@ describe('module/module1~Class1: ', ()=> {
       });
       // protected
       find(doc, 'table[data-s="summary"]:nth-of-type(2)', (doc)=>{
-        assert.includes(doc, '[data-s="target"]:nth-of-type(1)', 'protected method2 this is method2 desc.');
+        assert.includes(doc, '[data-s="target"]:nth-of-type(1)', 'protected method2 this is Class2#method2 desc.');
         assert.notIncludes(doc, '[data-s="target"]:nth-of-type(1)', 'this is second line.');
       });
       // private
@@ -257,83 +254,115 @@ describe('module/module1~Class1: ', ()=> {
         assert.includes(doc, '[data-s="this"]', 'Class1');
         assert.includes(doc, '[data-s="this"] a', encode('module:module|module1~Class1.html'), 'href');
 
-        find(doc, '[data-s="fires"]', (doc)=>{
-          assert.includes(doc, '[data-s="fireEvent"]:nth-of-type(1)', 'Event1');
-          assert.includes(doc, '[data-s="fireEvent"]:nth-of-type(2)', 'Event2');
+        assert.includes(doc, '[data-s="fire"]', 'Event1 Event2');
+        assert.includes(doc, '[data-s="fire"] li:nth-of-type(1) a', encode('module:module|module1.html') + '#inner-Event1', 'href');
+        assert.includes(doc, '[data-s="fire"] li:nth-of-type(2) a', encode('module:module|module1.html') + '#inner-Event2', 'href');
 
-          assert.includes(doc, '[data-s="fireEvent"]:nth-of-type(1) a', encode('module:module|module1.html') + '#inner-Event1', 'href');
-          assert.includes(doc, '[data-s="fireEvent"]:nth-of-type(2) a', encode('module:module|module1.html') + '#inner-Event2', 'href');
+        assert.includes(doc, '[data-s="listen"]', 'Event1 Event2');
+        assert.includes(doc, '[data-s="listen"] li:nth-of-type(1) a', encode('module:module|module1.html') + '#inner-Event1', 'href');
+        assert.includes(doc, '[data-s="listen"] li:nth-of-type(2) a', encode('module:module|module1.html') + '#inner-Event2', 'href');
+
+        assert.includes(doc, '[data-s="throw"]:nth-of-type(1)', 'Error this is throws Error desc.');
+        assert.includes(doc, '[data-s="throw"]:nth-of-type(2)', 'Class1 this is throws Class1 desc.');
+        assert.includes(doc, '[data-s="throw"]:nth-of-type(3)', 'ReferenceError this is throws ReferenceError desc.');
+
+        assert.includes(doc, '[data-s="throw"]:nth-of-type(2) a', encode('module:module|module1~Class1.html'), 'href');
+        assert.includes(doc, '[data-s="throw"]:nth-of-type(3) a', 'https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError', 'href');
+
+        find(doc, '[data-s="see"] ul', (doc)=>{
+          assert.includes(doc, 'li:nth-of-type(1)', 'http://example.com');
+          assert.includes(doc, 'li:nth-of-type(2)', 'module/module1');
+          assert.includes(doc, 'li:nth-of-type(3)', 'Namespace1');
+          assert.includes(doc, 'li:nth-of-type(4)', 'Class1');
+          assert.includes(doc, 'li:nth-of-type(5)', 'Interface1');
+          assert.includes(doc, 'li:nth-of-type(6)', 'Mixin1');
+          assert.includes(doc, 'li:nth-of-type(7)', 'method1');
+          assert.includes(doc, 'li:nth-of-type(8)', 'member1');
+          assert.includes(doc, 'li:nth-of-type(9)', 'Typedef1');
+          assert.includes(doc, 'li:nth-of-type(10)', 'Callback1');
+          assert.includes(doc, 'li:nth-of-type(11)', 'CONSTANT1');
+          assert.includes(doc, 'li:nth-of-type(12)', 'Event1');
+          assert.includes(doc, 'li:nth-of-type(13)', 'XMLHttpRequest');
+          assert.includes(doc, 'li:nth-of-type(14)', 'module/module1.js');
+          assert.includes(doc, 'li:nth-of-type(15)', 'member1');
+          assert.includes(doc, 'li:nth-of-type(16)', 'method1');
+          assert.includes(doc, 'li:nth-of-type(17)', 'staticMember1');
+          assert.includes(doc, 'li:nth-of-type(18)', 'staticMethod1');
+
+          assert.includes(doc, 'li:nth-of-type(1) a', 'http://example.com', 'href');
+          assert.includes(doc, 'li:nth-of-type(2) a', encode('module:module|module1.html'), 'href');
+          assert.includes(doc, 'li:nth-of-type(3) a', encode('module:module|module1~Namespace1.html'), 'href');
+          assert.includes(doc, 'li:nth-of-type(4) a', encode('module:module|module1~Class1.html'), 'href');
+          assert.includes(doc, 'li:nth-of-type(5) a', encode('module:module|module1~Interface1.html'), 'href');
+          assert.includes(doc, 'li:nth-of-type(6) a', encode('module:module|module1~Mixin1.html'), 'href');
+          assert.includes(doc, 'li:nth-of-type(7) a', encode('module:module|module1.html') + '#inner-method1', 'href');
+          assert.includes(doc, 'li:nth-of-type(8) a', encode('module:module|module1.html') + '#inner-member1', 'href');
+          assert.includes(doc, 'li:nth-of-type(9) a', encode('module:module|module1.html') + '#inner-Typedef1', 'href');
+          assert.includes(doc, 'li:nth-of-type(10) a', encode('module:module|module1.html') + '#inner-Callback1', 'href');
+          assert.includes(doc, 'li:nth-of-type(11) a', encode('module:module|module1.html') + '#inner-CONSTANT1', 'href');
+          assert.includes(doc, 'li:nth-of-type(12) a', encode('module:module|module1.html') + '#inner-Event1', 'href');
+          assert.includes(doc, 'li:nth-of-type(13) a', 'https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest', 'href');
+          assert.includes(doc, 'li:nth-of-type(14) a', encode('@file-module|module1.js.html'), 'href');
+          assert.includes(doc, 'li:nth-of-type(15) a', encode('module:module|module1~Class1.html') + '#instance-member1', 'href');
+          assert.includes(doc, 'li:nth-of-type(16) a', encode('module:module|module1~Class1.html') + '#instance-method1', 'href');
+          assert.includes(doc, 'li:nth-of-type(17) a', encode('module:module|module1~Class1.html') + '#static-staticMember1', 'href');
+          assert.includes(doc, 'li:nth-of-type(18) a', encode('module:module|module1~Class1.html') + '#static-staticMethod1', 'href');
         });
 
-        find(doc, '[data-s="listens"]', (doc)=>{
-          assert.includes(doc, '[data-s="listenEvent"]:nth-of-type(1)', 'Event1');
-          assert.includes(doc, '[data-s="listenEvent"]:nth-of-type(2)', 'Event2');
+        find(doc, '[data-s="require"] ul', (doc)=>{
+          assert.includes(doc, 'li:nth-of-type(1)', 'module/module1');
+          assert.includes(doc, 'li:nth-of-type(2)', 'Namespace1');
+          assert.includes(doc, 'li:nth-of-type(3)', 'Class1');
+          assert.includes(doc, 'li:nth-of-type(4)', 'Interface1');
+          assert.includes(doc, 'li:nth-of-type(5)', 'Mixin1');
+          assert.includes(doc, 'li:nth-of-type(6)', 'method1');
+          assert.includes(doc, 'li:nth-of-type(7)', 'member1');
+          assert.includes(doc, 'li:nth-of-type(8)', 'Typedef1');
+          assert.includes(doc, 'li:nth-of-type(9)', 'Callback1');
+          assert.includes(doc, 'li:nth-of-type(10)', 'CONSTANT1');
+          assert.includes(doc, 'li:nth-of-type(11)', 'Event1');
+          assert.includes(doc, 'li:nth-of-type(12)', 'XMLHttpRequest');
+          assert.includes(doc, 'li:nth-of-type(13)', 'member1');
+          assert.includes(doc, 'li:nth-of-type(14)', 'method1');
+          assert.includes(doc, 'li:nth-of-type(15)', 'staticMember1');
+          assert.includes(doc, 'li:nth-of-type(16)', 'staticMethod1');
 
-          assert.includes(doc, '[data-s="listenEvent"]:nth-of-type(1) a', encode('module:module|module1.html') + '#inner-Event1', 'href');
-          assert.includes(doc, '[data-s="listenEvent"]:nth-of-type(2) a', encode('module:module|module1.html') + '#inner-Event2', 'href');
+          assert.includes(doc, 'li:nth-of-type(1) a', encode('module:module|module1.html'), 'href');
+          assert.includes(doc, 'li:nth-of-type(2) a', encode('module:module|module1~Namespace1.html'), 'href');
+          assert.includes(doc, 'li:nth-of-type(3) a', encode('module:module|module1~Class1.html'), 'href');
+          assert.includes(doc, 'li:nth-of-type(4) a', encode('module:module|module1~Interface1.html'), 'href');
+          assert.includes(doc, 'li:nth-of-type(5) a', encode('module:module|module1~Mixin1.html'), 'href');
+          assert.includes(doc, 'li:nth-of-type(6) a', encode('module:module|module1.html') + '#inner-method1', 'href');
+          assert.includes(doc, 'li:nth-of-type(7) a', encode('module:module|module1.html') + '#inner-member1', 'href');
+          assert.includes(doc, 'li:nth-of-type(8) a', encode('module:module|module1.html') + '#inner-Typedef1', 'href');
+          assert.includes(doc, 'li:nth-of-type(9) a', encode('module:module|module1.html') + '#inner-Callback1', 'href');
+          assert.includes(doc, 'li:nth-of-type(10) a', encode('module:module|module1.html') + '#inner-CONSTANT1', 'href');
+          assert.includes(doc, 'li:nth-of-type(11) a', encode('module:module|module1.html') + '#inner-Event1', 'href');
+          assert.includes(doc, 'li:nth-of-type(12) a', 'https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest', 'href');
+          assert.includes(doc, 'li:nth-of-type(13) a', encode('module:module|module1~Class1.html') + '#instance-member1', 'href');
+          assert.includes(doc, 'li:nth-of-type(14) a', encode('module:module|module1~Class1.html') + '#instance-method1', 'href');
+          assert.includes(doc, 'li:nth-of-type(15) a', encode('module:module|module1~Class1.html') + '#static-staticMember1', 'href');
+          assert.includes(doc, 'li:nth-of-type(16) a', encode('module:module|module1~Class1.html') + '#static-staticMethod1', 'href');
         });
 
-        find(doc, '[data-s="throws"]', (doc)=>{
-          assert.includes(doc, '[data-s="throw"]:nth-of-type(1)', 'Error this is throws Error desc.');
-          assert.includes(doc, '[data-s="throw"]:nth-of-type(2)', 'Class1 this is throws Class1 desc.');
-          assert.includes(doc, '[data-s="throw"]:nth-of-type(3)', 'ReferenceError this is throws ReferenceError desc.');
+        find(doc, '[data-s="author"] ul', (doc)=>{
+          assert.includes(doc, 'li:nth-of-type(1)', 'foo');
+          assert.includes(doc, 'li:nth-of-type(2)', 'bar');
 
-          assert.includes(doc, '[data-s="throw"]:nth-of-type(2) a', encode('module:module|module1~Class1.html'), 'href');
-          assert.includes(doc, '[data-s="throw"]:nth-of-type(3) a', 'https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError', 'href');
+          assert.includes(doc, 'li:nth-of-type(1) a', 'mailto:foo@example.com', 'href');
+          assert.includes(doc, 'li:nth-of-type(2) a', 'http://twitter.com/bar', 'href');
         });
 
-        find(doc, '[data-s="seeWrap"]', (doc)=>{
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(1)', 'See: http://example.com');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(2)', 'See: module/module1');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(3)', 'See: Namespace1');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(4)', 'See: Class1');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(5)', 'See: Interface1');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(6)', 'See: Mixin1');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(7)', 'See: method1');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(8)', 'See: member1');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(9)', 'See: Typedef1');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(10)', 'See: Callback1');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(11)', 'See: CONSTANT1');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(12)', 'See: Event1');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(13)', 'See: XMLHttpRequest');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(14)', 'See: module/module1.js');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(15)', 'See: member1');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(16)', 'See: method1');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(17)', 'See: staticMember1');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(18)', 'See: staticMethod1');
-
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(1) a', 'http://example.com', 'href');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(2) a', encode('module:module|module1.html'), 'href');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(3) a', encode('module:module|module1~Namespace1.html'), 'href');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(4) a', encode('module:module|module1~Class1.html'), 'href');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(5) a', encode('module:module|module1~Interface1.html'), 'href');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(6) a', encode('module:module|module1~Mixin1.html'), 'href');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(7) a', encode('module:module|module1.html') + '#inner-method1', 'href');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(8) a', encode('module:module|module1.html') + '#inner-member1', 'href');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(9) a', encode('module:module|module1.html') + '#inner-Typedef1', 'href');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(10) a', encode('module:module|module1.html') + '#inner-Callback1', 'href');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(11) a', encode('module:module|module1.html') + '#inner-CONSTANT1', 'href');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(12) a', encode('module:module|module1.html') + '#inner-Event1', 'href');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(13) a', 'https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest', 'href');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(14) a', encode('@file-module|module1.js.html'), 'href');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(15) a', encode('module:module|module1~Class1.html') + '#instance-member1', 'href');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(16) a', encode('module:module|module1~Class1.html') + '#instance-method1', 'href');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(17) a', encode('module:module|module1~Class1.html') + '#static-staticMember1', 'href');
-          assert.includes(doc, 'h4[data-s="see"]:nth-of-type(18) a', encode('module:module|module1~Class1.html') + '#static-staticMethod1', 'href');
+        find(doc, '[data-s="todo"] ul', (doc)=>{
+          assert.includes(doc, 'li:nth-of-type(1)', 'this is method1 1st todo.');
+          assert.includes(doc, 'li:nth-of-type(2)', 'this is method1 2nd todo.');
         });
-
-        assert.includes(doc, '[data-s="require"]', 'module/module1, Namespace1, Class1, Interface1, Mixin1, method1, member1, Typedef1, Callback1, CONSTANT1, Event1, XMLHttpRequest, member1, method1, staticMember1, staticMethod1');
-
-        assert.includes(doc, '[data-s="author"]', 'foo, bar');
-        assert.includes(doc, '[data-s="author"] span:nth-of-type(1) a', 'mailto:foo@example.com', 'href');
-        assert.includes(doc, '[data-s="author"] span:nth-of-type(2) a', 'http://twitter.com/bar', 'href');
-
-        assert.includes(doc, '[data-s="todo"]:nth-of-type(1)', 'this is method1 1st todo.');
-        assert.includes(doc, '[data-s="todo"]:nth-of-type(2)', 'this is method1 2nd todo.');
       });
       // protected
       find(doc, '[data-s="detail"]:nth-of-type(2)', (doc)=>{
         assert.includes(doc, '#instance-method2', 'protected method2');
+        assert.includes(doc, '[data-s="inherit"]', 'method2');
+        assert.includes(doc, '[data-s="inherit"] a', encode('module:module|module1~Class2.html') + '#instance-method2', 'href');
       });
       // private
       find(doc, '[data-s="detail"]:nth-of-type(3)', (doc)=>{

@@ -184,6 +184,7 @@ Class1.prototype.method1 = function(p1, p2, p3){};
 /**
  * this is method2 desc. this is second line.
  * @protected
+ * @override
  */
 Class1.prototype.method2 = function(){};
 
@@ -262,6 +263,12 @@ Class1.staticMember3 = null;
  * @extends module:module/module1~Class3
  */
 function Class2(){}
+
+/**
+ * this is Class2#method2 desc. this is second line.
+ * @protected
+ */
+Class2.prototype.method2 = function(){};
 
 /**
  * @class
