@@ -18,6 +18,7 @@ export default class DocResolver {
     this._resolveCallback();
     this._resolveSourceCode();
     this._resolveExtendsChain();
+    this._resolveFileAbsPath();
   }
 
   _resolveIgnore() {
@@ -288,5 +289,16 @@ export default class DocResolver {
     }
 
     this._builder._data.__RESOLVED_REQUIRES__ = true;
+  }
+
+  _resolveFileAbsPath() {
+    if (this._builder._data.__RESOLVED_FILE_LONGNAME__) return;
+
+    this._builder._data({kind: 'file'}).update(function(){
+      this._custom_file_abs_path = this.meta.path + path.sep + this.meta.filename;
+      return this;
+    });
+
+    this._builder._data.__RESOLVED_FILE_LONGNAME__ = true;
   }
 }

@@ -313,14 +313,8 @@ export default class DocBuilder {
     if (doc.kind === 'file') {
       fileDoc = doc;
     } else {
-      var filePath = doc.meta.path + '/' + doc.meta.filename;
-      var fileDocs = this._find({kind: 'file'});
-      for (var _fileDoc of fileDocs) {
-        if (filePath.match(new RegExp(`${_fileDoc.name}$`))) {
-          fileDoc = _fileDoc;
-          break;
-        }
-      }
+      var absPath = doc.meta.path + '/' + doc.meta.filename;
+      fileDoc = this._find({kind: 'file', _custom_file_abs_path: absPath})[0];
     }
 
     if (!fileDoc) return;
