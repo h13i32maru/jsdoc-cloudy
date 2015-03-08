@@ -5,6 +5,7 @@ import StaticFileBuilder from './builder/StaticFileBuilder.js';
 import IndexDocBuilder from './builder/IndexDocBuilder.js';
 import ReadmeDocBuilder from './builder/ReadmeDocBuilder.js';
 import ObjectDocBuilder from './builder/ObjectDocBuilder.js';
+import SearchIndexBuilder from './builder/SearchIndexBuilder.js';
 
 /**
  * @param {TaffyDB} data see http://www.taffydb.com/
@@ -27,4 +28,5 @@ exports.publish = function(data, option, tutorials) {
   new ReadmeDocBuilder(data, option).exec(writeHTML);
   new ObjectDocBuilder(data, option).exec(writeHTML);
   new StaticFileBuilder(data, option).exec(copy);
+  new SearchIndexBuilder(data, option).exec(writeHTML);
 };

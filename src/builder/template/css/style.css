@@ -303,3 +303,70 @@ footer, .file-footer {
   margin-top: 20px;
   padding-bottom: 10px;
 }
+
+/* search box */
+.search-box {
+  position: absolute;
+  top: 25px;
+  right: 50px;
+  padding-right: 8px;
+  padding-bottom: 10px;
+}
+
+.search-box img {
+  width: 24px;
+  vertical-align: top;
+}
+
+.search-input {
+  display: inline;
+  visibility: hidden;
+  width: 0;
+  padding: 2px;
+  height: 1.5em;
+  outline: none;
+  background: transparent;
+  border: 1px #0af;
+  border-style: none none solid none;
+  vertical-align: bottom;
+}
+
+.search-input-edge {
+  display: none;
+  width: 1px;
+  height: 5px;
+  background-color: #0af;
+  vertical-align: bottom;
+}
+
+.search-result {
+  position: absolute;
+  padding: 0;
+  margin-top: 5px;
+  margin-left: 30px;
+  background: white;
+  box-shadow: 1px 1px 4px rgb(0,0,0);
+}
+
+.search-result li {
+  list-style: none;
+  padding: 2px 4px;
+}
+
+.search-result li a {
+  display: block;
+}
+
+.search-result li.selected {
+  background: #ddd;
+}
+
+.search-box.active .search-input {
+  visibility: visible;
+  transition: width 0.2s ease-out;
+  width: 300px;
+}
+
+.search-box.active .search-input-edge {
+  display: inline-block;
+}

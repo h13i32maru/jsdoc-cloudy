@@ -5,6 +5,7 @@ export default class StaticFileBuilder extends DocBuilder {
   exec(callback) {
     callback(path.resolve(__dirname, './template/css'), './css');
     callback(path.resolve(__dirname, './template/script'), './script');
+    callback(path.resolve(__dirname, './template/image'), './image');
 
     // see DocBuilder#_buildLayoutDoc
     if (this._config) {
