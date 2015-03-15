@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import escape from 'escape-html';
-import SpruceTemplate from 'spruce-template';
+import IceCap from 'ice-cap';
 import {shorten} from './util.js';
 import DocResolver from './DocResolver.js';
 
@@ -52,73 +52,73 @@ export default class DocBuilder {
   }
 
   _buildLayoutDoc() {
-    var s = new SpruceTemplate(this._readTemplate('layout.html'), {autoClose: false});
+    var ice = new IceCap(this._readTemplate('layout.html'), {autoClose: false});
 
     // see StaticFileBuilder#exec
     if (this._config) {
-      s.loop('userScript', this._config.cloudy.scripts, (i, userScript, s)=>{
+      ice.loop('userScript', this._config.cloudy.scripts, (i, userScript, ice)=>{
         var name = `user/script/${i}-${path.basename(userScript)}`;
-        s.attr('userScript', 'src', name);
+        ice.attr('userScript', 'src', name);
       });
 
-      s.loop('userStyle', this._config.cloudy.styles, (i, userStyle, s)=>{
+      ice.loop('userStyle', this._config.cloudy.styles, (i, userStyle, ice)=>{
         var name = `user/css/${i}-${path.basename(userStyle)}`;
-        s.attr('userStyle', 'href', name);
+        ice.attr('userStyle', 'href', name);
       });
     }
 
-    s.text('date', new Date().toString());
-    s.load('nav', this._buildNavDoc());
-    return s;
+    ice.text('date', new Date().toString());
+    ice.load('nav', this._buildNavDoc());
+    return ice;
   }
 
   _buildNavDoc() {
     var html = this._readTemplate('nav.html');
-    var s = new SpruceTemplate(html);
+    var ice = new IceCap(html);
 
     // classes
     var classDocs = this._find({kind: 'class'});
-    s.drop('classWrap', !classDocs.length);
-    s.loop('classDoc', classDocs, (i, classDoc, s)=>{
-      s.load('classDoc', this._buildDocLinkHTML(classDoc.longname));
+    ice.drop('classWrap', !classDocs.length);
+    ice.loop('classDoc', classDocs, (i, classDoc, ice)=>{
+      ice.load('classDoc', this._buildDocLinkHTML(classDoc.longname));
     });
 
     // interfaces
     var interfaceDocs = this._find({kind: 'interface'});
-    s.drop('interfaceWrap', !interfaceDocs.length);
-    s.loop('interfaceDoc', interfaceDocs, (i, interfaceDoc, s)=>{
-      s.load('interfaceDoc', this._buildDocLinkHTML(interfaceDoc.longname));
+    ice.drop('interfaceWrap', !interfaceDocs.length);
+    ice.loop('interfaceDoc', interfaceDocs, (i, interfaceDoc, ice)=>{
+      ice.load('interfaceDoc', this._buildDocLinkHTML(interfaceDoc.longname));
     });
 
     // namespaces
     var namespaceDocs = this._find({kind: 'namespace'});
-    s.drop('namespaceWrap', !namespaceDocs.length);
-    s.loop('namespaceDoc', namespaceDocs, (i, namespaceDoc, s)=>{
-      s.load('namespaceDoc', this._buildDocLinkHTML(namespaceDoc.longname));
+    ice.drop('namespaceWrap', !namespaceDocs.length);
+    ice.loop('namespaceDoc', namespaceDocs, (i, namespaceDoc, ice)=>{
+      ice.load('namespaceDoc', this._buildDocLinkHTML(namespaceDoc.longname));
     });
 
     // modules
     var moduleDocs = this._find({kind: 'module'});
-    s.drop('moduleWrap', !moduleDocs.length);
-    s.loop('moduleDoc', moduleDocs, (i, moduleDoc, s)=>{
-      s.load('moduleDoc', this._buildDocLinkHTML(moduleDoc.longname));
+    ice.drop('moduleWrap', !moduleDocs.length);
+    ice.loop('moduleDoc', moduleDocs, (i, moduleDoc, ice)=>{
+      ice.load('moduleDoc', this._buildDocLinkHTML(moduleDoc.longname));
     });
 
     // mixin
     var mixinDocs = this._find({kind: 'mixin'});
-    s.drop('mixinWrap', !mixinDocs.length);
-    s.loop('mixinDoc', mixinDocs, (i, mixinDoc, s)=>{
-      s.load('mixinDoc', this._buildDocLinkHTML(mixinDoc.longname));
+    ice.drop('mixinWrap', !mixinDocs.length);
+    ice.loop('mixinDoc', mixinDocs, (i, mixinDoc, ice)=>{
+      ice.load('mixinDoc', this._buildDocLinkHTML(mixinDoc.longname));
     });
 
     // files
     var fileDocs = this._find({kind: 'file'});
-    s.drop('fileWrap', !fileDocs.length);
-    s.loop('fileDoc', fileDocs, (i, fileDoc, s)=>{
-      s.load('fileDoc', this._buildFileDocLinkHTML(fileDoc));
+    ice.drop('fileWrap', !fileDocs.length);
+    ice.loop('fileDoc', fileDocs, (i, fileDoc, ice)=>{
+      ice.load('fileDoc', this._buildFileDocLinkHTML(fileDoc));
     });
 
-    return s;
+    return ice;
   }
 
   _findAccessDocs(doc, kind, isStaticScope) {
@@ -197,7 +197,7 @@ export default class DocBuilder {
   _buildSummaryDoc(docs, title, innerLink, kind) {
     if (docs.length === 0) return;
 
-    var s = new SpruceTemplate(this._readTemplate('summary.html'));
+    var s = new IceCap(this._readTemplate('summary.html'));
 
     s.text('title', title);
     s.loop('target', docs, (i, doc, s)=>{
@@ -242,7 +242,7 @@ export default class DocBuilder {
   }
 
   _buildDetailDocs(docs, title) {
-    var s = new SpruceTemplate(this._readTemplate('details.html'));
+    var s = new IceCap(this._readTemplate('details.html'));
 
     s.text('title', title);
     s.drop('title', !docs.length);
@@ -306,13 +306,11 @@ export default class DocBuilder {
       }
 
       // example
-      var exampleDocs = doc.examples;
-      s.loop('exampleDoc', exampleDocs, (i, exampleDoc, s)=>{
-        s.text('exampleCode', exampleDoc);
+      s.into('example', doc.examples, (examples, ice)=>{
+        ice.loop('exampleDoc', examples, (i, exampleDoc, ice)=>{
+          ice.text('exampleCode', exampleDoc);
+        });
       });
-      if (!exampleDocs) {
-        s.drop('example');
-      }
     });
 
     return s;
@@ -460,8 +458,8 @@ export default class DocBuilder {
     return html;
   }
 
-  _buildProperties(properties, title = 'Properties:') {
-    var s = new SpruceTemplate(this._readTemplate('properties.html'));
+  _buildProperties(properties = [], title = 'Properties:') {
+    var s = new IceCap(this._readTemplate('properties.html'));
 
     s.text('title', title);
 
@@ -496,7 +494,7 @@ export default class DocBuilder {
       }
     });
 
-    if (!properties) {
+    if (!properties || properties.length === 0) {
       s.drop('properties');
     }
 
@@ -558,7 +556,7 @@ export default class DocBuilder {
   _buildFileFooterHTML(doc) {
     if (!doc) return '';
 
-    var s = new SpruceTemplate(this._readTemplate('file-footer.html'));
+    var s = new IceCap(this._readTemplate('file-footer.html'));
 
     var flag = false;
 

@@ -25,10 +25,10 @@
     "http-server": "",
     "cheerio": ""
   },
-
   "dependencies": {
     "escape-html": "",
-    "fs-extra": ""
+    "fs-extra": "",
+    "ice-cap": "../ice-cap"
   },
 
   "main": "out/src/publish.js"

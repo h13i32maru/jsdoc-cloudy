@@ -1,5 +1,5 @@
 import fs from 'fs';
-import SpruceTemplate from 'spruce-template';
+import IceCap from 'ice-cap';
 import DocBuilder from './DocBuilder.js';
 
 export default class IndexDocBuilder extends DocBuilder {
@@ -12,7 +12,7 @@ export default class IndexDocBuilder extends DocBuilder {
   _buildIndexDoc() {
     var indexInfo = this._getIndexInfo();
 
-    var s = new SpruceTemplate(this._readTemplate('index.html'));
+    var s = new IceCap(this._readTemplate('index.html'));
 
     s.text('title', indexInfo.title);
     s.text('version', indexInfo.version, 'append');

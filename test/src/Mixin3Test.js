@@ -5,12 +5,12 @@ describe('module/module1~Mixin3: ', ()=> {
   let encode = encodeURIComponent;
 
   it('has mixed.', ()=> {
-    find(doc, '[data-s="directMixed"]', (doc)=> {
+    find(doc, '[data-ice="directMixed"]', (doc)=> {
       assert.includes(doc, 'li:nth-of-type(1)', 'Class3');
       assert.includes(doc, 'li:nth-of-type(1) a', encode('module:module|module1~Class3.html'), 'href');
     });
 
-    find(doc, '[data-s="indirectMixed"]', (doc)=> {
+    find(doc, '[data-ice="indirectMixed"]', (doc)=> {
       assert.includes(doc, 'li:nth-of-type(1)', 'Class1');
       assert.includes(doc, 'li:nth-of-type(1) a', encode('module:module|module1~Class1.html'), 'href');
 

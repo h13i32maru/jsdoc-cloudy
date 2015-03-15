@@ -1,4 +1,4 @@
-import SpruceTemplate from 'spruce-template';
+import IceCap from 'ice-cap';
 import DocBuilder from './DocBuilder.js';
 
 export default class ReadmeDocBuilder extends DocBuilder {
@@ -10,7 +10,7 @@ export default class ReadmeDocBuilder extends DocBuilder {
 
   _buildReadmeDoc() {
     var html = this._readTemplate('readme.html');
-    var s = new SpruceTemplate(html);
+    var s = new IceCap(html);
     s.load('readme', this._option.readme);
 
     return s;

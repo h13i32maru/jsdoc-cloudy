@@ -1,4 +1,4 @@
-import SpruceTemplate from 'spruce-template';
+import IceCap from 'ice-cap';
 import DocBuilder from './DocBuilder.js';
 
 export default class NamespaceDocBuilder extends DocBuilder {
@@ -6,8 +6,8 @@ export default class NamespaceDocBuilder extends DocBuilder {
     var s = this._buildLayoutDoc();
     var docs = this._find({kind: ['namespace', 'module', 'mixin', 'file', 'class', 'interface']});
     for (var doc of docs) {
-      s.load('content', this._buildObjectDoc(doc));
-      s.load('fileFooter', this._buildFileFooterHTML(doc));
+      s.load('content', this._buildObjectDoc(doc), IceCap.MODE_WRITE);
+      s.load('fileFooter', this._buildFileFooterHTML(doc), IceCap.MODE_WRITE);
       var fileName = this._getOutputFileName(doc);
       callback(s.html, fileName);
     }
@@ -18,7 +18,7 @@ export default class NamespaceDocBuilder extends DocBuilder {
     var directSubclass = this._buildDirectSubclassHTML(doc);
     var indirectSubclass = this._buildIndirectSubclassHTML(doc);
 
-    var s = new SpruceTemplate(this._readTemplate('object.html'));
+    var s = new IceCap(this._readTemplate('object.html'));
 
     // header
     s.load('memberof', this._buildDocLinkHTML(doc.memberof));
@@ -54,9 +54,10 @@ export default class NamespaceDocBuilder extends DocBuilder {
     s.load('todo', this._buildDocsLinkHTML(doc.todo), 'append');
 
     // file example
-    s.drop('fileexampleDocs', !doc.fileexamples);
-    s.loop('fileexampleDoc', doc.fileexamples, (i, fileexample, s)=>{
-      s.text('fileexampleCode', fileexample);
+    s.into('fileexampleDocs', doc.fileexamples, (fileexamples, ice)=>{
+      ice.loop('fileexampleDoc', fileexamples, (i, filexample, ice)=>{
+        ice.text('fileexampleCode', filexample);
+      });
     });
 
     // summary

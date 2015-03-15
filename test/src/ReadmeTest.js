@@ -4,7 +4,7 @@ describe('README: ', ()=> {
   let doc = readDoc('@readme.html');
 
   it('has README.', ()=>{
-    assert.includes(doc, '[data-s="readme"]', 'JSDoc Cloudy Test');
-    assert.includes(doc, '[data-s="readme"]','this is README');
+    assert.includes(doc, '[data-ice="readme"]', 'JSDoc Cloudy Test');
+    assert.includes(doc, '[data-ice="readme"]','this is README');
   });
 });
