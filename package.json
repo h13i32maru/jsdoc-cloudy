@@ -23,7 +23,9 @@
     "espower-loader": "",
     "jsdoc": "",
     "http-server": "",
-    "cheerio": ""
+    "cheerio": "",
+    "taffydb": "https://github.com/hegemonic/taffydb/tarball/7d100bcee0e997ee4977e273cdce60bd8933050e",
+    "istanbul": ""
   },
   "dependencies": {
     "escape-html": "",

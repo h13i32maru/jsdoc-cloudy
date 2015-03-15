@@ -9,7 +9,7 @@
     "includePattern": ".+\\.js$"
   },
   "opts": {
-    "template": "./out/src/",
+    "template": "./out/test/fixture/",
     "destination": "./out/test/jsdoc",
     "recurse": true,
     "readme": "./out/test/fixture/README.md",
