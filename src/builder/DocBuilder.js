@@ -208,11 +208,9 @@ export default class DocBuilder {
       ice.text('override', doc.inherits ? 'override' : '');
       ice.text('readonly', doc.readonly ? 'readonly' : '');
       ice.text('access', doc.access);
-      ice.drop('sinceLabel', !doc.since);
       ice.text('since', doc.since);
       ice.load('deprecated', this._buildDeprecatedHTML(doc));
       ice.load('experimental', this._buildExperimentalHTML(doc));
-      ice.drop('versionLabel', !doc.version);
       ice.text('version', doc.version);
     });
 

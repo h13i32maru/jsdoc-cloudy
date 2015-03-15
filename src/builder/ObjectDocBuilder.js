@@ -4,6 +4,7 @@ import DocBuilder from './DocBuilder.js';
 export default class NamespaceDocBuilder extends DocBuilder {
   exec(callback) {
     var ice = this._buildLayoutDoc();
+    ice.autoDrop = false;
     var docs = this._find({kind: ['namespace', 'module', 'mixin', 'file', 'class', 'interface']});
     for (var doc of docs) {
       ice.load('content', this._buildObjectDoc(doc), IceCap.MODE_WRITE);
@@ -30,7 +31,6 @@ export default class NamespaceDocBuilder extends DocBuilder {
     ice.load('variation', this._buildVariationHTML(doc), 'append');
 
     // extends chain
-    ice.load('extends', this._buildDocsLinkHTML(doc.augments, null, false, ', '), 'append');
     ice.load('extendsChain', extendsChain, 'append');
     ice.load('directSubclass', directSubclass, 'append');
     ice.load('indirectSubclass', indirectSubclass, 'append');
@@ -91,8 +91,9 @@ export default class NamespaceDocBuilder extends DocBuilder {
     ice.load('callbackDetails', this._buildDetailHTML(doc, 'callback', 'Callbacks'));
 
     // source code
-    ice.drop('sourceCodeWrap', !doc._custom_source_code);
-    ice.text('sourceCode', doc._custom_source_code);
+    ice.into('sourceCodeWrap', doc._custom_source_code, (sourceCode, ice)=>{
+      ice.text('sourceCode', sourceCode);
+    });
 
     return ice;
   }
