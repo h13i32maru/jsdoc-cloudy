@@ -10,8 +10,6 @@
     "init": "bash ./script/init.sh",
     "build": "bash ./script/build.sh",
     "test": "bash ./script/test.sh",
-    "jsdoc": "bash ./script/build_jsdoc.sh",
-    "sample": "bash ./script/build_sample.sh",
     "start": "bash ./script/server.sh"
   },
   "author": "h13i32maru",
@@ -33,6 +31,9 @@
     "fs-extra": "",
     "ice-cap": ""
   },
-
+  "keywords": [
+    "jsdoc",
+    "template"
+  ],
   "main": "out/src/publish.js"
 }
