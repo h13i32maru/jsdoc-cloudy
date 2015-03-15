@@ -3,13 +3,13 @@ import DocBuilder from './DocBuilder.js';
 
 export default class NamespaceDocBuilder extends DocBuilder {
   exec(callback) {
-    var s = this._buildLayoutDoc();
+    var ice = this._buildLayoutDoc();
     var docs = this._find({kind: ['namespace', 'module', 'mixin', 'file', 'class', 'interface']});
     for (var doc of docs) {
-      s.load('content', this._buildObjectDoc(doc), IceCap.MODE_WRITE);
-      s.load('fileFooter', this._buildFileFooterHTML(doc), IceCap.MODE_WRITE);
+      ice.load('content', this._buildObjectDoc(doc), IceCap.MODE_WRITE);
+      ice.load('fileFooter', this._buildFileFooterHTML(doc), IceCap.MODE_WRITE);
       var fileName = this._getOutputFileName(doc);
-      callback(s.html, fileName);
+      callback(ice.html, fileName);
     }
   }
 
@@ -18,83 +18,83 @@ export default class NamespaceDocBuilder extends DocBuilder {
     var directSubclass = this._buildDirectSubclassHTML(doc);
     var indirectSubclass = this._buildIndirectSubclassHTML(doc);
 
-    var s = new IceCap(this._readTemplate('object.html'));
+    var ice = new IceCap(this._readTemplate('object.html'));
 
     // header
-    s.load('memberof', this._buildDocLinkHTML(doc.memberof));
-    s.text('access', doc.access);
-    s.text('kind', doc.kind);
-    s.load('file', this._buildFileDocLinkHTML(doc), 'append');
-    s.text('since', doc.since, 'append');
-    s.text('version', doc.version, 'append');
-    s.load('variation', this._buildVariationHTML(doc), 'append');
+    ice.load('memberof', this._buildDocLinkHTML(doc.memberof));
+    ice.text('access', doc.access);
+    ice.text('kind', doc.kind);
+    ice.load('file', this._buildFileDocLinkHTML(doc), 'append');
+    ice.text('since', doc.since, 'append');
+    ice.text('version', doc.version, 'append');
+    ice.load('variation', this._buildVariationHTML(doc), 'append');
 
     // extends chain
-    s.load('extends', this._buildDocsLinkHTML(doc.augments, null, false, ', '), 'append');
-    s.load('extendsChain', extendsChain, 'append');
-    s.load('directSubclass', directSubclass, 'append');
-    s.load('indirectSubclass', indirectSubclass, 'append');
-    s.load('implements', this._buildDocsLinkHTML(doc.implements, null, false, ', '), 'append');
-    s.load('indirectImplements', this._buildDocsLinkHTML(doc._custom_indirect_implements, null, false, ', '), 'append');
-    s.load('mixes', this._buildDocsLinkHTML(doc.mixes, null, false, ', '), 'append');
-    s.load('indirectMixes', this._buildDocsLinkHTML(doc._custom_indirect_mixes, null, false, ', '), 'append');
-    s.load('directImplemented', this._buildDocsLinkHTML(doc._custom_direct_implemented, null, false, ', '), 'append');
-    s.load('indirectImplemented', this._buildDocsLinkHTML(doc._custom_indirect_implemented, null, false, ', '), 'append');
-    s.load('directMixed', this._buildDocsLinkHTML(doc._custom_direct_mixed, null, false, ', '), 'append');
-    s.load('indirectMixed', this._buildDocsLinkHTML(doc._custom_indirect_mixed, null, false, ', '), 'append');
+    ice.load('extends', this._buildDocsLinkHTML(doc.augments, null, false, ', '), 'append');
+    ice.load('extendsChain', extendsChain, 'append');
+    ice.load('directSubclass', directSubclass, 'append');
+    ice.load('indirectSubclass', indirectSubclass, 'append');
+    ice.load('implements', this._buildDocsLinkHTML(doc.implements, null, false, ', '), 'append');
+    ice.load('indirectImplements', this._buildDocsLinkHTML(doc._custom_indirect_implements, null, false, ', '), 'append');
+    ice.load('mixes', this._buildDocsLinkHTML(doc.mixes, null, false, ', '), 'append');
+    ice.load('indirectMixes', this._buildDocsLinkHTML(doc._custom_indirect_mixes, null, false, ', '), 'append');
+    ice.load('directImplemented', this._buildDocsLinkHTML(doc._custom_direct_implemented, null, false, ', '), 'append');
+    ice.load('indirectImplemented', this._buildDocsLinkHTML(doc._custom_indirect_implemented, null, false, ', '), 'append');
+    ice.load('directMixed', this._buildDocsLinkHTML(doc._custom_direct_mixed, null, false, ', '), 'append');
+    ice.load('indirectMixed', this._buildDocsLinkHTML(doc._custom_indirect_mixed, null, false, ', '), 'append');
 
     // self
-    s.text('name', doc.name);
-    s.load('description', doc.classdesc || doc.description);
-    s.load('deprecated', this._buildDeprecatedHTML(doc));
-    s.load('experimental', this._buildExperimentalHTML(doc));
-    s.load('require', this._buildDocsLinkHTML(doc.requires), 'append');
-    s.load('author', this._buildAuthorHTML(doc), 'append');
-    s.load('see', this._buildDocsLinkHTML(doc.see), 'append');
-    s.load('todo', this._buildDocsLinkHTML(doc.todo), 'append');
+    ice.text('name', doc.name);
+    ice.load('description', doc.classdesc || doc.description);
+    ice.load('deprecated', this._buildDeprecatedHTML(doc));
+    ice.load('experimental', this._buildExperimentalHTML(doc));
+    ice.load('require', this._buildDocsLinkHTML(doc.requires), 'append');
+    ice.load('author', this._buildAuthorHTML(doc), 'append');
+    ice.load('see', this._buildDocsLinkHTML(doc.see), 'append');
+    ice.load('todo', this._buildDocsLinkHTML(doc.todo), 'append');
 
     // file example
-    s.into('fileexampleDocs', doc.fileexamples, (fileexamples, ice)=>{
+    ice.into('fileexampleDocs', doc.fileexamples, (fileexamples, ice)=>{
       ice.loop('fileexampleDoc', fileexamples, (i, filexample, ice)=>{
         ice.text('fileexampleCode', filexample);
       });
     });
 
     // summary
-    s.load('namespaceSummary', this._buildSummaryHTML(doc, 'namespace', 'Namespaces'), 'append');
-    s.load('classSummary', this._buildSummaryHTML(doc, 'class', 'Classes'), 'append');
-    s.load('interfaceSummary', this._buildSummaryHTML(doc, 'interface', 'Interfaces'), 'append');
-    s.load('mixinSummary', this._buildSummaryHTML(doc, 'mixin', 'Mixin'), 'append');
-    s.load('staticMemberSummary', this._buildSummaryHTML(doc, 'member', 'Members', true), 'append');
-    s.load('staticMethodSummary', this._buildSummaryHTML(doc, 'function', 'Methods', true), 'append');
-    s.load('constructorSummary', this._buildSummaryHTML(doc, 'constructor', 'Constructor'), 'append');
-    s.load('memberSummary', this._buildSummaryHTML(doc, 'member', 'Members'), 'append');
-    s.load('methodSummary', this._buildSummaryHTML(doc, 'function', 'Methods'), 'append');
-    s.load('typedefSummary', this._buildSummaryHTML(doc, 'typedef', 'Typedefs'), 'append');
-    s.load('eventSummary', this._buildSummaryHTML(doc, 'event', 'Events'), 'append');
-    s.load('constSummary', this._buildSummaryHTML(doc, 'constant', 'Constants'), 'append');
-    s.load('enumSummary', this._buildSummaryHTML(doc, 'enum', 'Enums'), 'append');
-    s.load('callbackSummary', this._buildSummaryHTML(doc, 'callback', 'callback'), 'append');
+    ice.load('namespaceSummary', this._buildSummaryHTML(doc, 'namespace', 'Namespaces'), 'append');
+    ice.load('classSummary', this._buildSummaryHTML(doc, 'class', 'Classes'), 'append');
+    ice.load('interfaceSummary', this._buildSummaryHTML(doc, 'interface', 'Interfaces'), 'append');
+    ice.load('mixinSummary', this._buildSummaryHTML(doc, 'mixin', 'Mixin'), 'append');
+    ice.load('staticMemberSummary', this._buildSummaryHTML(doc, 'member', 'Members', true), 'append');
+    ice.load('staticMethodSummary', this._buildSummaryHTML(doc, 'function', 'Methods', true), 'append');
+    ice.load('constructorSummary', this._buildSummaryHTML(doc, 'constructor', 'Constructor'), 'append');
+    ice.load('memberSummary', this._buildSummaryHTML(doc, 'member', 'Members'), 'append');
+    ice.load('methodSummary', this._buildSummaryHTML(doc, 'function', 'Methods'), 'append');
+    ice.load('typedefSummary', this._buildSummaryHTML(doc, 'typedef', 'Typedefs'), 'append');
+    ice.load('eventSummary', this._buildSummaryHTML(doc, 'event', 'Events'), 'append');
+    ice.load('constSummary', this._buildSummaryHTML(doc, 'constant', 'Constants'), 'append');
+    ice.load('enumSummary', this._buildSummaryHTML(doc, 'enum', 'Enums'), 'append');
+    ice.load('callbackSummary', this._buildSummaryHTML(doc, 'callback', 'callback'), 'append');
 
-    s.load('inheritedSummary', this._buildInheritedSummaryHTML(doc), 'append');
+    ice.load('inheritedSummary', this._buildInheritedSummaryHTML(doc), 'append');
 
     // detail
-    s.load('staticMemberDetails', this._buildDetailHTML(doc, 'member', 'Members', true));
-    s.load('staticMethodDetails', this._buildDetailHTML(doc, 'function', 'Methods', true));
-    s.load('constructorDetails', this._buildDetailHTML(doc, 'constructor', 'Constructors'));
-    s.load('memberDetails', this._buildDetailHTML(doc, 'member', 'Members'));
-    s.load('methodDetails', this._buildDetailHTML(doc, 'function', 'Methods'));
-    s.load('typedefDetails', this._buildDetailHTML(doc, 'typedef', 'Typedefs'));
-    s.load('eventDetails', this._buildDetailHTML(doc, 'event', 'Events'));
-    s.load('constDetails', this._buildDetailHTML(doc, 'constant', 'Constants'));
-    s.load('enumDetails', this._buildDetailHTML(doc, 'enum', 'Enums'));
-    s.load('callbackDetails', this._buildDetailHTML(doc, 'callback', 'Callbacks'));
+    ice.load('staticMemberDetails', this._buildDetailHTML(doc, 'member', 'Members', true));
+    ice.load('staticMethodDetails', this._buildDetailHTML(doc, 'function', 'Methods', true));
+    ice.load('constructorDetails', this._buildDetailHTML(doc, 'constructor', 'Constructors'));
+    ice.load('memberDetails', this._buildDetailHTML(doc, 'member', 'Members'));
+    ice.load('methodDetails', this._buildDetailHTML(doc, 'function', 'Methods'));
+    ice.load('typedefDetails', this._buildDetailHTML(doc, 'typedef', 'Typedefs'));
+    ice.load('eventDetails', this._buildDetailHTML(doc, 'event', 'Events'));
+    ice.load('constDetails', this._buildDetailHTML(doc, 'constant', 'Constants'));
+    ice.load('enumDetails', this._buildDetailHTML(doc, 'enum', 'Enums'));
+    ice.load('callbackDetails', this._buildDetailHTML(doc, 'callback', 'Callbacks'));
 
     // source code
-    s.drop('sourceCodeWrap', !doc._custom_source_code);
-    s.text('sourceCode', doc._custom_source_code);
+    ice.drop('sourceCodeWrap', !doc._custom_source_code);
+    ice.text('sourceCode', doc._custom_source_code);
 
-    return s;
+    return ice;
   }
 
   _buildVariationHTML(doc) {

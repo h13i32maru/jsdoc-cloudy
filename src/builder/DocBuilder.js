@@ -197,26 +197,26 @@ export default class DocBuilder {
   _buildSummaryDoc(docs, title, innerLink, kind) {
     if (docs.length === 0) return;
 
-    var s = new IceCap(this._readTemplate('summary.html'));
+    var ice = new IceCap(this._readTemplate('summary.html'));
 
-    s.text('title', title);
-    s.loop('target', docs, (i, doc, s)=>{
-      s.load('name', this._buildDocLinkHTML(doc.longname, null, innerLink));
-      s.load('signature', this._buildSignatureHTML(doc));
-      s.load('description', shorten(doc, kind === 'constructor'));
-      s.text('virtual', doc.virtual ? 'virtual' : '');
-      s.text('override', doc.inherits ? 'override' : '');
-      s.text('readonly', doc.readonly ? 'readonly' : '');
-      s.text('access', doc.access);
-      s.drop('sinceLabel', !doc.since);
-      s.text('since', doc.since);
-      s.load('deprecated', this._buildDeprecatedHTML(doc));
-      s.load('experimental', this._buildExperimentalHTML(doc));
-      s.drop('versionLabel', !doc.version);
-      s.text('version', doc.version);
+    ice.text('title', title);
+    ice.loop('target', docs, (i, doc, ice)=>{
+      ice.load('name', this._buildDocLinkHTML(doc.longname, null, innerLink));
+      ice.load('signature', this._buildSignatureHTML(doc));
+      ice.load('description', shorten(doc, kind === 'constructor'));
+      ice.text('virtual', doc.virtual ? 'virtual' : '');
+      ice.text('override', doc.inherits ? 'override' : '');
+      ice.text('readonly', doc.readonly ? 'readonly' : '');
+      ice.text('access', doc.access);
+      ice.drop('sinceLabel', !doc.since);
+      ice.text('since', doc.since);
+      ice.load('deprecated', this._buildDeprecatedHTML(doc));
+      ice.load('experimental', this._buildExperimentalHTML(doc));
+      ice.drop('versionLabel', !doc.version);
+      ice.text('version', doc.version);
     });
 
-    return s;
+    return ice;
   }
 
   _buildDetailHTML(doc, kind, title, isStaticScope = false) {
@@ -242,78 +242,78 @@ export default class DocBuilder {
   }
 
   _buildDetailDocs(docs, title) {
-    var s = new IceCap(this._readTemplate('details.html'));
+    var ice = new IceCap(this._readTemplate('details.html'));
 
-    s.text('title', title);
-    s.drop('title', !docs.length);
+    ice.text('title', title);
+    ice.drop('title', !docs.length);
 
-    s.loop('detail', docs, (i, doc, s)=>{
-      s.attr('anchor', 'id', `${doc.scope}-${doc.name}`);
-      s.text('name', doc.name);
-      s.load('signature', this._buildSignatureHTML(doc));
-      s.load('description', doc.description);
-      s.text('virtual', doc.virtual ? 'virtual' : '');
-      s.text('override', doc.inherits ? 'override' : '');
-      s.text('access', doc.access);
-      s.text('since', doc.since, 'append');
-      s.load('deprecated', this._buildDeprecatedHTML(doc));
-      s.load('experimental', this._buildExperimentalHTML(doc));
-      s.text('readonly', doc.readonly ? 'readonly' : '');
-      s.load('require', this._buildDocsLinkHTML(doc.requires), 'append');
-      s.load('author', this._buildAuthorHTML(doc), 'append');
-      s.text('version', doc.version, 'append');
-      s.load('defaultvalue', this._buildDocsLinkHTML([doc.defaultvalue]), 'append');
-      s.load('inherit', this._buildDocsLinkHTML([doc.inherits]), 'append');
-      s.load('this', this._buildDocsLinkHTML([doc.this]), 'append');
-      s.load('fire', this._buildDocsLinkHTML(doc.fires), 'append');
-      s.load('listen', this._buildDocsLinkHTML(doc.listens), 'append');
-      s.load('see', this._buildDocsLinkHTML(doc.see), 'append');
-      s.load('todo', this._buildDocsLinkHTML(doc.todo), 'append');
+    ice.loop('detail', docs, (i, doc, ice)=>{
+      ice.attr('anchor', 'id', `${doc.scope}-${doc.name}`);
+      ice.text('name', doc.name);
+      ice.load('signature', this._buildSignatureHTML(doc));
+      ice.load('description', doc.description);
+      ice.text('virtual', doc.virtual ? 'virtual' : '');
+      ice.text('override', doc.inherits ? 'override' : '');
+      ice.text('access', doc.access);
+      ice.text('since', doc.since, 'append');
+      ice.load('deprecated', this._buildDeprecatedHTML(doc));
+      ice.load('experimental', this._buildExperimentalHTML(doc));
+      ice.text('readonly', doc.readonly ? 'readonly' : '');
+      ice.load('require', this._buildDocsLinkHTML(doc.requires), 'append');
+      ice.load('author', this._buildAuthorHTML(doc), 'append');
+      ice.text('version', doc.version, 'append');
+      ice.load('defaultvalue', this._buildDocsLinkHTML([doc.defaultvalue]), 'append');
+      ice.load('inherit', this._buildDocsLinkHTML([doc.inherits]), 'append');
+      ice.load('this', this._buildDocsLinkHTML([doc.this]), 'append');
+      ice.load('fire', this._buildDocsLinkHTML(doc.fires), 'append');
+      ice.load('listen', this._buildDocsLinkHTML(doc.listens), 'append');
+      ice.load('see', this._buildDocsLinkHTML(doc.see), 'append');
+      ice.load('todo', this._buildDocsLinkHTML(doc.todo), 'append');
 
       if (['function', 'class', 'interface'].indexOf(doc.kind) !== -1) {
-        s.load('properties', this._buildProperties(doc.params, 'Params:'));
+        ice.load('properties', this._buildProperties(doc.params, 'Params:'));
       } else {
-        s.load('properties', this._buildProperties(doc.properties, 'Properties:'));
+        ice.load('properties', this._buildProperties(doc.properties, 'Properties:'));
       }
 
       // return
       if (doc.returns) {
-        s.load('returnDescription', doc.returns[0].description);
+        ice.load('returnDescription', doc.returns[0].description);
         var typeNames = [];
         for (var typeName of doc.returns[0].type.names) {
           typeNames.push(this._buildDocLinkHTML(typeName));
         }
         if ('nullable' in doc.returns[0]) {
           var nullable = doc.returns[0].nullable;
-          s.load('returnType', typeNames.join(' | ') + ` (nullable: ${nullable})`);
+          ice.load('returnType', typeNames.join(' | ') + ` (nullable: ${nullable})`);
         } else {
-          s.load('returnType', typeNames.join(' | '));
+          ice.load('returnType', typeNames.join(' | '));
         }
 
-        s.load('returnProperties', this._buildProperties(doc.properties, 'Return Properties:'));
+        ice.load('returnProperties', this._buildProperties(doc.properties, 'Return Properties:'));
       } else {
-        s.drop('returnParams');
+        ice.drop('returnParams');
       }
 
       // throws
       if (doc.exceptions) {
-        s.loop('throw', doc.exceptions, (i, exceptionDoc, s)=>{
-          s.load('throwName', this._buildDocLinkHTML(exceptionDoc.type.names[0]));
-          s.load('throwDesc', exceptionDoc.description);
+        ice.loop('throw', doc.exceptions, (i, exceptionDoc, ice)=>{
+          ice.load('throwName', this._buildDocLinkHTML(exceptionDoc.type.names[0]));
+          ice.load('throwDesc', exceptionDoc.description);
         });
       } else {
-        s.drop('throwWrap');
+        ice.drop('throwWrap');
       }
 
       // example
-      s.into('example', doc.examples, (examples, ice)=>{
+      ice.into('example', doc.examples, (examples, ice)=>{
         ice.loop('exampleDoc', examples, (i, exampleDoc, ice)=>{
           ice.text('exampleCode', exampleDoc);
         });
       });
     });
 
-    return s;
+    return ice;
   }
 
   _getURL(doc, inner = false) {
@@ -459,22 +459,22 @@ export default class DocBuilder {
   }
 
   _buildProperties(properties = [], title = 'Properties:') {
-    var s = new IceCap(this._readTemplate('properties.html'));
+    var ice = new IceCap(this._readTemplate('properties.html'));
 
-    s.text('title', title);
+    ice.text('title', title);
 
-    s.loop('property', properties, (i, prop, s)=>{
-      s.autoDrop = false;
-      s.attr('property', 'data-depth', prop.name.split('.').length - 1);
-      s.text('name', prop.name);
-      s.attr('name', 'data-depth', prop.name.split('.').length - 1);
-      s.load('description', prop.description);
+    ice.loop('property', properties, (i, prop, ice)=>{
+      ice.autoDrop = false;
+      ice.attr('property', 'data-depth', prop.name.split('.').length - 1);
+      ice.text('name', prop.name);
+      ice.attr('name', 'data-depth', prop.name.split('.').length - 1);
+      ice.load('description', prop.description);
 
       var typeNames = [];
       for (var typeName of prop.type.names) {
         typeNames.push(this._buildDocLinkHTML(typeName));
       }
-      s.load('type', typeNames.join(' | '));
+      ice.load('type', typeNames.join(' | '));
 
       // appendix
       var appendix = [];
@@ -488,17 +488,17 @@ export default class DocBuilder {
         appendix.push(`<li>nullable: ${prop.nullable}</li>`);
       }
       if (appendix.length) {
-        s.load('appendix', `<ul>${appendix.join('\n')}</ul>`);
+        ice.load('appendix', `<ul>${appendix.join('\n')}</ul>`);
       } else {
-        s.text('appendix', '');
+        ice.text('appendix', '');
       }
     });
 
     if (!properties || properties.length === 0) {
-      s.drop('properties');
+      ice.drop('properties');
     }
 
-    return s;
+    return ice;
   }
 
   _buildDeprecatedHTML(doc) {
@@ -556,20 +556,20 @@ export default class DocBuilder {
   _buildFileFooterHTML(doc) {
     if (!doc) return '';
 
-    var s = new IceCap(this._readTemplate('file-footer.html'));
+    var ice = new IceCap(this._readTemplate('file-footer.html'));
 
     var flag = false;
 
     if (doc.copyright) {
       flag = true;
-      s.text('copyright', doc.copyright);
+      ice.text('copyright', doc.copyright);
     }
 
     if (doc.license) {
       flag = true;
-      s.text('license', doc.license);
+      ice.text('license', doc.license);
     }
 
-    return flag ? s.html : '';
+    return flag ? ice.html : '';
   }
 }

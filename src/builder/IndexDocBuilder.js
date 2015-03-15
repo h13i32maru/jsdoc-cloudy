@@ -4,30 +4,30 @@ import DocBuilder from './DocBuilder.js';
 
 export default class IndexDocBuilder extends DocBuilder {
   exec(callback) {
-    var s = this._buildLayoutDoc();
-    s.load('content', this._buildIndexDoc());
-    callback(s.html, 'index.html');
+    var ice = this._buildLayoutDoc();
+    ice.load('content', this._buildIndexDoc());
+    callback(ice.html, 'index.html');
   }
 
   _buildIndexDoc() {
     var indexInfo = this._getIndexInfo();
 
-    var s = new IceCap(this._readTemplate('index.html'));
+    var ice = new IceCap(this._readTemplate('index.html'));
 
-    s.text('title', indexInfo.title);
-    s.text('version', indexInfo.version, 'append');
-    s.text('url', indexInfo.url);
-    s.attr('url', 'href', indexInfo.url);
-    s.text('description', indexInfo.desc);
+    ice.text('title', indexInfo.title);
+    ice.text('version', indexInfo.version, 'append');
+    ice.text('url', indexInfo.url);
+    ice.attr('url', 'href', indexInfo.url);
+    ice.text('description', indexInfo.desc);
 
-    s.load('moduleSummary', this._buildSummaryHTML(null, 'module', 'Module Summary'), 'append');
-    s.load('namespaceSummary', this._buildSummaryHTML(null, 'namespace', 'Namespace Summary'), 'append');
-    s.load('classSummary', this._buildSummaryHTML(null, 'class', 'Class Summary'), 'append');
-    s.load('interfaceSummary', this._buildSummaryHTML(null, 'interface', 'Interface Summary'), 'append');
-    s.load('mixinSummary', this._buildSummaryHTML(null, 'mixin', 'Mixin Summary'), 'append');
-    s.load('fileSummary', this._buildSummaryHTML(null, 'file', 'File Summary'), 'append');
+    ice.load('moduleSummary', this._buildSummaryHTML(null, 'module', 'Module Summary'), 'append');
+    ice.load('namespaceSummary', this._buildSummaryHTML(null, 'namespace', 'Namespace Summary'), 'append');
+    ice.load('classSummary', this._buildSummaryHTML(null, 'class', 'Class Summary'), 'append');
+    ice.load('interfaceSummary', this._buildSummaryHTML(null, 'interface', 'Interface Summary'), 'append');
+    ice.load('mixinSummary', this._buildSummaryHTML(null, 'mixin', 'Mixin Summary'), 'append');
+    ice.load('fileSummary', this._buildSummaryHTML(null, 'file', 'File Summary'), 'append');
 
-    return s;
+    return ice;
   }
 
   _getIndexInfo() {
