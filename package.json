@@ -30,7 +30,7 @@
   "dependencies": {
     "escape-html": "",
     "fs-extra": "",
-    "ice-cap": "../ice-cap"
+    "ice-cap": ""
   },
 
   "main": "out/src/publish.js"
