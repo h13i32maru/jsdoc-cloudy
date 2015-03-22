@@ -366,14 +366,24 @@ export default class DocBuilder {
 
     if (typeof longname !== 'string') throw new Error(JSON.stringify(longname));
 
+    // Array.<Foo>
+    // TODO: support nested Array
+    let matched = longname.match(/^Array\.<(.*?)>$/);
+    let isArray = false;
+    if (matched) {
+      longname = matched[1];
+      isArray = true;
+    }
+
     var doc = this._find({longname})[0];
 
     if (!doc) {
       // if longname is HTML tag, not escape.
+      var arraySuffix = isArray ? '[]' : '';
       if (longname.indexOf('<') === 0) {
-        return `<span>${longname}</span>`;
+        return `<span>${longname}${arraySuffix}</span>`;
       } else {
-        return `<span>${escape(text || longname)}</span>`;
+        return `<span>${escape(text || longname)}${arraySuffix}</span>`;
       }
     }
 
@@ -384,10 +394,11 @@ export default class DocBuilder {
     } else {
       text = escape(text || doc.name);
       var url = this._getURL(doc, inner);
+      var arraySuffix = isArray ? '[]' : '';
       if (url) {
-        return `<span><a href="${url}">${text}</a></span>`;
+        return `<span><a href="${url}">${text}</a>${arraySuffix}</span>`;
       } else {
-        return `<span>${text}</span>`;
+        return `<span>${text}${arraySuffix}</span>`;
       }
     }
   }

@@ -230,7 +230,7 @@ describe('module/module1~Class1: ', ()=> {
           assert.includes(doc, '[data-ice="property"]:nth-of-type(1)', 'p1 string | number optional default: 10 nullable: true this is p1 desc.');
           assert.includes(doc, '[data-ice="property"]:nth-of-type(2)', 'p2 string | number optional default: 10 nullable: false this is p2 desc.');
           assert.includes(doc, '[data-ice="property"]:nth-of-type(3)', 'p3 Object this is p3 desc.');
-          assert.includes(doc, '[data-ice="property"]:nth-of-type(4)', 'p3.p4 Array.<string> this is p4 desc.');
+          assert.includes(doc, '[data-ice="property"]:nth-of-type(4)', 'p3.p4 string[] this is p4 desc.');
         });
       });
     })
@@ -248,7 +248,7 @@ describe('module/module1~Class1: ', ()=> {
           assert.includes(doc, '[data-ice="property"]:nth-of-type(1)', 'p1 string | number optional default: 10 nullable: true this is p1 desc.');
           assert.includes(doc, '[data-ice="property"]:nth-of-type(2)', 'p2 string | number optional default: 10 nullable: false this is p2 desc.');
           assert.includes(doc, '[data-ice="property"]:nth-of-type(3)', 'p3 Object this is p3 desc.');
-          assert.includes(doc, '[data-ice="property"]:nth-of-type(4)', 'p3.p4 Array.<string> this is p4 desc.');
+          assert.includes(doc, '[data-ice="property"]:nth-of-type(4)', 'p3.p4 string[] this is p4 desc.');
           assert.includes(doc, '[data-ice="property"]:nth-of-type(5)', 'p3.p5 Class1 this is desc.');
           assert.includes(doc, '[data-ice="property"]:nth-of-type(6)', 'p3.p6 member1 this is desc.');
           assert.includes(doc, '[data-ice="property"]:nth-of-type(7)', 'p3.p6 member1 this is desc.');
@@ -285,7 +285,7 @@ describe('module/module1~Class1: ', ()=> {
           assert.includes(doc, '[data-ice="property"]:nth-of-type(1)', 'p1 string | number optional default: 10 nullable: true this is p1 desc.');
           assert.includes(doc, '[data-ice="property"]:nth-of-type(2)', 'p2 string | number optional default: 10 nullable: false this is p2 desc.');
           assert.includes(doc, '[data-ice="property"]:nth-of-type(3)', 'p3 Object this is p3 desc.');
-          assert.includes(doc, '[data-ice="property"]:nth-of-type(4)', 'p3.p4 Array.<string> this is p4 desc.');
+          assert.includes(doc, '[data-ice="property"]:nth-of-type(4)', 'p3.p4 string[] this is p4 desc.');
           assert.includes(doc, '[data-ice="property"]:nth-of-type(5)', 'p3.p5 Class1 this is desc.');
           assert.includes(doc, '[data-ice="property"]:nth-of-type(6)', 'p3.p6 member1 this is desc.');
           assert.includes(doc, '[data-ice="property"]:nth-of-type(7)', 'p3.p6 member1 this is desc.');
@@ -305,7 +305,7 @@ describe('module/module1~Class1: ', ()=> {
             assert.includes(doc, '[data-ice="property"]:nth-of-type(1)', 'p1 string | number optional default: 10 nullable: true this is p1 desc.');
             assert.includes(doc, '[data-ice="property"]:nth-of-type(2)', 'p2 string | number optional default: 10 nullable: false this is p2 desc.');
             assert.includes(doc, '[data-ice="property"]:nth-of-type(3)', 'p3 Object this is p3 desc.');
-            assert.includes(doc, '[data-ice="property"]:nth-of-type(4)', 'p3.p4 Array.<string> this is p4 desc.');
+            assert.includes(doc, '[data-ice="property"]:nth-of-type(4)', 'p3.p4 string[] this is p4 desc.');
             assert.includes(doc, '[data-ice="property"]:nth-of-type(5)', 'p3.p5 Class1 this is desc.');
             assert.includes(doc, '[data-ice="property"]:nth-of-type(6)', 'p3.p6 member1 this is desc.');
             assert.includes(doc, '[data-ice="property"]:nth-of-type(7)', 'p3.p6 member1 this is desc.');
