@@ -19,6 +19,7 @@
   "cloudy": {
     "title": "sample for test",
     "description": "this is sample for test description.",
+    "importPath": "jsdoc-cloudy/test/",
     "styles": ["./out/test/fixture/static/style1.css", "./out/test/fixture/static/style2.css"],
     "scripts": ["./out/test/fixture/static/script1.js", "./out/test/fixture/static/script2.js"]
   }

@@ -6,8 +6,10 @@ describe('module/module1~Class1: ', ()=> {
 
   it('has header notice.', ()=>{
     find(doc, '[data-ice="content"] .header-notice', (doc)=>{
-      assert.includes(doc, '[data-ice="memberof"]', 'module/module1');
-      assert.includes(doc, '[data-ice="memberof"] a', encode('module:module|module1.html'), 'href');
+      //assert.includes(doc, '[data-ice="memberof"]', 'module/module1');
+      //assert.includes(doc, '[data-ice="memberof"] a', encode('module:module|module1.html'), 'href');
+      assert.includes(doc, '[data-ice="importPath"]', "import Class1 from 'jsdoc-cloudy/test/module/module1.js'");
+
       assert.includes(doc, '[data-ice="access"]', 'public');
       assert.includes(doc, '[data-ice="kind"]', 'class');
 

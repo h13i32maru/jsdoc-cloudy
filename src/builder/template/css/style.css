@@ -72,6 +72,11 @@ p > code {
   background: #ddd;
 }
 
+.import-path pre.prettyprint {
+  border: none;
+  padding: 0;
+}
+
 .layout-container {
   /*display: flex;*/
   /*flex-direction: row;*/
@@ -236,7 +241,7 @@ table.params td p {
   padding-right: 10px;
 }
 
-.content .detail h4 + * {
+.content .detail h4 + :not(pre) {
   padding-left: 0;
   margin-left: 10px;
 }

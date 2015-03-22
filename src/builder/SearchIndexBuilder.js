@@ -9,8 +9,21 @@ export default class StaticFileBuilder extends DocBuilder {
       inherited: {isUndefined: true},
       mixed: {isUndefined: true}
     });
+
     for (let doc of docs) {
-      searchIndex.push([doc.longname.toLowerCase(), this._getURL(doc, null, 2), doc.longname]);
+      let indexText, url, displayText;
+
+      if (doc._custom_import_path) {
+        displayText = `${doc._custom_import_path}~${doc.name}`;
+        indexText = displayText.toLowerCase();
+        url = this._getURL(doc, null, 2);
+      } else {
+        displayText = doc.longname;
+        indexText = displayText.toLowerCase();
+        url = this._getURL(doc, null, 2);
+      }
+
+      searchIndex.push([indexText, url, displayText]);
     }
 
     let javascript = 'window.jsdocCloudySearchIndex = ' + JSON.stringify(searchIndex, null, 2);

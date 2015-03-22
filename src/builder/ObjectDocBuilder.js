@@ -22,7 +22,15 @@ export default class NamespaceDocBuilder extends DocBuilder {
     var ice = new IceCap(this._readTemplate('object.html'));
 
     // header
-    ice.load('memberof', this._buildDocLinkHTML(doc.memberof));
+    if (doc._custom_import_path) {
+      ice.drop('memberof');
+      ice.into('importPath', `import ${doc.name} from '${doc._custom_import_path}'`, (code, ice)=>{
+        ice.text('importPathCode', code);
+      });
+    } else {
+      ice.load('memberof', this._buildDocLinkHTML(doc.memberof));
+      ice.drop('importPath');
+    }
     ice.text('access', doc.access);
     ice.text('kind', doc.kind);
     ice.load('file', this._buildFileDocLinkHTML(doc), 'append');

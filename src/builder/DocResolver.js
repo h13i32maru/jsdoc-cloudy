@@ -19,6 +19,7 @@ export default class DocResolver {
     this._resolveSourceCode();
     this._resolveExtendsChain();
     this._resolveFileAbsPath();
+    this._resolveImportPath();
   }
 
   _resolveIgnore() {
@@ -359,5 +360,32 @@ export default class DocResolver {
     });
 
     this._builder._data.__RESOLVED_FILE_LONGNAME__ = true;
+  }
+
+  _resolveImportPath() {
+    if (this._builder._data.__RESOLVED_IMPORT_PATH__) return;
+
+    let prefix = null;
+    if (!this._builder._config) return;
+    if ('importPath' in this._builder._config.cloudy) {
+      prefix = this._builder._config.cloudy.importPath;
+    } else {
+      return;
+    }
+
+    let inDirPath = this._builder._option._[0];
+    inDirPath = path.resolve(inDirPath);
+
+    this._builder._data({kind: ['class', 'interface', 'mixin']}).update(function(){
+      if (this.meta) {
+        let filePath = this.meta.path + path.sep + this.meta.filename;
+        let relativeFilePath = path.relative(inDirPath, filePath);
+        let importPath = path.normalize(prefix + path.sep + relativeFilePath);
+        this._custom_import_path = importPath;
+        return this;
+      }
+    });
+
+    this._builder._data.__RESOLVED_IMPORT_PATH__ = true;
   }
 }

@@ -35,5 +35,8 @@
     "jsdoc",
     "template"
   ],
+  "files": [
+    "out/src"
+  ],
   "main": "out/src/publish.js"
 }
