@@ -351,6 +351,12 @@ footer, .file-footer {
   margin-left: 30px;
   background: white;
   box-shadow: 1px 1px 4px rgb(0,0,0);
+  white-space: nowrap;
+}
+
+.search-result-import-path {
+  color: #aaa;
+  font-size: 12px;
 }
 
 .search-result li {
