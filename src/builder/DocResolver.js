@@ -46,6 +46,14 @@ export default class DocResolver {
   _resolveGlobalNamespace() {
     if (this._data.__RESOLVED_GLOBAL_NAMESPACE__) return;
 
+    if (this._builder._config) {
+      if ('global' in this._builder._config.cloudy) {
+        if (!this._builder._config.cloudy.global) {
+          return;
+        }
+      }
+    }
+
     var docs = this._builder._find({memberof: {isUndefined: true}});
     if (docs.length) {
       for (var doc of docs) {
