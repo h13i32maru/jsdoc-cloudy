@@ -69,29 +69,29 @@ export default class NamespaceDocBuilder extends DocBuilder {
     });
 
     // summary
-    ice.load('namespaceSummary', this._buildSummaryHTML(doc, 'namespace', 'Namespaces'), 'append');
-    ice.load('classSummary', this._buildSummaryHTML(doc, 'class', 'Classes'), 'append');
-    ice.load('interfaceSummary', this._buildSummaryHTML(doc, 'interface', 'Interfaces'), 'append');
-    ice.load('mixinSummary', this._buildSummaryHTML(doc, 'mixin', 'Mixin'), 'append');
-    ice.load('staticMemberSummary', this._buildSummaryHTML(doc, 'member', 'Members', true), 'append');
-    ice.load('staticMethodSummary', this._buildSummaryHTML(doc, 'function', 'Methods', true), 'append');
-    ice.load('constructorSummary', this._buildSummaryHTML(doc, 'constructor', 'Constructor'), 'append');
-    ice.load('memberSummary', this._buildSummaryHTML(doc, 'member', 'Members'), 'append');
-    ice.load('methodSummary', this._buildSummaryHTML(doc, 'function', 'Methods'), 'append');
-    ice.load('typedefSummary', this._buildSummaryHTML(doc, 'typedef', 'Typedefs'), 'append');
-    ice.load('eventSummary', this._buildSummaryHTML(doc, 'event', 'Events'), 'append');
-    ice.load('constSummary', this._buildSummaryHTML(doc, 'constant', 'Constants'), 'append');
-    ice.load('enumSummary', this._buildSummaryHTML(doc, 'enum', 'Enums'), 'append');
-    ice.load('callbackSummary', this._buildSummaryHTML(doc, 'callback', 'callback'), 'append');
+    ice.load('namespaceSummary', this._buildSummaryHTML(doc, 'namespace', 'Namespaces'));
+    ice.load('classSummary', this._buildSummaryHTML(doc, 'class', 'Classes'));
+    ice.load('interfaceSummary', this._buildSummaryHTML(doc, 'interface', 'Interfaces'));
+    ice.load('mixinSummary', this._buildSummaryHTML(doc, 'mixin', 'Mixin'));
+    ice.load('staticMemberSummary', this._buildSummaryHTML(doc, 'member', 'Members', 'static'));
+    ice.load('staticMethodSummary', this._buildSummaryHTML(doc, 'function', 'Methods', 'static'));
+    ice.load('constructorSummary', this._buildSummaryHTML(doc, 'constructor', 'Constructor'));
+    ice.load('memberSummary', this._buildSummaryHTML(doc, 'member', 'Members', {'!is': 'static'}));
+    ice.load('methodSummary', this._buildSummaryHTML(doc, 'function', 'Methods', {'!is': 'static'}));
+    ice.load('typedefSummary', this._buildSummaryHTML(doc, 'typedef', 'Typedefs'));
+    ice.load('eventSummary', this._buildSummaryHTML(doc, 'event', 'Events'));
+    ice.load('constSummary', this._buildSummaryHTML(doc, 'constant', 'Constants'));
+    ice.load('enumSummary', this._buildSummaryHTML(doc, 'enum', 'Enums'));
+    ice.load('callbackSummary', this._buildSummaryHTML(doc, 'callback', 'callback'));
 
     ice.load('inheritedSummary', this._buildInheritedSummaryHTML(doc), 'append');
 
     // detail
-    ice.load('staticMemberDetails', this._buildDetailHTML(doc, 'member', 'Members', true));
-    ice.load('staticMethodDetails', this._buildDetailHTML(doc, 'function', 'Methods', true));
+    ice.load('staticMemberDetails', this._buildDetailHTML(doc, 'member', 'Members', 'static'));
+    ice.load('staticMethodDetails', this._buildDetailHTML(doc, 'function', 'Methods', 'static'));
     ice.load('constructorDetails', this._buildDetailHTML(doc, 'constructor', 'Constructors'));
-    ice.load('memberDetails', this._buildDetailHTML(doc, 'member', 'Members'));
-    ice.load('methodDetails', this._buildDetailHTML(doc, 'function', 'Methods'));
+    ice.load('memberDetails', this._buildDetailHTML(doc, 'member', 'Members', {'!is': 'static'}));
+    ice.load('methodDetails', this._buildDetailHTML(doc, 'function', 'Methods', {'!is': 'static'}));
     ice.load('typedefDetails', this._buildDetailHTML(doc, 'typedef', 'Typedefs'));
     ice.load('eventDetails', this._buildDetailHTML(doc, 'event', 'Events'));
     ice.load('constDetails', this._buildDetailHTML(doc, 'constant', 'Constants'));
@@ -170,7 +170,7 @@ export default class NamespaceDocBuilder extends DocBuilder {
       let title = `From ${superDoc.kind} ${this._buildDocLinkHTML(longname, longname)}`;
       let result = this._buildSummaryDoc(targetDocs, '----------', false, superDoc.kind);
       if (result) {
-        result.load('title', title);
+        result.load('title', title, IceCap.MODE_WRITE);
         html.push(result.html);
       }
     }

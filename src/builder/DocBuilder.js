@@ -121,7 +121,7 @@ export default class DocBuilder {
     return ice;
   }
 
-  _findAccessDocs(doc, kind, isStaticScope) {
+  _findAccessDocs(doc, kind, scope = null) {
     if (kind === 'constructor' && !doc) {
       throw new Error('doc must be specified if kind === constructor');
     }
@@ -153,10 +153,8 @@ export default class DocBuilder {
       delete cond.memberof;
     }
 
-    if (isStaticScope) {
-      cond.scope = 'static';
-    } else {
-      cond.scope = {'!is': 'static'};
+    if (scope) {
+      cond.scope = scope;
     }
 
     let excludeInherited = {inherits: {isUndefined: true}, mixed: {isUndefined: true}};
@@ -169,8 +167,8 @@ export default class DocBuilder {
     return accessDocs;
   }
 
-  _buildSummaryHTML(doc, kind, title, isStaticScope = false) {
-    var accessDocs = this._findAccessDocs(doc, kind, isStaticScope);
+  _buildSummaryHTML(doc, kind, title, scope = null) {
+    var accessDocs = this._findAccessDocs(doc, kind, scope);
     var innerLink = kind === 'constructor';
     var html = '';
     for (var accessDoc of accessDocs) {
@@ -217,8 +215,8 @@ export default class DocBuilder {
     return ice;
   }
 
-  _buildDetailHTML(doc, kind, title, isStaticScope = false) {
-    var accessDocs = this._findAccessDocs(doc, kind, isStaticScope);
+  _buildDetailHTML(doc, kind, title, scope = null) {
+    var accessDocs = this._findAccessDocs(doc, kind, scope);
     var html = '';
     for (var accessDoc of accessDocs) {
       var docs = accessDoc[1];
