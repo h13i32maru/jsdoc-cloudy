@@ -166,7 +166,13 @@ export default class NamespaceDocBuilder extends DocBuilder {
     for (let longname of longnames) {
       let superDoc = this._find({longname })[0];
 
-      let targetDocs = this._orderedFind('scope desc, kind desc, access desc', {memberof: longname, inherits: {isUndefined: true}, mixed: {isUndefined: true}});
+      let targetDocs = this._orderedFind('scope desc, kind desc, access desc', {
+        memberof: longname,
+        kind: ['member', 'function'],
+        inherits: {isUndefined: true},
+        mixed: {isUndefined: true}
+      });
+
       let title = `From ${superDoc.kind} ${this._buildDocLinkHTML(longname, longname)}`;
       let result = this._buildSummaryDoc(targetDocs, '----------', false, superDoc.kind);
       if (result) {
